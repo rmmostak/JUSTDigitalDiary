@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinator"
+    android:background="#A303A9F4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#542196F3"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="10"
+        tools:context=".NotePad.MakeNote">
+
+        <EditText
+            android:id="@+id/noteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:drawableTint="@color/black"
+            android:hint="Enter your note title"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <com.blogspot.skferdous.justdigitaldiary.NotePad.LinedEditText
+            android:id="@+id/noteBody"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="9"
+            android:backgroundTint="@color/black"
+            android:gravity="top"
+            android:hint="Write your note here..."
+            android:padding="5dp" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.slideshow.VCMessageFragment">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:gravity="bottom">
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="5dp"
+           android:textIsSelectable="true"
+           android:textAlignment="center"
+           android:textSize="20sp"
+           android:text="Message from honorable Vice Chancellor sir"
+           android:textAppearance="@style/TextAppearance.AppCompat.Title"
+           android:layout_margin="5dp" />
+
+       <TextView
+           android:id="@+id/text_vc_message"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="5dp"
+           android:textIsSelectable="true"
+           android:textAlignment="textStart"
+           android:textSize="20sp"
+           android:text="@string/vc_message"
+           android:layout_margin="5dp" />
+
+   </LinearLayout>
+
+</ScrollView>

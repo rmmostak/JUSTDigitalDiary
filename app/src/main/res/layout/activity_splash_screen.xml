@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center"
+    android:background="#A303A9F4"
+    android:gravity="center"
+    android:theme="@style/Theme.AppCompat.NoActionBar"
+    tools:context=".SplashScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/calibri"
+            android:gravity="center"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/welcome_notice_splash_screen"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/event_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_below="@+id/welcome"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:src="@drawable/event_image" />
+
+            <ImageView
+                android:id="@+id/just_logo"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/just_logo"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="bottom"
+        android:text="Design and Developed by CSE, JUST"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/DimGray"
+        android:textStyle="italic"
+        tools:ignore="RtlCompat" />
+
+</RelativeLayout>

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">JUST Digital Diary</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_vc_message">Message (Vice-Chancellor)</string>
+    <string name="vc_message">It is my great pleasure to invite you to explore the
+        Jashore University of Science and Technology (JUST) online through our website.
+        Contribution of science and technology for developing a nation is well known to all.
+        To meet up the diversified demand of people, information and communication technology
+        and biological sciences are playing the key role. University is the most suitable place
+        for education and research. Universities are playing a vital role in building efficient
+        manpower for the development of the country as well as for the global need. With a view
+        to imparting science and technology oriented education in Bangladesh, the Jashore University
+        of Science and Technology was established in 2007 by the Shadhinota Shorok (Independence Road)
+        in Jashore district. The first batch of students was admitted in 2008-2009 session.
+        The honorable Prime Minister of the People’s Republic of Bangladesh, Sheikh Hasina,
+        inaugurated the campus of the university on December 27, 2010.
+    </string>
+    <string name="welcome_notice_splash_screen">Welcome to\nJUST Digital Diary\nMobile App</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="about_us">About Us</string>
+    <string name="share_app">Share App</string>
+    <string name="welcome_note">JUST Digital Diary Mobile App</string>
+    <string name="about_us_text"><i>Design and Development by</i>\n
+        <b>Computer Science and Engineering Department</b>\n
+        <b>Jashore University of Science and Technology, Jashore.</b></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="API_KEY">AIzaSyCpkai1OArOr5xhb6MwS7Dlnjf6MKaJne0</string>
+</resources>

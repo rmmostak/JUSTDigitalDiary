@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        android:contentDescription="Edit"
+        android:icon="@drawable/ic_edit"
+        android:title="Edit"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/save"
+        android:contentDescription="Save"
+        android:icon="@drawable/ic_save"
+        android:title="Save"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/delete"
+        android:contentDescription="Delete"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete"
+        app:showAsAction="always" />
+
+</menu>
