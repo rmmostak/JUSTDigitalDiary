@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:weightSum="10">
+
+    <ImageView
+        android:id="@+id/prev"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:src="@drawable/ic_prev" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+        <TextView
+            android:id="@+id/gTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="1dp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <ImageView
+            android:id="@+id/gImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:clickable="true"
+            android:contentDescription="Gallery Image" />
+
+        <TextView
+            android:id="@+id/gDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="1dp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textIsSelectable="true" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:src="@drawable/ic_next" />
+
+</LinearLayout>

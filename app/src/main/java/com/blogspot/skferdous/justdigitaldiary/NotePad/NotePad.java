@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,26 +55,14 @@ public class NotePad extends AppCompatActivity {
         setContentView(R.layout.activity_note_pad);
 
         CoordinatorLayout coordinatorLayout;
-        coordinatorLayout=findViewById(R.id.coordinator);
-        if (!isConnected()) {
-            /*new AlertDialog.Builder(this)
-                    .setIcon(R.drawable.logo)
-                    .setTitle("You are offline!")
-                    .setMessage("Please connect to the internet and try again, Thank you!")
-                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(ContactActivity.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            dialog.dismiss();
-                        }
-                    }).show();*/
+        coordinatorLayout = findViewById(R.id.coordinator);
+/*        if (!isConnected()) {
+
             Snackbar.make(coordinatorLayout, "You don't have internet connection, Please connect!", Snackbar.LENGTH_INDEFINITE)
                     .setAction("OK", v -> {
                         return;
                     }).show();
-        }
+        }*/
 
         notice = findViewById(R.id.notice);
         recyclerView = findViewById(R.id.recyclerView);
@@ -103,40 +92,45 @@ public class NotePad extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(true);
         dialog.show();
-        String user = auth.getUid();
-        reference = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(user);
-        reference.keepSynced(true);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    NoteModel model = snapshot.getValue(NoteModel.class);
-                    modelList.add(model);
-                }
-                if (modelList.isEmpty()) {
-                    notice.setVisibility(View.VISIBLE);
-                    dialog.dismiss();
+        try {
+            String user = auth.getUid();
+            reference = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(user);
+            reference.keepSynced(true);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        NoteModel model = snapshot.getValue(NoteModel.class);
+                        modelList.add(model);
+                    }
+                    if (modelList.isEmpty()) {
+                        notice.setVisibility(View.VISIBLE);
+                        dialog.dismiss();
 
-                } else {
-                    notice.setVisibility(View.GONE);
-                    adapter = new NoteAdapter(NotePad.this, modelList);
-                    recyclerView.setAdapter(adapter);
-                    dialog.dismiss();
+                    } else {
+                        notice.setVisibility(View.GONE);
+                        adapter = new NoteAdapter(NotePad.this, modelList);
+                        recyclerView.setAdapter(adapter);
+                        dialog.dismiss();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(NotePad.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(NotePad.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(NotePad.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(NotePad.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+        startActivity(intent, options.toBundle());
         super.onBackPressed();
     }
 }

@@ -6,34 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".ui.slideshow.VCMessageFragment">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       android:gravity="bottom">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="5dp"
-           android:textIsSelectable="true"
-           android:textAlignment="center"
-           android:textSize="20sp"
-           android:text="Message from honorable Vice Chancellor sir"
-           android:textAppearance="@style/TextAppearance.AppCompat.Title"
-           android:layout_margin="5dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
+            android:text="Message from honorable Vice Chancellor sir"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textIsSelectable="true"
+            android:textSize="20sp" />
 
-       <TextView
-           android:id="@+id/text_vc_message"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="5dp"
-           android:textIsSelectable="true"
-           android:textAlignment="textStart"
-           android:textSize="20sp"
-           android:text="@string/vc_message"
-           android:layout_margin="5dp" />
+        <TextView
+            android:id="@+id/text_vc_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:text="@string/vc_message"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textIsSelectable="true" />
 
-   </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

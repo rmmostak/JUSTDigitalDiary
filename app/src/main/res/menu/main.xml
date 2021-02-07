@@ -7,4 +7,9 @@
         android:title="@string/sign_out"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/nav_name"
+        android:title=""
+        app:showAsAction="always" />
+
 </menu>

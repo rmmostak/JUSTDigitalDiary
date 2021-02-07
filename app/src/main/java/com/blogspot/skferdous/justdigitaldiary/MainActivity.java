@@ -1,21 +1,25 @@
 package com.blogspot.skferdous.justdigitaldiary;
 
 import android.app.ActivityOptions;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
+import com.blogspot.skferdous.justdigitaldiary.Authentication.LoginActivity;
+import com.blogspot.skferdous.justdigitaldiary.Model.AuthModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,9 +28,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Objects;
+
 import eu.dkaratzas.android.inapp.update.Constants;
 import eu.dkaratzas.android.inapp.update.InAppUpdateManager;
 import eu.dkaratzas.android.inapp.update.InAppUpdateStatus;
+
+import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
 
 public class MainActivity extends AppCompatActivity implements InAppUpdateManager.InAppUpdateHandler {
 
@@ -39,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
 
     private FirebaseAuth firebaseAuth;
     private InAppUpdateManager inAppUpdateManager;
+
+    String uName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +93,42 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        try {
+            DatabaseReference reference;
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String uid = auth.getCurrentUser().getUid();
+            String check = checkEmailValidity(auth.getCurrentUser().getEmail());
+            if (check.equals("just.edu.bd")) {
+                reference = FirebaseDatabase.getInstance().getReference("Users").child("Faculty and Stuff").child(uid);
+            } else {
+                reference = FirebaseDatabase.getInstance().getReference("Users").child("Students").child(uid);
+            }
+
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        uName = snapshot.child("name").getValue(String.class);
+                        MenuItem item = menu.findItem(R.id.nav_name);
+                        item.setTitle(uName);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        //String name = getName();
+
         return true;
     }
 
@@ -92,12 +138,13 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
         if (item.getItemId() == R.id.signOut) {
 
             firebaseAuth.signOut();
-            Intent intent = new Intent(MainActivity.this, Authentication.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            ActivityOptions options=ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
             startActivity(intent, options.toBundle());
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
 
     }
 

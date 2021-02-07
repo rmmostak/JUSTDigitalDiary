@@ -18,8 +18,9 @@
         tools:layout="@layout/fragment_vc_message" />
 
     <fragment
-    android:id="@+id/nav_about_us"
-    android:name="com.blogspot.skferdous.justdigitaldiary.ui.gallery.AboutUsFragment"
-    android:label="@string/about_us"
-    tools:layout="@layout/fragment_about_us" />
+        android:id="@+id/nav_about_us"
+        android:name="com.blogspot.skferdous.justdigitaldiary.ui.gallery.AboutUsFragment"
+        android:label="@string/about_us"
+        tools:layout="@layout/fragment_about_us" />
+
 </navigation>
