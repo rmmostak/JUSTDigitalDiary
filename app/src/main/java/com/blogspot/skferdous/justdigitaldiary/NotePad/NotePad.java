@@ -7,6 +7,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
@@ -16,16 +17,24 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.NoteAdapter;
+import com.blogspot.skferdous.justdigitaldiary.Adapter.ViewPagerAdapter;
+import com.blogspot.skferdous.justdigitaldiary.Calendar.AddingEvent;
+import com.blogspot.skferdous.justdigitaldiary.Calendar.CalendarActivity;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.Model.NoteModel;
+import com.blogspot.skferdous.justdigitaldiary.NotePad.Fragment.MyNoteFragment;
+import com.blogspot.skferdous.justdigitaldiary.NotePad.Fragment.SharedNoteFragment;
 import com.blogspot.skferdous.justdigitaldiary.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,101 +45,38 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 import static com.blogspot.skferdous.justdigitaldiary.NotePad.MakeNote.NOTE_NODE;
 import static com.blogspot.skferdous.justdigitaldiary.NotePad.ViewNote.ROOT_NOTE;
 
 public class NotePad extends AppCompatActivity {
-    private TextView notice;
-    private RecyclerView recyclerView;
-    private FloatingActionButton actionButton;
-    private List<NoteModel> modelList = new ArrayList<>();
-    private NoteAdapter adapter;
 
-    private DatabaseReference reference;
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_pad);
 
-        CoordinatorLayout coordinatorLayout;
-        coordinatorLayout = findViewById(R.id.coordinator);
-/*        if (!isConnected()) {
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
 
-            Snackbar.make(coordinatorLayout, "You don't have internet connection, Please connect!", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", v -> {
-                        return;
-                    }).show();
-        }*/
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.AddFragment(new MyNoteFragment(), "My Notes");
+        adapter.AddFragment(new SharedNoteFragment(), "Shared Notes");
 
-        notice = findViewById(R.id.notice);
-        recyclerView = findViewById(R.id.recyclerView);
-        actionButton = findViewById(R.id.actionButton);
-
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        showNoteList();
-
-        actionButton.setOnClickListener(view -> {
-            Intent intent = new Intent(NotePad.this, MakeNote.class);
-            startActivity(intent);
-        });
-    }
-
-    private boolean isConnected() {
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = manager.getActiveNetworkInfo();
-        return info != null && info.isConnected();
-    }
-
-    private void showNoteList() {
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("Data is retrieving, please wait...");
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(true);
-        dialog.show();
-        try {
-            String user = auth.getUid();
-            reference = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(user);
-            reference.keepSynced(true);
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        NoteModel model = snapshot.getValue(NoteModel.class);
-                        modelList.add(model);
-                    }
-                    if (modelList.isEmpty()) {
-                        notice.setVisibility(View.VISIBLE);
-                        dialog.dismiss();
-
-                    } else {
-                        notice.setVisibility(View.GONE);
-                        adapter = new NoteAdapter(NotePad.this, modelList);
-                        recyclerView.setAdapter(adapter);
-                        dialog.dismiss();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(NotePad.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-        } catch (Exception e) {
-            Toast.makeText(NotePad.this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(NotePad.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
         startActivity(intent, options.toBundle());
         super.onBackPressed();
     }
+
 }

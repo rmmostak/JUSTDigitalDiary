@@ -3,41 +3,56 @@ package com.blogspot.skferdous.justdigitaldiary.ui.home;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.blogspot.skferdous.justdigitaldiary.Calendar.CalendarActivity;
-import com.blogspot.skferdous.justdigitaldiary.Contact.ContactActivity;
+import com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode;
 import com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
 import com.blogspot.skferdous.justdigitaldiary.R;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    //private HomeViewModel homeViewModel;
     private Context context;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        /*homeViewModel =
+                new ViewModelProvider(this).get(HomeViewModel.class);*/
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        CardView contact = root.findViewById(R.id.contact);
-        contact.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), ContactActivity.class);
+        CardView adminContact = root.findViewById(R.id.adminContact);
+        adminContact.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ContactNode.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            ActivityOptions options=ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.left2right, R.anim.right2left);
+            SharedPreferences preferences=getActivity().getSharedPreferences("child", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putString("first_ref", "Administrative Offices");
+            editor.commit();
+            //intent.putExtra("first_ref", "Administrative Offices");
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
+        });
+
+        CardView facultyContact = root.findViewById(R.id.facultyContact);
+        facultyContact.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ContactNode.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            SharedPreferences preferences=getActivity().getSharedPreferences("child", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putString("first_ref", "Faculty Members");
+            editor.commit();
+            //intent.putExtra("first_ref", "Faculty Members");
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
 
@@ -45,7 +60,7 @@ public class HomeFragment extends Fragment {
         calendar.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CalendarActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            ActivityOptions options=ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.left2right, R.anim.right2left);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
 
         });
@@ -54,7 +69,7 @@ public class HomeFragment extends Fragment {
         notepad.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), NotePad.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            ActivityOptions options=ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.left2right, R.anim.right2left);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
 
@@ -62,7 +77,7 @@ public class HomeFragment extends Fragment {
         explore.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), ExploreActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            ActivityOptions options=ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.left2right, R.anim.right2left);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
 

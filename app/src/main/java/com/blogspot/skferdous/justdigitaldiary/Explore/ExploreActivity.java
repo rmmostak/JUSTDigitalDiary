@@ -10,12 +10,15 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,25 +72,29 @@ public class ExploreActivity extends AppCompatActivity {
         web = findViewById(R.id.web);
         web.setOnClickListener(v -> {
 
-            String url = "http://just.edu.bd";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
+            Intent intent=new Intent(ExploreActivity.this, CalendarWeb.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
         });
 
         portal = findViewById(R.id.portal);
         portal.setOnClickListener(v -> {
-            Toast.makeText(ExploreActivity.this, "No more resources right now!", Toast.LENGTH_SHORT).show();
 
+            Intent intent = new Intent(ExploreActivity.this, PortalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
         });
 
-        explore = findViewById(R.id.explore);
+        /*explore = findViewById(R.id.explore);
         explore.setOnClickListener(v -> {
-            Toast.makeText(ExploreActivity.this, "No more resources right now!", Toast.LENGTH_SHORT).show();
+            ToastShort(this, "No more resources right now!");
+        });*/
 
-        });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+/*        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setIcon(R.drawable.logo)
                 .setTitle("Notice")
                 .setMessage("This feature is under constructing, please keep using to get update!")
@@ -97,7 +104,7 @@ public class ExploreActivity extends AppCompatActivity {
                         return;
                     }
                 });
-        builder.show();
+        builder.show();*/
     }
 
     private boolean isConnected() {
@@ -184,10 +191,6 @@ public class ExploreActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        /*gTitle.setText(modelList.get(0).getTopic());
-        Picasso.get().load(modelList.get(0).getUrl()).into(gImage);
-        gDetail.setText(modelList.get(0).getDetail());*/
-
 
         dialogBuilder.setPositiveButton("Close", (dialog1, which) -> {
             in = 1;
@@ -202,8 +205,22 @@ public class ExploreActivity extends AppCompatActivity {
         Intent intent = new Intent(ExploreActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
         startActivity(intent, options.toBundle());
         super.onBackPressed();
+    }
+
+    public static void ToastShort(Context context, String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.getView().setBackgroundColor(Color.parseColor("#00bfa5"));
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
+    }
+
+    public static void ToastLong(Context context, String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        toast.getView().setBackgroundColor(Color.parseColor("#00bfa5"));
+        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
     }
 }

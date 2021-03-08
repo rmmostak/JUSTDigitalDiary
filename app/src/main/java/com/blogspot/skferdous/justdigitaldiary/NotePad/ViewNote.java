@@ -3,28 +3,26 @@ package com.blogspot.skferdous.justdigitaldiary.NotePad;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
+import com.blogspot.skferdous.justdigitaldiary.Model.InvitedModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.NoteModel;
+import com.blogspot.skferdous.justdigitaldiary.NotePad.Fragment.MyNoteFragment;
 import com.blogspot.skferdous.justdigitaldiary.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,54 +31,65 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
+import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
+import static com.blogspot.skferdous.justdigitaldiary.MainActivity.NOTE_ROOT;
 import static com.blogspot.skferdous.justdigitaldiary.NotePad.MakeNote.NOTE_NODE;
 
 public class ViewNote extends AppCompatActivity {
 
     private TextView title, body;
     private DatabaseReference reference;
-    private String note_id;
+    private String note_id, push, uid;
+    ;
+    private RecyclerView recyclerView;
     public static final String ROOT_NOTE = "JUST Digital Diary Notes";
+    public static final String NOTE_INVITE = "Invitations";
+    private String attendees = "null";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_note);
 
-        CoordinatorLayout coordinatorLayout;
-        coordinatorLayout = findViewById(R.id.coordinator);
+        title = findViewById(R.id.noteTitle);
+        body = findViewById(R.id.noteBody);
+        recyclerView = findViewById(R.id.emailRecycler);
 
-/*
-        if (!isConnected()) {
-            Snackbar.make(coordinatorLayout, "You don't have internet connection, Please connect!", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", v -> {
-                        return;
-                    }).show();
-        }
-*/
 
         Intent intent = getIntent();
         note_id = intent.getStringExtra("noteId");
+        int count = intent.getIntExtra("count", 0);
 
-        title = findViewById(R.id.noteTitle);
-        body = findViewById(R.id.noteBody);
+        if (count > 0) {
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(ViewNote.this));
+            showRecyclerView();
+        }
+
+        showPersonalNote();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void showRecyclerView() {
+        try {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            //String email = auth.getCurrentUser().getEmail();
+            //DatabaseReference reference = FirebaseDatabase.getInstance().getReference(NOTE_ROOT).child(NOTE_NODE).child();
+
+        } catch (Exception e) {
+            ToastLong(ViewNote.this, e.getMessage());
+        }
+    }
+
+    private void showPersonalNote() {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("Data is retrieving, please wait...");
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
         dialog.show();
 
         try {
             FirebaseAuth auth = FirebaseAuth.getInstance();
-            String user = auth.getUid();
-
-            reference = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(user).child(note_id);
+            reference = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(auth.getUid()).child(note_id);
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -111,13 +120,6 @@ public class ViewNote extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(ViewNote.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-    }
-
-    public boolean isConnected() {
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = manager.getActiveNetworkInfo();
-        return info != null && info.isConnected();
     }
 
     @Override
@@ -159,27 +161,45 @@ public class ViewNote extends AppCompatActivity {
                     dialog.setCancelable(false);
                     dialog.show();
 
-                    NoteModel model = new NoteModel(note_id, date, time, stTitle, stBody);
-
                     try {
-                        reference.setValue(model).addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                dialog.dismiss();
-                                Intent intent = new Intent(ViewNote.this, NotePad.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
-                                startActivity(intent, options.toBundle());
-                                finish();
+                        reference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                NoteModel noteModel = dataSnapshot.getValue(NoteModel.class);
+                                attendees = noteModel != null ? noteModel.getAttendees() : "null";
+                                FirebaseAuth auth = FirebaseAuth.getInstance();
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(auth.getUid()).child(note_id);
+                                NoteModel model = new NoteModel(note_id, date, time, stTitle, stBody, attendees, false);
+                                try {
+                                    databaseReference.setValue(model).addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            dialog.dismiss();
+                                            Intent intent = new Intent(ViewNote.this, NotePad.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                                            startActivity(intent, options.toBundle());
+                                            finish();
 
-                            } else {
-                                Toast.makeText(ViewNote.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                dialog.dismiss();
+                                        } else {
+                                            Toast.makeText(ViewNote.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    Toast.makeText(ViewNote.this, e.getMessage(), Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                ToastLong(ViewNote.this, databaseError.getMessage());
                             }
                         });
                     } catch (Exception e) {
-                        Toast.makeText(ViewNote.this, e.getMessage(), Toast.LENGTH_LONG).show();
-
+                        ToastLong(ViewNote.this, e.getMessage());
                     }
+
                 } else {
                     body.setError("You have to add something!!");
                     body.requestFocus();
@@ -196,56 +216,156 @@ public class ViewNote extends AppCompatActivity {
 
         if (id == R.id.delete) {
 
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setTitle("Note is deleting, please wait...");
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setCancelable(false);
+            deleteThis();
+        }
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure to delete this note?");
-            builder.setTitle("Alert:");
-            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+        return super.onOptionsItemSelected(item);
+    }
 
-                dialog.show();
-                try {
-                    reference.removeValue().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            dialog.dismiss();
-                            Intent intent = new Intent(ViewNote.this, NotePad.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
-                            startActivity(intent, options.toBundle());
-                            finish();
+    private void deleteThis() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("Note is deleting, please wait...");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
 
-                        } else {
-                            Toast.makeText(ViewNote.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            dialog.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure to delete this note?");
+        builder.setTitle("Alert:");
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+
+            dialog.show();
+            try {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(auth.getUid()).child(note_id);
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            NoteModel model = dataSnapshot.getValue(NoteModel.class);
+
+                            try {
+                                if (model != null) {
+                                    uid = model.getAttendees();
+                                }
+                            } catch (DatabaseException e) {
+                                e.printStackTrace();
+                            }
+
+                            StringBuilder builder1 = new StringBuilder();
+                            if (uid.equals("null")) {
+                                FirebaseAuth auth = FirebaseAuth.getInstance();
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(auth.getUid()).child(note_id);
+                                database.removeValue().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Intent intent = new Intent(ViewNote.this, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                                        startActivity(intent, options.toBundle());
+                                        finish();
+
+                                    } else {
+                                        ToastLong(ViewNote.this, task1.getException().getMessage());
+                                    }
+                                });
+                            } else {
+                                for (int i = 0; i < uid.length(); i++) {
+                                    builder1.append(uid.charAt(i));
+                                    if (uid.charAt(i) == ',') {
+                                        deleteNode(builder1.substring(0, builder1.length() - 1));
+                                        builder1.delete(0, builder1.length());
+                                    }
+                                }
+                            }
+                        } catch (DatabaseException e) {
+                            ToastLong(ViewNote.this, e.getMessage());
                         }
-                    });
-                } catch (Exception e) {
-                    Toast.makeText(ViewNote.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-            builder.setNegativeButton("No", (dialogInterface, i) -> {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        ToastLong(ViewNote.this, databaseError.getMessage());
+
+                    }
+                });
+            } catch (Exception e) {
+                ToastLong(ViewNote.this, e.getMessage());
+            }
+            dialog.dismiss();
+            Intent intent = new Intent(ViewNote.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
+            finish();
+        });
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
                 /*Intent intent = new Intent(ViewNote.this, NotePad.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
                 dialog.dismiss();*/
-                return;
+            return;
+        });
+
+        builder.show();
+    }
+
+    private void deleteNode(String substring) {
+        try {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(NOTE_ROOT).child(NOTE_INVITE).child(substring);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        InvitedModel model = snapshot.getValue(InvitedModel.class);
+                        if (note_id.equals(model.getNoteId())) {
+                            push = model.getKey();
+                            //ToastLong(ViewNote.this, push);
+                            finalDelete(push, substring);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    ToastLong(ViewNote.this, databaseError.getMessage());
+                }
             });
 
-            builder.show();
+        } catch (Exception e) {
+            ToastLong(ViewNote.this, e.getMessage());
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void finalDelete(String push, String subString) {
+        try {
+            //ToastLong(ViewNote.this, subString+"\n"+push);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(NOTE_ROOT).child(NOTE_INVITE).child(subString).child(push);
+            reference.removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    DatabaseReference database = FirebaseDatabase.getInstance().getReference(ROOT_NOTE).child(NOTE_NODE).child(auth.getUid()).child(note_id);
+                    database.removeValue().addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            return;
+                        } else {
+                            ToastLong(ViewNote.this, task.getException().getMessage());
+                        }
+                    });
+                }
+            });
+            //ToastLong(ViewNote.this, "Please reload this page to get current data!");
+        } catch (Exception e) {
+            ToastLong(ViewNote.this, e.getMessage());
+        }
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(ViewNote.this, NotePad.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
         startActivity(intent, options.toBundle());
         super.onBackPressed();
     }

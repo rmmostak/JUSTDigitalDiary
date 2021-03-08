@@ -48,10 +48,6 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child("Faculty and Stuff");
-        studentReference = FirebaseDatabase.getInstance().getReference("Users").child("Students");
-
         int orientation = this.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             CoordinatorLayout coordinatorLayout;
@@ -82,9 +78,19 @@ public class SignupActivity extends AppCompatActivity {
             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+        startActivity(intent, options.toBundle());
+        super.onBackPressed();
     }
 
     private void actionForSignUp() {
@@ -167,6 +173,7 @@ public class SignupActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
         try {
+            firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.createUserWithEmailAndPassword(mail, p2).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
 
@@ -200,7 +207,7 @@ public class SignupActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+                                                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
                                                 startActivity(intent, options.toBundle());
                                                 finish();
                                             });
@@ -258,7 +265,7 @@ public class SignupActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+                                                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
                                                 startActivity(intent, options.toBundle());
                                                 finish();
                                             });
@@ -327,38 +334,4 @@ public class SignupActivity extends AppCompatActivity {
         }
         return builder.toString();
     }
-
-   /* public void sendEmailVerification() {
-        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-
-                    dialog.dismiss();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Alert!");
-                    builder.setIcon(R.drawable.logo);
-                    builder.setMessage("You have created account successfully, Please verify your email!!");
-                    builder.setPositiveButton("OK", (dialog1, which) -> {
-
-                        signupEmail.setText("");
-                        signupPass.setText("");
-                        signupConfirmPass.setText("");
-
-                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    });
-                    builder.show();
-
-                    firebaseAuth.signOut();
-                    finish();
-                    startActivity(new Intent(SignUp.this, LogIn.class));
-                } else {
-                    Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }*/
 }

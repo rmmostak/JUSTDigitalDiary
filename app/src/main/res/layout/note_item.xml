@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -17,10 +18,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="3dp"
             android:layout_weight="2"
             android:gravity="right"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="3dp">
 
             <TextView
                 android:id="@+id/noteTime"
@@ -41,12 +42,12 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:padding="3dp"
-            android:layout_marginLeft="5dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="6"
             android:gravity="left"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="3dp">
 
             <TextView
                 android:id="@+id/noteTitle"
@@ -67,5 +68,12 @@
         </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+    <Button
+        android:id="@+id/attendeeNo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:layout_margin="3dp"
+        android:background="@drawable/circle"
+        android:textColor="@color/purple_700" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

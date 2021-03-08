@@ -23,7 +23,7 @@
     <color name="color10">#C05F8A</color>
     <color name="color11">#77CC7C</color>
     <color name="color12">#D15353</color>
-    <color name="colorPrimary2">#FFC107</color>
+    <color name="colorPrimary2">#3F51B5</color>
     <color name="colorPrimaryDark2">#FFA000</color>
     <color name="backgroundcolor">#fcfcfc</color>
     <color name="lightgray">#ededed</color>
@@ -37,8 +37,8 @@
     <color name="black_overlay">#66000000</color>
 
 
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1A85DA</color>
     <color name="colorAccent">#D81B60</color>
 
     <color name="colorPrimary1">#4fb053</color>

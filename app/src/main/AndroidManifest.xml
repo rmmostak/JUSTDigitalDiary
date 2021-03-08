@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.blogspot.skferdous.justdigitaldiary">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
@@ -17,12 +20,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JUSTDigitalDiary"
         android:usesCleartextTraffic="true">
+        <activity android:name=".VehicleTracking.VehicleTracking"></activity>
+        <activity
+            android:name=".Explore.PortalActivity"
+            android:label="Portal"
+            android:parentActivityName=".Explore.ExploreActivity" />
+        <activity
+            android:name=".Authentication.UserManual"
+            android:label="User Manual"
+            android:parentActivityName=".Authentication.LoginActivity" />
+        <activity
+            android:name=".NotePad.InvitedNotePad"
+            android:label="Shared Notes"
+            android:parentActivityName=".NotePad.NotePad" />
+        <activity
+            android:name=".Calendar.AddingEvent"
+            android:label="Add your enents"
+            android:parentActivityName=".Calendar.CalendarActivity" />
+        <activity
+            android:name=".Explore.CalendarWeb"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Authentication.SignupActivity"
             android:label="Making account"
             android:parentActivityName=".Authentication.LoginActivity" />
-        <activity
-            android:name=".Authentication.LoginActivity">
+        <activity android:name=".Authentication.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +60,9 @@
             android:name=".NotePad.MakeNote"
             android:label="Make your note"
             android:parentActivityName=".NotePad.NotePad" />
-        <activity android:name=".Contact.FacultyListActivity">
+        <activity
+            android:name=".Contact.FacultyListActivity"
+            android:parentActivityName=".Contact.DeptActivity">
 
             <!--
             <meta-data
@@ -46,8 +70,12 @@
                 android:value=".Contact.FacultyListActivity" />
             -->
         </activity>
-        <activity android:name=".Contact.DeptActivity" />
-        <activity android:name=".Contact.ContactListActivity"></activity>
+        <activity
+            android:name=".Contact.DeptActivity"
+            android:parentActivityName=".Contact.ContactNode" />
+        <activity
+            android:name=".Contact.ContactListActivity"
+            android:parentActivityName=".Contact.ContactNode" />
         <activity
             android:name=".NotePad.NotePad"
             android:label="Your Notes"
@@ -58,16 +86,15 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Calendar.CalendarActivity"
-            android:label="Calendar"
+            android:label="JUST Calendar"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Contact.ContactNode"
             android:label="Node of Contact"
-            android:parentActivityName=".Contact.ContactActivity" />
-        <activity
-            android:name=".Contact.ContactActivity"
-            android:label="Contact Categories"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".NotePad.ShareNoteView"
+            android:parentActivityName=".NotePad.NotePad" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

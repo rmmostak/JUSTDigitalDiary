@@ -17,8 +17,8 @@ android {
         applicationId "com.blogspot.skferdous.justdigitaldiary"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 3
-        versionName "beta"
+        versionCode 5
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -50,8 +50,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
 
-    //implementation "androidx.cardview:cardview:1.0.0"
-    //implementation "androidx.recyclerview:recyclerview:1.1.0"
+    //implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
     implementation 'com.google.firebase:firebase-database:19.2.1'
     implementation 'com.google.firebase:firebase-auth:20.0.2'
     implementation 'com.firebaseui:firebase-ui-database:3.1.1'
@@ -59,17 +59,12 @@ dependencies {
     implementation 'com.google.android.play:core:1.7.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    //implementation platform('com.google.firebase:firebase-bom:26.3.0')
-    //implementation 'com.google.firebase:firebase-analytics'
-    //implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    //implementation 'com.google.firebase:firebase-crash:16.2.1'
-
     //implementation 'com.google.api-client:google-api-client:1.23.0'
     //implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
     //implementation 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
 
     implementation 'eu.dkaratzas:android-inapp-update:1.0.5'
-    implementation 'com.github.tibolte:agendacalendarview:1.0.4'
+    //implementation 'com.github.tibolte:agendacalendarview:1.0.4'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

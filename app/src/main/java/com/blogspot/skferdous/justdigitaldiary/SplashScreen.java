@@ -47,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
 
     Runnable r = () -> {
         Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-        ActivityOptions options=ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+        ActivityOptions options=ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
         startActivity(intent, options.toBundle());
         finish();
     };

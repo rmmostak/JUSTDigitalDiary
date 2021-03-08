@@ -13,14 +13,20 @@
 
     <fragment
         android:id="@+id/nav_vc_message"
-        android:name="com.blogspot.skferdous.justdigitaldiary.ui.slideshow.VCMessageFragment"
+        android:name="com.blogspot.skferdous.justdigitaldiary.ui.VCMessage.VCMessageFragment"
         android:label="@string/menu_vc_message"
         tools:layout="@layout/fragment_vc_message" />
 
     <fragment
         android:id="@+id/nav_about_us"
-        android:name="com.blogspot.skferdous.justdigitaldiary.ui.gallery.AboutUsFragment"
+        android:name="com.blogspot.skferdous.justdigitaldiary.ui.about.AboutUsFragment"
         android:label="@string/about_us"
         tools:layout="@layout/fragment_about_us" />
+
+    <fragment
+        android:id="@+id/nav_feedBack"
+        android:name="com.blogspot.skferdous.justdigitaldiary.ui.feedback.FeedBackFragment"
+        android:label="Feedback"
+        tools:layout="@layout/search_fragment" />
 
 </navigation>

@@ -1,7 +1,32 @@
 package com.blogspot.skferdous.justdigitaldiary.Model;
 
 public class NoteModel {
-    private String id, date, time, title, body;
+    private String id;
+    private String date;
+    private String time;
+    private String title;
+    private String body;
+    private String attendees;
+    private String noteId;
+
+    public String getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(String noteId) {
+        this.noteId = noteId;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    private String senderId;
+    private boolean permission;
 
     public NoteModel() {
     }
@@ -46,11 +71,29 @@ public class NoteModel {
         this.body = body;
     }
 
-    public NoteModel(String id, String date, String time, String title, String body) {
+    public String getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(String attendees) {
+        this.attendees = attendees;
+    }
+
+    public boolean isPermission() {
+        return permission;
+    }
+
+    public void setPermission(boolean permission) {
+        this.permission = permission;
+    }
+
+    public NoteModel(String id, String date, String time, String title, String body, String attendees, boolean permission) {
         this.id = id;
         this.date = date;
         this.time = time;
         this.title = title;
         this.body = body;
+        this.attendees = attendees;
+        this.permission = permission;
     }
 }

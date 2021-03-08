@@ -13,13 +13,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactAdapter;
+import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactCategoryAdapter;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.MakeNote;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
@@ -34,10 +37,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode.FIRST_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivity.FINAL_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivity.SECOND_CHILD;
+import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
+import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastShort;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
 public class DeptActivity extends AppCompatActivity {
@@ -53,19 +59,11 @@ public class DeptActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dept);
 
-        CoordinatorLayout coordinatorLayout;
-        coordinatorLayout = findViewById(R.id.coordinator);
-/*        if (!isConnected()) {
-            Snackbar.make(coordinatorLayout, "You don't have internet connection, Please connect!", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", v -> {
-                        return;
-                    }).show();
-        }*/
-
-        Intent intent = getIntent();
-        THIRD_CHILD = intent.getStringExtra("thirdChild");
+        SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
+        THIRD_CHILD = preferences.getString("third_child", null);
 
         ActionBar bar = getSupportActionBar();
+        assert bar != null;
         bar.setTitle(THIRD_CHILD);
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -77,18 +75,9 @@ public class DeptActivity extends AppCompatActivity {
             GridLayoutManager manager = new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false);
             recyclerView.setLayoutManager(manager);
         }
-        if (savedInstanceState != null) {
-            databaseReference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD).child(THIRD_CHILD);
-        }
 
         keyList = new ArrayList<>();
         showContactList();
-    }
-
-    private boolean isConnected() {
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = manager.getActiveNetworkInfo();
-        return info != null && info.isConnected();
     }
 
     private void showContactList() {
@@ -99,15 +88,53 @@ public class DeptActivity extends AppCompatActivity {
         dialog.show();
 
         try {
-            databaseReference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD).child(THIRD_CHILD);
+            SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
+            String child = preferences.getString("first_ref", null);
+            databaseReference = FirebaseDatabase.getInstance().getReference(ROOT).child(child);
+            //ToastShort(this, THIRD_CHILD);
             databaseReference.keepSynced(true);
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        databaseReference.child(snapshot.getKey()).child(THIRD_CHILD).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot sn : dataSnapshot.getChildren()) {
+                                    for (DataSnapshot s : sn.getChildren()) {
+                                        keyList.add(s.getKey());
+                                    }
+                                }
+                                adapter = new ContactAdapter(keyList);
+                                recyclerView.setAdapter(adapter);
+                                dialog.dismiss();
+                            }
 
-                        String ch = snapshot.getKey();
-                        keyList.add(ch);
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                ToastLong(DeptActivity.this, databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            /*databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        ToastShort(DeptActivity.this, "snapshot.getKey()"+snapshot.getChildren());
+                        for (DataSnapshot sn : snapshot.getChildren()) {
+                            String ch = sn.getKey();
+                            keyList.add(ch);
+                            ToastShort(DeptActivity.this, ch);
+                        }
                     }
                     adapter = new ContactAdapter(keyList);
                     recyclerView.setAdapter(adapter);
@@ -119,7 +146,7 @@ public class DeptActivity extends AppCompatActivity {
                     Toast.makeText(DeptActivity.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
-            });
+            });*/
         } catch (Exception e) {
             Toast.makeText(DeptActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }

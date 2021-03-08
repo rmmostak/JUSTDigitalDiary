@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:drawableLeft="@drawable/ic_edit"
+                android:drawableLeft="@drawable/ic_account"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/black"
                 android:hint="Full Name"
@@ -85,7 +85,7 @@
                 android:drawableLeft="@drawable/ic_edit"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/black"
-                android:hint="Department"
+                android:hint="Department/Section"
                 android:inputType="text" />
 
             <TextView

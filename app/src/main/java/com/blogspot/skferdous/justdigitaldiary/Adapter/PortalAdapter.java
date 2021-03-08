@@ -1,0 +1,56 @@
+package com.blogspot.skferdous.justdigitaldiary.Adapter;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.blogspot.skferdous.justdigitaldiary.Model.PortalModel;
+import com.blogspot.skferdous.justdigitaldiary.R;
+
+import java.util.List;
+
+public class PortalAdapter extends RecyclerView.Adapter<PortalAdapter.ViewHolder> {
+
+    private Context context;
+    private List<PortalModel> portalModelList;
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.portal_layout, parent, false);
+        return new PortalAdapter.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return portalModelList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView image;
+        TextView title, link;
+        Button go, copy;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            image = itemView.findViewById(R.id.image);
+            title = itemView.findViewById(R.id.title);
+            link = itemView.findViewById(R.id.link);
+            go = itemView.findViewById(R.id.go);
+            copy = itemView.findViewById(R.id.copy);
+        }
+    }
+}

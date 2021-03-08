@@ -1,31 +1,46 @@
 package com.blogspot.skferdous.justdigitaldiary.Authentication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.blogspot.skferdous.justdigitaldiary.NotePad.InvitedNotePad;
+import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
 import com.blogspot.skferdous.justdigitaldiary.R;
 import com.blogspot.skferdous.justdigitaldiary.SplashScreen;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.File;
+import java.io.IOException;
 
 import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
 
@@ -33,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email, pass;
     private TextView warning, signUp, forgotPass;
-    private Button signIn;
+    private Button signIn, guest;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -48,7 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ActionBar bar=getSupportActionBar();
+        ActionBar bar = getSupportActionBar();
+        assert bar != null;
         bar.setTitle("Login");
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -75,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         warning = findViewById(R.id.warning);
         signUp = findViewById(R.id.signUp);
         signIn = findViewById(R.id.signIn);
+        //guest = findViewById(R.id.guest);
         forgotPass = findViewById(R.id.forgotPass);
 
         forgotPass.setOnClickListener(v -> {
@@ -114,10 +131,19 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
 
+        /*guest.setOnClickListener(v -> {
+            SharedPreferences preferences = getSharedPreferences("guest_state", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("state", true);
+            Intent intent = new Intent(LoginActivity.this, SplashScreen.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+            startActivity(intent, options.toBundle());
+        });*/
     }
 
     @Override
@@ -226,7 +252,7 @@ public class LoginActivity extends AppCompatActivity {
                         dialog.dismiss();
                         Intent intent = new Intent(LoginActivity.this, SplashScreen.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+                        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
                         startActivity(intent, options.toBundle());
                     } else {
                         dialog.dismiss();
@@ -263,4 +289,24 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }*/
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_docs, menu);
+        return true;
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.docs) {
+            Intent intent = new Intent(LoginActivity.this, UserManual.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -2,6 +2,7 @@ package com.blogspot.skferdous.justdigitaldiary;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Objects;
 
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
     private AppBarConfiguration mAppBarConfiguration;
 
     public static final String ROOT = "JUST Digital Diary";
+    public static final String NOTE_ROOT = "JUST Digital Diary Notes";
 
     public static final String ADMIN_TAG = "Administrative Offices";
     public static final String FACULTY_TAG = "Faculty Members";
@@ -112,22 +116,33 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
 
                         uName = snapshot.child("name").getValue(String.class);
                         MenuItem item = menu.findItem(R.id.nav_name);
-                        item.setTitle(uName);
+                        int orientation = MainActivity.this.getResources().getConfiguration().orientation; //.getResources().getConfiguration().orientation;
+                        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            if (uName.length() > 17) {
+                                StringBuilder builder = new StringBuilder();
+                                for (int i = 0; i < 15; i++) {
+                                    builder.append(uName.charAt(i));
+                                }
+                                item.setTitle(builder + "...");
+                            } else {
+                                item.setTitle(uName);
+                            }
+                        } else {
+                            item.setTitle(uName);
+                        }
+
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-
 
         } catch (Exception e) {
             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        //String name = getName();
 
         return true;
     }

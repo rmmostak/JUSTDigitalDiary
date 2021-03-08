@@ -13,11 +13,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactAdapter;
 import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactViewAdapter;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.Model.ChildModel;
@@ -37,6 +41,7 @@ import java.util.List;
 
 import static com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode.FIRST_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity.THIRD_CHILD;
+import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
 public class FacultyListActivity extends AppCompatActivity {
@@ -53,22 +58,18 @@ public class FacultyListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_list);
 
-        CoordinatorLayout coordinatorLayout;
-        coordinatorLayout = findViewById(R.id.coordinator);
-/*        if (!isConnected()) {
-            Snackbar.make(coordinatorLayout, "You don't have internet connection, Please connect!", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", v -> {
-                        return;
-                    }).show();
-        }*/
-
-        Intent intent = getIntent();
-        String firstChild = intent.getStringExtra("firstChild");
-        SECOND_CHILD = intent.getStringExtra("secondChild");
-        FINAL_CHILD = intent.getStringExtra("finalChild");
+        SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
+        String child = preferences.getString("second_child", null);
+        String child2 = preferences.getString("final_child", null);
+        SECOND_CHILD = child;
+        FINAL_CHILD = child2;
 
         ActionBar bar = getSupportActionBar();
+        assert bar != null;
         bar.setTitle(FINAL_CHILD);
+
+        TextView itemDesc = findViewById(R.id.itemDesc);
+        itemDesc.setText(FINAL_CHILD);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -76,12 +77,6 @@ public class FacultyListActivity extends AppCompatActivity {
 
         childModelList = new ArrayList<>();
         showContactList();
-    }
-
-    private boolean isConnected() {
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = manager.getActiveNetworkInfo();
-        return info != null && info.isConnected();
     }
 
     private void showContactList() {
@@ -92,27 +87,56 @@ public class FacultyListActivity extends AppCompatActivity {
         dialog.show();
 
         try {
-            databaseReference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD).child(THIRD_CHILD).child(FINAL_CHILD);
+            SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
+            String child = preferences.getString("first_ref", null);
+            databaseReference = FirebaseDatabase.getInstance().getReference(ROOT).child(child);
+            //ToastShort(this, THIRD_CHILD);
             databaseReference.keepSynced(true);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        ChildModel model = snapshot.getValue(ChildModel.class);
-                        childModelList.add(model);
-                    }
+                        databaseReference.child(snapshot.getKey()).child(THIRD_CHILD).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot sn : dataSnapshot.getChildren()) {
+                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(ROOT).child(child).child(snapshot.getKey()).child(THIRD_CHILD).child(sn.getKey()).child(FINAL_CHILD);
+                                    reference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                Log.d("key", snapshot.getKey());
+                                                ChildModel model = snapshot.getValue(ChildModel.class);
+                                                childModelList.add(model);
+                                            }
 
-                    adapter = new ContactViewAdapter(FacultyListActivity.this, childModelList);
-                    recyclerView.setAdapter(adapter);
-                    dialog.dismiss();
+                                            adapter = new ContactViewAdapter(FacultyListActivity.this, childModelList);
+                                            recyclerView.setAdapter(adapter);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            ToastLong(FacultyListActivity.this, databaseError.getMessage());
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                ToastLong(FacultyListActivity.this, databaseError.getMessage());
+                            }
+                        });
+                    }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(FacultyListActivity.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
+                    ToastLong(FacultyListActivity.this, databaseError.getMessage());
                 }
             });
+            dialog.dismiss();
+
         } catch (Exception e) {
             Toast.makeText(FacultyListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }

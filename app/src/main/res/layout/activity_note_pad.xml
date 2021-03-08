@@ -2,13 +2,13 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A303A9F4"
-    android:id="@+id/coordinator"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".NotePad.NotePad">
 
+    <!--
     <TextView
         android:id="@+id/notice"
         android:layout_width="wrap_content"
@@ -32,9 +32,35 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
-        android:background="#03A9F4"
+        android:background="@drawable/circle"
         android:contentDescription="Add Note"
         android:padding="5dp"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_add" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#A303A9F4">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:background="@color/colorPrimary"
+            app:tabTextColor="@color/white"
+            app:tabSelectedTextColor="@color/purple_700"
+            android:textAlignment="center"
+            app:tabBackground="@color/colorPrimary"
+            app:tabIndicatorColor="@color/purple_500"
+            android:pointerIcon="crosshair"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

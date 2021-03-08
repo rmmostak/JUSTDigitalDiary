@@ -10,32 +10,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        android:weightSum="10">
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/noteTitle"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/emailRecycler"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/black"
-            android:drawableTint="@color/black"
-            android:focusable="false"
-            android:inputType="text"
-            android:padding="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:layout_height="wrap_content" />
 
-        <com.blogspot.skferdous.justdigitaldiary.NotePad.LinedEditText
-            android:id="@+id/noteBody"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="9"
-            android:focusable="false"
-            android:gravity="top"
-            android:lineHeight="30dp"
-            android:padding="5dp" />
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/noteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/black"
+                android:drawableTint="@color/black"
+                android:focusable="false"
+                android:inputType="text"
+                android:padding="5dp"
+                android:text="Note Title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <com.blogspot.skferdous.justdigitaldiary.NotePad.LinedEditText
+                android:id="@+id/noteBody"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:focusable="false"
+                android:gravity="top"
+                android:lineHeight="30dp"
+                android:padding="5dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

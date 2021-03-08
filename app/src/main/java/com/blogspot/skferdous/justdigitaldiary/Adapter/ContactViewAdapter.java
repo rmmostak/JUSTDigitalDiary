@@ -94,62 +94,56 @@ public class ContactViewAdapter extends RecyclerView.Adapter<ContactViewAdapter.
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (context.checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(context, "Unissued call permission!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "Unissued call permission!", Toast.LENGTH_LONG).show();
                             requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 10);
                             return;
                         }
-                        ActivityOptions options=ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.left2right, R.anim.right2left);
+                        ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
                         v.getContext().startActivity(intent, options.toBundle());
                     }
                 }
             }
         });
 
-        holder.mail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.mail.setOnClickListener(v -> {
 
-                Toast.makeText(context, "You are going to send an email!", Toast.LENGTH_LONG).show();
-                String sendTo = model.getEmail();
-                String sendSub = "Subject";
-                String sendBody = "Message";
-                if (sendTo.isEmpty() && sendSub.isEmpty() && sendBody.isEmpty()) {
-                    Toast.makeText(context, "Sorry, email address is not found", Toast.LENGTH_LONG).show();
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("message/rfc822");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{sendTo});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, sendSub);
-                    intent.putExtra(Intent.EXTRA_TEXT, sendBody);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        context.startActivity(Intent.createChooser(intent, "Choose an email client..."));
-                    } catch (ActivityNotFoundException e) {
-                        Toast.makeText(context, "Sorry, email address is not found!", Toast.LENGTH_SHORT).show();
-                    }
+            Toast.makeText(context, "You are going to send an email!", Toast.LENGTH_LONG).show();
+            String sendTo = model.getEmail();
+            String sendSub = "Subject";
+            String sendBody = "Message";
+            if (sendTo.isEmpty() && sendSub.isEmpty() && sendBody.isEmpty()) {
+                Toast.makeText(context, "Sorry, email address is not found", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{sendTo});
+                intent.putExtra(Intent.EXTRA_SUBJECT, sendSub);
+                intent.putExtra(Intent.EXTRA_TEXT, sendBody);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    context.startActivity(Intent.createChooser(intent, "Choose an email client..."));
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(context, "Sorry, email address is not found!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        holder.msg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "You are going to send a short message!", Toast.LENGTH_LONG).show();
-                String number = model.getPhoneHome();
-                String MSG = "Assalamu alaykum, ";
-                if (number.isEmpty() && MSG.isEmpty()) {
-                    Toast.makeText(context, "Sorry, we couldn't find any number to send message!", Toast.LENGTH_LONG).show();
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("smsto:" + number));
-                    intent.putExtra("sms_body", MSG);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                    try {
-                        context.startActivity(Intent.createChooser(intent, "Choose a message client... "));
-                    } catch (ActivityNotFoundException e) {
-                        Toast.makeText(context, "Sorry, messaging address is not found!", Toast.LENGTH_LONG).show();
-                    }
+        holder.msg.setOnClickListener(v -> {
+            Toast.makeText(context, "You are going to send a short message!", Toast.LENGTH_LONG).show();
+            String number = model.getPhoneHome();
+            String MSG = "Assalamu alaykum, ";
+            if (number.isEmpty() && MSG.isEmpty()) {
+                Toast.makeText(context, "Sorry, we couldn't find any number to send message!", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("smsto:" + number));
+                intent.putExtra("sms_body", MSG);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                try {
+                    context.startActivity(Intent.createChooser(intent, "Choose a message client... "));
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(context, "Sorry, messaging address is not found!", Toast.LENGTH_LONG).show();
                 }
             }
         });
