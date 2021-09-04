@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="gray">#C6C6C6</color>
+
     <color name="white1">#FFFFFF</color>
     <color name="white2">#8F9EA0</color>
     <color name="white3">#217A80</color>
@@ -28,7 +30,7 @@
     <color name="backgroundcolor">#fcfcfc</color>
     <color name="lightgray">#ededed</color>
     <color name="deeppurple">#7c4dff</color>
-    <color name="yello">#ffb300</color>
+    <color name="yellow">#ffb300</color>
     <color name="green">#00bfa5</color>
     <color name="colorAccent2">#FF4081</color>
     <color name="darkblue">#23283a</color>
@@ -36,10 +38,11 @@
     <color name="pink">#fe104d</color>
     <color name="black_overlay">#66000000</color>
 
+    <color name="colorPrimary">#003031</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorAccent">#9C27B0</color>
 
-    <color name="colorPrimary">#2196F3</color>
-    <color name="colorPrimaryDark">#1A85DA</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="bg">#745801BD</color>
 
     <color name="colorPrimary1">#4fb053</color>
     <color name="colorPrimaryDark1">#3d8e4c</color>

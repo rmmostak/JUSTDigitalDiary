@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A303A9F4"
+    android:background="#ffffff"
     tools:context=".Explore.ExploreActivity">
 
     <LinearLayout
@@ -15,10 +15,28 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="5dp">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JUST Exploring"
+            android:textColor="@color/colorPrimary"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/portal"
-            android:layout_width="140dp"
-            android:layout_height="170dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="9dp"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
@@ -28,75 +46,88 @@
             app:contentPadding="1dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
-                    android:layout_margin="2dp"
-                    android:background="@drawable/cerclebackone"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_baseline_link_24" />
-
-                <TextView
-                    android:id="@+id/csetext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="Portal"
-                    android:textColor="@color/black"
-                    android:textSize="19dp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_margin="1dp"
-                    android:background="#FB95A795" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/calibri"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="Go what do you want!"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="1dp"
-            android:clipToPadding="false"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="1dp">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/gallery"
-                android:layout_width="140dp"
-                android:layout_height="170dp"
-                android:layout_margin="9dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="#ffffff"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:contentPadding="1dp">
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="74dp"
+                        android:layout_height="74dp"
+                        android:layout_margin="2dp"
+                        android:background="@drawable/cerclebackone"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_baseline_link_24" />
+
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="#FB95A795" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/csetext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/calibri"
+                        android:text="Portal"
+                        android:textColor="@color/black"
+                        android:textSize="19dp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/calibri"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="Go what do you want!"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="9dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#faf8f8"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="3dp"
+            app:contentPadding="1dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="74dp"
@@ -105,6 +136,20 @@
                         android:background="@drawable/cerclebackgroundttt"
                         android:padding="10dp"
                         android:src="@drawable/ic_menu_gallery" />
+
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="#B1AFA9" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/home01"
@@ -117,12 +162,6 @@
                         android:textSize="19dp"
                         android:textStyle="bold" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_margin="1dp"
-                        android:background="#B1AFA9" />
-
                     <TextView
 
                         android:layout_width="wrap_content"
@@ -133,26 +172,36 @@
                         android:text="View campus with picture"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/web"
-                android:layout_width="140dp"
-                android:layout_height="170dp"
-                android:layout_margin="3dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="#faf8f8"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:contentPadding="1dp">
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/web"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="9dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="#faf8f8"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="3dp"
+            app:contentPadding="1dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="74dp"
@@ -161,6 +210,20 @@
                         android:background="@drawable/cerclebackthree"
                         android:padding="10dp"
                         android:src="@drawable/ic_baseline_web_24" />
+
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="#899997" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -172,12 +235,6 @@
                         android:textSize="19dp"
                         android:textStyle="bold" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_margin="1dp"
-                        android:background="#899997" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -188,9 +245,10 @@
                         android:textColor="@color/black"
                         android:textSize="14dp" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

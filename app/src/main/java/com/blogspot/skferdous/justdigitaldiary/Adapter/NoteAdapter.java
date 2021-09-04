@@ -53,15 +53,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.body.setText(model.getBody());
         /*int orientation = context.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {*/
-            if (model.getTitle().length() > 20) {
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < 20; i++) {
-                    builder.append(model.getTitle().charAt(i));
-                }
-                holder.title.setText(builder.toString() + "...");
-            } else {
-                holder.title.setText(model.getTitle());
+        if (model.getTitle().length() > 20) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < 20; i++) {
+                builder.append(model.getTitle().charAt(i));
             }
+            holder.title.setText(builder.toString() + "...");
+        } else {
+            holder.title.setText(model.getTitle());
+        }
         /*} else {
             holder.title.setText(model.getTitle());
         }*/

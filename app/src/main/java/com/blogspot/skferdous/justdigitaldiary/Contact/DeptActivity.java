@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
@@ -67,14 +68,16 @@ public class DeptActivity extends AppCompatActivity {
         bar.setTitle(THIRD_CHILD);
 
         recyclerView = findViewById(R.id.recyclerView);
-        int orientation = this.getResources().getConfiguration().orientation;
+        RecyclerView.LayoutManager manager= new LinearLayoutManager(DeptActivity.this);
+        recyclerView.setLayoutManager(manager);
+        /*int orientation = this.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            GridLayoutManager manager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
-            recyclerView.setLayoutManager(manager);
-        } else {
             GridLayoutManager manager = new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false);
             recyclerView.setLayoutManager(manager);
-        }
+        } else {
+            GridLayoutManager manager = new GridLayoutManager(this, 4, RecyclerView.VERTICAL, false);
+            recyclerView.setLayoutManager(manager);
+        }*/
 
         keyList = new ArrayList<>();
         showContactList();

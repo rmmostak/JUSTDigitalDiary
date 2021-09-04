@@ -4,10 +4,14 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,20 +23,32 @@ import com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity;
 import com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivity;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode.FIRST_CHILD;
+import static com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity.THIRD_CHILD;
+import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ADMIN_TAG;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.FACULTY_TAG;
+import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
     List<String> cardModels;
+    String count;
+    Context context;
+    private DatabaseReference reference;
 
     public ContactAdapter(List<String> cardModels) {
         this.cardModels = cardModels;
+        //this.count = count;
     }
 
     @NonNull
@@ -47,14 +63,79 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
         String title = cardModels.get(position);
         if (title.length() > 44) {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < 45; i++) {
-                builder.append(title.charAt(i));
-            }
-            holder.title.setText(builder + "...");
+            holder.title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+
+            holder.title.setText(title.substring(0, 44)+"...");
         } else {
-            holder.title.setText(title);
+            if (title.endsWith("Dept")) {
+                holder.title.setText("Department of " + title.replace("Dept", ""));
+
+                reference = FirebaseDatabase.getInstance().getReference(ROOT).child("Faculty Members");
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            reference.child(snapshot.getKey()).child(THIRD_CHILD).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot sn : dataSnapshot.getChildren()) {
+                                        for (DataSnapshot s : sn.getChildren()) {
+                                            if (s.getKey().equals(title)) {
+                                                holder.totalChild.setText(s.getChildrenCount() + " Teacher(s)");
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    ToastLong(context.getApplicationContext(), databaseError.getMessage());
+                                }
+                            });
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            } else {
+                holder.title.setText(title);
+                reference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD);
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            reference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD).child(snapshot.getKey());
+                            reference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot sn : dataSnapshot.getChildren()) {
+                                        if (sn.getKey().equals(title)) {
+                                            holder.totalChild.setText(sn.getChildrenCount() + " Sub-Categories");
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    ToastLong(context.getApplicationContext(), databaseError.getMessage());
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        ToastLong(context.getApplicationContext(), databaseError.getMessage());
+                    }
+                });
+            }
         }
+
         holder.cardView.setOnClickListener(v -> {
             if (title.startsWith("Faculty of")) {
 
@@ -102,13 +183,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardView;
-        TextView title;
+        TextView title, totalChild;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             cardView = itemView.findViewById(R.id.contactNodeCard);
             title = itemView.findViewById(R.id.title);
+            totalChild = itemView.findViewById(R.id.totalChild);
         }
     }
 }

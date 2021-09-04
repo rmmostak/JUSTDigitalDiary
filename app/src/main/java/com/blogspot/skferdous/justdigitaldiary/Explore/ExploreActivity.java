@@ -8,18 +8,31 @@ import androidx.cardview.widget.CardView;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,17 +45,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExploreActivity extends AppCompatActivity {
 
-    private CardView gallery, web, portal, explore;
+    private CardView gallery, web, portal;
     private DatabaseReference reference;
     private List<GalleryModel> modelList;
-    private int in = 0;
+    private int in;
+    private int index = 0;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -72,7 +91,7 @@ public class ExploreActivity extends AppCompatActivity {
         web = findViewById(R.id.web);
         web.setOnClickListener(v -> {
 
-            Intent intent=new Intent(ExploreActivity.this, CalendarWeb.class);
+            Intent intent = new Intent(ExploreActivity.this, WebsiteActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
@@ -88,23 +107,6 @@ public class ExploreActivity extends AppCompatActivity {
             ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
-
-        /*explore = findViewById(R.id.explore);
-        explore.setOnClickListener(v -> {
-            ToastShort(this, "No more resources right now!");
-        });*/
-
-/*        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setIcon(R.drawable.logo)
-                .setTitle("Notice")
-                .setMessage("This feature is under constructing, please keep using to get update!")
-                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-        builder.show();*/
     }
 
     private boolean isConnected() {
@@ -120,6 +122,7 @@ public class ExploreActivity extends AppCompatActivity {
 
         dialogBuilder.setView(dialogView);
 
+        ProgressBar imageLoading = dialogView.findViewById(R.id.imageLoading);
         ImageView prev = dialogView.findViewById(R.id.prev);
         TextView gTitle = dialogView.findViewById(R.id.gTitle);
         ImageView gImage = dialogView.findViewById(R.id.gImage);
@@ -131,56 +134,44 @@ public class ExploreActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     modelList.clear();
-                    in = 0;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         GalleryModel model = snapshot.getValue(GalleryModel.class);
                         GalleryModel galleryModel = new GalleryModel(model.getTopic(), model.getUrl(), model.getDetail());
                         modelList.add(galleryModel);
                     }
 
-                    gTitle.setText(modelList.get(0).getTopic());
-                    Picasso.get().load(modelList.get(0).getUrl()).into(gImage);
-                    gDetail.setText(modelList.get(0).getDetail());
+                    int size = modelList.size();
 
+                    Picasso.get().load(modelList.get(index).getUrl()).into(gImage);
+                    gTitle.setText(modelList.get(index).getTopic());
+                    gDetail.setText(modelList.get(index).getDetail());
+                    Log.d("title", modelList.get(index).getTopic() + ", " + index);
+                    imageLoading.setVisibility(View.GONE);
                     prev.setOnClickListener(v -> {
-                        Toast.makeText(ExploreActivity.this, "No more resources right now!", Toast.LENGTH_SHORT).show();
-                    });
-                    next.setOnClickListener(v -> {
-                        Toast.makeText(ExploreActivity.this, "No more resources right now!", Toast.LENGTH_SHORT).show();
-                    });
+                        imageLoading.setVisibility(View.VISIBLE);
 
-                   /*
-                    Toast.makeText(getApplicationContext(), String.valueOf(modelList.size()), Toast.LENGTH_LONG).show();
-                    if (!modelList.isEmpty()) {
-                        while (modelList.size() > in) {
-                            gTitle.setText(modelList.get(0).getTopic());
-                            Picasso.get().load(modelList.get(0).getUrl()).into(gImage);
-                            gDetail.setText(modelList.get(0).getDetail());
-
-                            next.setOnClickListener(v -> {
-                                if (in >= modelList.size()) {
-                                    return;
-                                } else {
-                                    gTitle.setText(modelList.get(in).getTopic());
-                                    Picasso.get().load(modelList.get(in).getUrl()).into(gImage);
-                                    gDetail.setText(modelList.get(in).getDetail());
-                                }
-                                in++;
-                            });
-
-                            prev.setOnClickListener(v -> {
-                                if (in < 1) {
-                                    return;
-                                } else {
-                                    gTitle.setText(modelList.get(in).getTopic());
-                                    Picasso.get().load(modelList.get(in).getUrl()).into(gImage);
-                                    gDetail.setText(modelList.get(in).getDetail());
-                                }
-                                in--;
-                            });
+                        --index;
+                        if (index < 0) {
+                            index = size - 1;
                         }
-                    }*/
+                        Picasso.get().load(modelList.get(index).getUrl()).into(gImage);
+                        gTitle.setText(modelList.get(index).getTopic());
+                        gDetail.setText(modelList.get(index).getDetail());
+                        Log.d("title", modelList.get(index).getTopic() + ", " + index);
+                        imageLoading.setVisibility(View.GONE);
+                    });
 
+                    next.setOnClickListener(v -> {
+                        imageLoading.setVisibility(View.VISIBLE);
+                        index++;
+                        if (index == size) {
+                            index = 0;
+                        }
+                        Picasso.get().load(modelList.get(index).getUrl()).into(gImage);
+                        gTitle.setText(modelList.get(index).getTopic());
+                        gDetail.setText(modelList.get(index).getDetail());
+                        imageLoading.setVisibility(View.GONE);
+                    });
                 }
 
                 @Override
@@ -193,7 +184,7 @@ public class ExploreActivity extends AppCompatActivity {
         }
 
         dialogBuilder.setPositiveButton("Close", (dialog1, which) -> {
-            in = 1;
+            in = 0;
             return;
         });
         AlertDialog alertDialog = dialogBuilder.create();
@@ -222,5 +213,21 @@ public class ExploreActivity extends AppCompatActivity {
         toast.getView().setBackgroundColor(Color.parseColor("#00bfa5"));
         toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
+    }
+
+    public static Drawable drawableFromUrl(String url) throws IOException {
+        Bitmap x;
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.connect();
+        InputStream input = null;
+        try {
+            input = connection.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        x = BitmapFactory.decodeStream(input);
+        return new BitmapDrawable(Resources.getSystem(), x);
     }
 }

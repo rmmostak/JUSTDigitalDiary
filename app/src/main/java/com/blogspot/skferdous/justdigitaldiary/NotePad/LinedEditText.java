@@ -1,5 +1,6 @@
 package com.blogspot.skferdous.justdigitaldiary.NotePad;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,7 +15,7 @@ public class LinedEditText extends EditText {
 
     static {
         linePaint = new Paint();
-        linePaint.setColor(Color.BLUE);
+        linePaint.setColor(Color.parseColor("#003031"));
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setTextSize(20);
     }
@@ -25,7 +26,7 @@ public class LinedEditText extends EditText {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Rect bounds = new Rect();
+        @SuppressLint("DrawAllocation") Rect bounds = new Rect();
 
         int firstLineY = getLineBounds(0, bounds);
         int lineHeight = getLineHeight();

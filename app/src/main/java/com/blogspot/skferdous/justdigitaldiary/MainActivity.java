@@ -2,25 +2,31 @@ package com.blogspot.skferdous.justdigitaldiary;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.content.IntentSender;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Authentication.LoginActivity;
-import com.blogspot.skferdous.justdigitaldiary.Model.AuthModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -28,18 +34,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Objects;
-
-import eu.dkaratzas.android.inapp.update.Constants;
-import eu.dkaratzas.android.inapp.update.InAppUpdateManager;
-import eu.dkaratzas.android.inapp.update.InAppUpdateStatus;
-
-import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
-
-public class MainActivity extends AppCompatActivity implements InAppUpdateManager.InAppUpdateHandler {
+public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -50,16 +46,57 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
     public static final String FACULTY_TAG = "Faculty Members";
 
     private FirebaseAuth firebaseAuth;
-    private InAppUpdateManager inAppUpdateManager;
+    private TextView navUserTitle;
 
-    String uName = "";
+    //in app update
+    private int MY_REQUEST_CODE = 111;
+    private AppUpdateManager mAppUpdateManager;
+    private int RC_APP_UPDATE = 999;
+    private int inAppUpdateType;
+    private com.google.android.play.core.tasks.Task<AppUpdateInfo> appUpdateInfoTask;
+    private InstallStateUpdatedListener installStateUpdatedListener;
+
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        toolbar = findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navUserTitle=findViewById(R.id.navUserTitle);
+
+        navUserTitle.setText("This is Rm");
+
         setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        /*start of in app update functions*/
+
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        appUpdateInfoTask.addOnSuccessListener(result -> {
+            if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            result,
+                            AppUpdateType.IMMEDIATE,
+                            MainActivity.this,
+                            MY_REQUEST_CODE
+                    );
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        /*end of in app update function*/
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -68,21 +105,45 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_about_us, R.id.nav_vc_message)
+                R.id.nav_home, R.id.nav_about_us, R.id.nav_vc_message, R.id.nav_feedBack, R.id.signOut)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
 
-        inAppUpdateManager = InAppUpdateManager.Builder(this, 101)
-                .resumeUpdates(true)
-                .mode(Constants.UpdateMode.FLEXIBLE)
-                .snackBarMessage("An update has been downloaded.")
-                .snackBarAction("Update")
-                .handler(this);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MY_REQUEST_CODE) {
+            Log.d("status", "Download started");
+            popupSnackBarForCompleteUpdate();
+            if (resultCode != RESULT_OK) {
+                Log.d("result status", "download failed");
+            }
+        }
+    }
 
-        inAppUpdateManager.checkForAppUpdate();
+    private void popupSnackBarForCompleteUpdate() {
+        try {
+            Snackbar snackbar =
+                    Snackbar.make(
+                            findViewById(R.id.coordinator),
+                            "An update has just been downloaded.\nRestart to update",
+                            Snackbar.LENGTH_INDEFINITE);
+
+            snackbar.setAction("INSTALL", v -> {
+                if (mAppUpdateManager != null) {
+                    mAppUpdateManager.completeUpdate();
+                }
+            });
+            snackbar.setActionTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            snackbar.show();
+
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -93,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
         super.onBackPressed();
     }
 
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -162,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
         return super.onOptionsItemSelected(item);
 
     }
+*/
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -171,21 +234,23 @@ public class MainActivity extends AppCompatActivity implements InAppUpdateManage
     }
 
     @Override
-    public void onInAppUpdateError(int code, Throwable error) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-    }
+        if (item.getItemId() == R.id.signOut) {
 
-    @Override
-    public void onInAppUpdateStatus(InAppUpdateStatus status) {
-        if (status.isDownloaded()) {
-            View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-            Snackbar snackbar = Snackbar.make(rootView,
-                    "An update has been downloaded.",
-                    Snackbar.LENGTH_INDEFINITE);
+            Toast.makeText(getApplicationContext(), firebaseAuth.getUid(), Toast.LENGTH_LONG).show();
 
-            snackbar.setAction("Update", v -> {
-                inAppUpdateManager.completeUpdate();
-            });
+            firebaseAuth.signOut();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+            startActivity(intent, options.toBundle());
         }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
     }
 }

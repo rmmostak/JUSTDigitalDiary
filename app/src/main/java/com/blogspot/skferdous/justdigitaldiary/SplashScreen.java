@@ -21,33 +21,33 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        //Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_splash_screen);
 
         welcome = findViewById(R.id.welcome);
         copy = findViewById(R.id.copy);
         event_image = findViewById(R.id.event_image);
-        just_logo=findViewById(R.id.just_logo);
+        just_logo = findViewById(R.id.just_logo);
 
-        Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         welcome.startAnimation(animation);
 
-        Animation animation1= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         copy.startAnimation(animation1);
 
-        Animation animation2= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left2right);
+        Animation animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.left2right);
         event_image.startAnimation(animation2);
 
-        Animation animation3= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.right2left);
+        Animation animation3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right2left);
         just_logo.startAnimation(animation3);
 
-        Handler handler= new Handler();
-        handler.postDelayed(r,2000);
+        Handler handler = new Handler();
+        handler.postDelayed(r, 2000);
     }
 
     Runnable r = () -> {
         Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-        ActivityOptions options=ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
         startActivity(intent, options.toBundle());
         finish();
     };

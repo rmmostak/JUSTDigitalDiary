@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
@@ -19,6 +20,7 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactAdapter;
@@ -50,9 +52,6 @@ public class ContactNode extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private List<String> keyList;
     public static String FIRST_CHILD = "";
-    public static String RESULT = "";
-    private static final String FIRST = "Root_Key";
-    private static final String SECOND = "Child_Key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +67,8 @@ public class ContactNode extends AppCompatActivity {
             bar.setTitle(ContactNode.FIRST_CHILD);
 
             recyclerView = findViewById(R.id.recyclerView);
-            int orientation = this.getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                GridLayoutManager manager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
-                recyclerView.setLayoutManager(manager);
-            } else {
-                GridLayoutManager manager = new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false);
-                recyclerView.setLayoutManager(manager);
-            }
+            RecyclerView.LayoutManager manager = new LinearLayoutManager(ContactNode.this);
+            recyclerView.setLayoutManager(manager);
 
             keyList = new ArrayList<>();
             showContactList();
@@ -109,6 +102,7 @@ public class ContactNode extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(ContactNode.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();

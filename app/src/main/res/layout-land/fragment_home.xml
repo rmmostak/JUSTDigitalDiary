@@ -4,30 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="start"
+    android:layout_centerInParent="true"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:background="@color/white"
     tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|left"
-        android:layout_margin="20dp"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        android:paddingEnd="30dp"
-        android:paddingRight="30dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/adminContact"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_margin="9dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#ffffff"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="3dp"
-            app:contentPadding="1dp">
+            style="@style/cardBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,56 +30,29 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="2dp"
                     android:background="@drawable/cerclebackone"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:src="@drawable/admin_icon" />
 
                 <TextView
                     android:id="@+id/home01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="Admin Office"
-                    android:textColor="@color/black"
-                    android:textAlignment="center"
-                    android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:gravity="center_horizontal" />
+                    style="@style/cardTitle"
+                    android:text="Admin Office" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_margin="1dp"
-                    android:background="#B1AFA9" />
+                <View style="@style/view" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/calibri"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="Contact List"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
+                    style="@style/cardSubTitle"
+                    android:text="Contact List" />
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/facultyContact"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_margin="3dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#faf8f8"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="3dp"
-            app:contentPadding="1dp">
+            style="@style/cardBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,55 +61,28 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="2dp"
                     android:background="@drawable/cerclebackthree"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:src="@drawable/faculty_logo" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="Faculty Member"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:gravity="center_horizontal" />
+                    style="@style/cardTitle"
+                    android:text="Faculty Members" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_margin="1dp"
-                    android:background="#899997" />
+                <View style="@style/view" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/calibri"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="Contact List"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
+                    style="@style/cardSubTitle"
+                    android:text="Contact List" />
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/calendar"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_margin="3dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#faf8f8"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="3dp"
-            app:contentPadding="1dp">
+            android:id="@+id/vehicleTracking"
+            style="@style/cardBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,54 +91,30 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="2dp"
                     android:background="@drawable/cerclebackthree"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_dateone" />
+                    android:padding="5dp"
+                    android:src="@drawable/ic_baseline_location" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="Calendar"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:gravity="center_horizontal" />
+                    style="@style/cardTitle"
+                    android:text="Vehicle Tracking" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_margin="1dp"
-                    android:background="#899997" />
+                <View style="@style/view" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/calibri"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="Calender"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
+                    style="@style/cardSubTitle"
+                    android:text="Track campus vehicle" />
+
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/notepad"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_margin="9dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#fcfbfb"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="3dp"
-            app:contentPadding="1dp">
+            style="@style/cardBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -207,55 +123,58 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="2dp"
                     android:background="@drawable/cerclebackgroundttt"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:src="@drawable/ic_noteone" />
 
                 <TextView
-                    android:id="@+id/csetext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="Notepad"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:gravity="center_horizontal" />
+                    style="@style/cardTitle"
+                    android:text="Notepad" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_margin="1dp"
-                    android:background="#FB95A795" />
+                <View style="@style/view" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/calibri"
-                    android:gravity="center"
-                    android:padding="3dp"
-                    android:text="Save Any Document"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
+                    style="@style/cardSubTitle"
+                    android:text="Save and share your note" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/calendar"
+            style="@style/cardBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/cerclebackthree"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_dateone" />
+
+                <TextView
+                    style="@style/cardTitle"
+                    android:text="Calendar" />
+
+                <View style="@style/view" />
+
+                <TextView
+                    style="@style/cardSubTitle"
+                    android:text="Calendar with events" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/explore"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_margin="3dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="3dp"
-            app:contentPadding="1dp">
+            style="@style/cardBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -264,42 +183,25 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:background="@drawable/cerclebacktwo"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:src="@drawable/ic_explore" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/calibri"
-                    android:text="Explore JUST"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="19dp"
-                    android:textStyle="bold"
-                    android:gravity="center_horizontal" />
+                    style="@style/cardTitle"
+                    android:text="Explore JUST" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:layout_margin="1dp"
-                    android:background="#928E8E" />
+                <View style="@style/view" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/calibri"
-                    android:gravity="center"
-                    android:padding="1dp"
-                    android:text="JUST Official Pages"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
+                    style="@style/cardSubTitle"
+                    android:text="JUST Official Pages" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
 
     </LinearLayout>
 

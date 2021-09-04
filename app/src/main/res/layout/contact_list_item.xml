@@ -1,169 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contactListCard"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:orientation="vertical"
+    android:padding="5dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/back"
+        android:gravity="bottom"
+        android:padding="10dp"
+        android:text="Dr. Syed Md. Galib"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/designation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/designation_background"
+        android:padding="8dp"
+        android:text="Associate Professor And Chairman"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:textStyle="italic" />
 
-            <ImageView
-                android:id="@+id/item_image1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="16dp"
-
-                android:background="@drawable/shape"
-                android:fitsSystemWindows="true"
-                android:padding="10dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_profile" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-
-                android:orientation="vertical"
-                android:paddingLeft="15dp">
-
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Dr. Syed Md. Galib"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textIsSelectable="true"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/designation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Associate Professor And Chairman"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textIsSelectable="true"
-                    android:textSize="16dp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="galib.cse@just.edu.bd"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textIsSelectable="true"
-                    android:textSize="14dp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="01709818108"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textIsSelectable="true"
-                    android:textSize="14dp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/pbx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="pbx"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textIsSelectable="true"
-                    android:textSize="14dp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/others"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="B.Sc. KU"
-                    android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textIsSelectable="true"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="#5454">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:weightSum="4">
-
-                <TextView
-                    android:id="@+id/textme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".9"
-                    android:text="Contact via:"
-                    android:textColor="#7105e4"
-                    android:textSize="19dp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/call"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="24dp"
-                    android:layout_weight="1"
-                    android:padding="4dp"
-                    android:src="@drawable/call" />
-
-                <ImageView
-                    android:id="@+id/mail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="24dp"
-                    android:layout_weight="1"
-                    android:padding="4dp"
-                    android:src="@drawable/email" />
-
-                <ImageView
-                    android:id="@+id/msg"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:layout_weight="1"
-                    android:padding="4dp"
-                    android:src="@drawable/msg" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

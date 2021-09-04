@@ -8,16 +8,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.blogspot.skferdous.justdigitaldiary.Authentication.LoginActivity;
+import com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity;
+import com.blogspot.skferdous.justdigitaldiary.Calendar.AddingEvent;
 import com.blogspot.skferdous.justdigitaldiary.Calendar.CalendarActivity;
 import com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode;
 import com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
 import com.blogspot.skferdous.justdigitaldiary.R;
+import com.blogspot.skferdous.justdigitaldiary.VehicleTracking.MapsActivity;
+import com.blogspot.skferdous.justdigitaldiary.VehicleTracking.VehicleTracking;
 
 public class HomeFragment extends Fragment {
 
@@ -26,6 +35,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         /*homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);*/
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -34,8 +44,8 @@ public class HomeFragment extends Fragment {
         adminContact.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), ContactNode.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            SharedPreferences preferences=getActivity().getSharedPreferences("child", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=preferences.edit();
+            SharedPreferences preferences = getActivity().getSharedPreferences("child", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
             editor.putString("first_ref", "Administrative Offices");
             editor.commit();
             //intent.putExtra("first_ref", "Administrative Offices");
@@ -47,13 +57,41 @@ public class HomeFragment extends Fragment {
         facultyContact.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), ContactNode.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            SharedPreferences preferences=getActivity().getSharedPreferences("child", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=preferences.edit();
+            SharedPreferences preferences = getActivity().getSharedPreferences("child", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
             editor.putString("first_ref", "Faculty Members");
             editor.commit();
             //intent.putExtra("first_ref", "Faculty Members");
             ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
+        });
+
+        CardView vehicle = root.findViewById(R.id.vehicleTracking);
+        vehicle.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            builder.setTitle("Notice!");
+            builder.setIcon(R.drawable.logo);
+            builder.setMessage("This feature is coming soon!!");
+            builder.setPositiveButton("OK", (dialog1, which) -> {
+                dialog1.dismiss();
+            });
+            builder.show();
+        });
+
+        vehicle.setOnClickListener(v -> {
+            /*Intent intent = new Intent(getContext(), MapsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());*/
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            builder.setTitle("Notice!");
+            builder.setIcon(R.drawable.logo);
+            builder.setMessage("This feature is coming soon!!");
+            builder.setPositiveButton("OK", (dialog1, which) -> {
+                dialog1.dismiss();
+            });
+            builder.show();
+
         });
 
         CardView calendar = root.findViewById(R.id.calendar);

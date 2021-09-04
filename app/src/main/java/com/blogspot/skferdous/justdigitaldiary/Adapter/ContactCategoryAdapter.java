@@ -51,7 +51,7 @@ public class ContactCategoryAdapter extends RecyclerView.Adapter<ContactCategory
             ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             v.getContext().startActivity(intent, options.toBundle());
 
-            });
+        });
     }
 
     @Override

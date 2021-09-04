@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_prev" />
 
     <LinearLayout
@@ -27,26 +28,43 @@
         android:orientation="vertical"
         android:padding="2dp">
 
+
         <TextView
             android:id="@+id/gTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:gravity="center_horizontal"
             android:padding="1dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-        <ImageView
-            android:id="@+id/gImage"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:clickable="true"
-            android:contentDescription="Gallery Image" />
+            android:layout_height="250dp">
+
+            <ImageView
+                android:id="@+id/gImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:clickable="true"
+                android:contentDescription="Gallery Image"
+                android:focusable="true" />
+
+            <ProgressBar
+                android:id="@+id/imageLoading"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <TextView
             android:id="@+id/gDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:gravity="center_horizontal"
             android:padding="1dp"
             android:textAlignment="center"
@@ -61,6 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_next" />
 
 </LinearLayout>

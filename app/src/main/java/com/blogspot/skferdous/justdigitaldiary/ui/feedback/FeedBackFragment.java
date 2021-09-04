@@ -30,14 +30,10 @@ public class FeedBackFragment extends Fragment {
     private EditText feedBack;
     private Button sendFeedBack;
 
-    public static FeedBackFragment newInstance() {
-        return new FeedBackFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.search_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_feeback, container, false);
         feedBack = root.findViewById(R.id.feedBack);
         sendFeedBack = root.findViewById(R.id.sendFeedBack);
         sendFeedBack.setOnClickListener(v -> {

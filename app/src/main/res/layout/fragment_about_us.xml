@@ -29,6 +29,7 @@
             android:layout_gravity="center"
             android:text="@string/welcome_note"
             android:textAlignment="center"
+            android:textIsSelectable="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/black" />
 
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
+        android:textIsSelectable="true"
         android:padding="5dp"
         android:text="@string/about_us_text"
         android:textAlignment="center"

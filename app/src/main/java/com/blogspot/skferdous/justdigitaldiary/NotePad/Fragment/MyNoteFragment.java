@@ -1,6 +1,7 @@
 package com.blogspot.skferdous.justdigitaldiary.NotePad.Fragment;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +52,6 @@ public class MyNoteFragment extends Fragment {
     private TextView notice;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
-    private FloatingActionButton actionButton;
     private List<NoteModel> modelList = new ArrayList<>();
     private NoteAdapter adapter;
 
@@ -72,17 +74,11 @@ public class MyNoteFragment extends Fragment {
 
         notice = view.findViewById(R.id.notice);
         recyclerView = view.findViewById(R.id.recyclerView);
-        actionButton = view.findViewById(R.id.actionButton);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         showNoteList();
-
-        actionButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), MakeNote.class);
-            startActivity(intent);
-        });
 
         return view;
     }

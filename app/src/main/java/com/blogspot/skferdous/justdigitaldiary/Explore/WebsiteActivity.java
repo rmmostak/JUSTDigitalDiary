@@ -12,12 +12,10 @@ import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
-import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.R;
 
-public class CalendarWeb extends AppCompatActivity {
+public class WebsiteActivity extends AppCompatActivity {
 
     private WebView webView;
 
@@ -52,7 +50,7 @@ public class CalendarWeb extends AppCompatActivity {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
-            Intent intent = new Intent(CalendarWeb.this, ExploreActivity.class);
+            Intent intent = new Intent(WebsiteActivity.this, ExploreActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);

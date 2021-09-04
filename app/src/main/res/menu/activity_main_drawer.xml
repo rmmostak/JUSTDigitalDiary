@@ -10,7 +10,7 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_vc_message"
-            android:icon="@drawable/t5"
+            android:icon="@drawable/ic_account"
             android:title="@string/menu_vc_message" />
         <item
             android:id="@+id/nav_about_us"
@@ -19,7 +19,11 @@
         <item
             android:id="@+id/nav_feedBack"
             android:icon="@drawable/ic_baseline_feedback_24"
-            android:title="Feedback" />
+            android:title="@string/feedback" />
 
+        <item
+            android:id="@+id/signOut"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/sign_out" />
     </group>
 </menu>

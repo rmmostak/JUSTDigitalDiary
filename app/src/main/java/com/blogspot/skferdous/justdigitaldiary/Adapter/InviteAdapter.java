@@ -89,15 +89,15 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
                             NoteModel model1 = snapshot.getValue(NoteModel.class);
                             /*int orientation = context.getResources().getConfiguration().orientation;
                             if (orientation == Configuration.ORIENTATION_PORTRAIT) {*/
-                                if (model1.getTitle().length() > 20) {
-                                    StringBuilder builder = new StringBuilder();
-                                    for (int i = 0; i < 20; i++) {
-                                        builder.append(model1.getTitle().charAt(i));
-                                    }
-                                    holder.noteTitle.setText(builder.toString() + "...");
-                                } else {
-                                    holder.noteTitle.setText(model1.getTitle());
+                            if (model1.getTitle().length() > 20) {
+                                StringBuilder builder = new StringBuilder();
+                                for (int i = 0; i < 20; i++) {
+                                    builder.append(model1.getTitle().charAt(i));
                                 }
+                                holder.noteTitle.setText(builder.toString() + "...");
+                            } else {
+                                holder.noteTitle.setText(model1.getTitle());
+                            }
                             /*} else {
                                 holder.noteTitle.setText(model1.getTitle());
                             }*/

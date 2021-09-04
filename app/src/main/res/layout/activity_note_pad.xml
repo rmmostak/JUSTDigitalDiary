@@ -5,62 +5,62 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:theme="@style/AppTheme.NoActionBar"
     tools:context=".NotePad.NotePad">
 
-    <!--
-    <TextView
-        android:id="@+id/notice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="Nothing to show here!"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="2dp" />
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/actionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="20dp"
-        android:background="@drawable/circle"
-        android:contentDescription="Add Note"
-        android:padding="5dp"
-        android:src="@drawable/ic_add" />-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#A303A9F4">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:tabTextColor="@color/white"
-            app:tabSelectedTextColor="@color/purple_700"
-            android:textAlignment="center"
-            app:tabBackground="@color/colorPrimary"
-            app:tabIndicatorColor="@color/purple_500"
-            android:pointerIcon="crosshair"
+            app:layout_scrollFlags="scroll|snap"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="Diary"
+            app:titleTextColor="@color/white" />
+
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal" />
+            android:background="@color/colorPrimary"
+            app:layout_collapseMode="pin"
+            app:titleTextColor="@color/white">
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                app:tabIndicatorColor="@color/green"
+                app:tabSelectedTextColor="@color/Aqua"
+                app:tabTextColor="@color/white" />
 
-    </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <ImageButton
+        android:id="@+id/actionButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/add_note_desc"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20dp"
+        android:background="@drawable/circle"
+        android:padding="5dp"
+        android:fadingEdgeLength="3dp"
+        android:shadowColor="@color/colorPrimary"
+        android:src="@drawable/ic_note_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

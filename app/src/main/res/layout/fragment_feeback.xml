@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.feedback.FeedBackFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:theme="@style/Theme.MaterialComponents"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:hintAnimationEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+            app:hintTextColor="@color/colorPrimary"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/feedBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:lineHeight="30dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:hint="Your Text"
+                android:lines="7" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--<com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your Text"
+            android:theme="@style/Theme.WhiteActionBar"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:hintTextColor="@color/colorPrimary"
+            app:placeholderTextColor="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/feedBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:lines="5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+-->
+
+        <Button
+            android:id="@+id/sendFeedBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
+            android:text="Submit"
+            android:background="@color/colorPrimary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</ScrollView>
