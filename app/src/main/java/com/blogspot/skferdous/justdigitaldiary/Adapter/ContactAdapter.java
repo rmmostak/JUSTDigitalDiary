@@ -21,6 +21,7 @@ import com.blogspot.skferdous.justdigitaldiary.Contact.ContactListActivity;
 import com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode;
 import com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity;
 import com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivity;
+import com.blogspot.skferdous.justdigitaldiary.Contact.SecondaryActivity;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.R;
 import com.google.firebase.database.DataSnapshot;
@@ -70,7 +71,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             if (title.endsWith("Dept")) {
                 holder.title.setText("Department of " + title.replace("Dept", ""));
 
-                reference = FirebaseDatabase.getInstance().getReference(ROOT).child("Faculty Members");
+                reference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child("Faculty Members");
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -98,23 +99,25 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        ToastLong(context.getApplicationContext(), databaseError.getMessage());
                     }
                 });
 
             } else {
                 holder.title.setText(title);
-                reference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD);
+                reference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(FIRST_CHILD);
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            reference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD).child(snapshot.getKey());
+
+                            reference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(FIRST_CHILD).child(snapshot.getKey());
                             reference.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (DataSnapshot sn : dataSnapshot.getChildren()) {
                                         if (sn.getKey().equals(title)) {
+                                            Log.d("faculty", sn.getKey()+sn.getChildrenCount());
                                             holder.totalChild.setText(sn.getChildrenCount() + " Sub-Categories");
                                         }
                                     }
@@ -161,7 +164,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 v.getContext().startActivity(intent, options.toBundle());
 
             } else {
-                Intent intent = new Intent(v.getContext(), ContactListActivity.class);
+                Intent intent = new Intent(v.getContext(), SecondaryActivity.class);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("secondChild", title);
                 intent.putExtra("firstChild", FIRST_CHILD);

@@ -54,7 +54,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode.FIRST_CHILD;
+import static com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity.THIRD_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivity.SECOND_CHILD;
+import static com.blogspot.skferdous.justdigitaldiary.Contact.SecondaryActivity.ADMIN_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastShort;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
@@ -65,7 +67,7 @@ public class ContactListActivity extends AppCompatActivity {
     private ListView listView;
     private List<ChildModel> childModelList;
     private ContactViewAdapter adapter;
-    private DatabaseReference databaseReference;
+    private DatabaseReference reference;
     public static String FINAL_CHILD = "";
     private TextView name, desg, email, phone, pbx, others;
     private ImageView call, mail, msg;
@@ -88,174 +90,183 @@ public class ContactListActivity extends AppCompatActivity {
         msg = findViewById(R.id.msg);
 
         topLayout = findViewById(R.id.topLayout);
-        /*Animation animation = AnimationUtils.loadAnimation(ContactListActivity.this, R.anim.fade_in);
-        topLayout.setVisibility(View.VISIBLE);
-        topLayout.setAnimation(animation);*/
 
-        Intent intent = getIntent();
-        SECOND_CHILD = intent.getStringExtra("secondChild");
-        FINAL_CHILD = intent.getStringExtra("finalChild");
+        SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
+        String child = preferences.getString("second_child", null);
+        String child2 = preferences.getString("last_child", null);
+        SECOND_CHILD = child;
+        FINAL_CHILD = child2;
 
         ActionBar bar = getSupportActionBar();
-        bar.setTitle(SECOND_CHILD);
+        bar.setTitle(FINAL_CHILD);
 
         listView = findViewById(R.id.listView);
         childModelList = new ArrayList<>();
 
-        makeChildList();
+        showContactList();
     }
 
-    private void makeChildList() {
+
+    private void showContactList() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("Data is retrieving, please wait...");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+
         try {
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setTitle("Loading, please wait...");
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setCancelable(false);
-            dialog.setButton("Cancel", (dialog1, which) -> startActivity(new Intent(ContactListActivity.this, ContactNode.class)));
-            dialog.show();
-            SharedPreferences preferences = getSharedPreferences("child", MODE_PRIVATE);
-            SECOND_CHILD = preferences.getString("second_child", null);
-            databaseReference = FirebaseDatabase.getInstance().getReference(ROOT).child(FIRST_CHILD);
-            databaseReference.addValueEventListener(new ValueEventListener() {
+            SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
+            String child = preferences.getString("first_ref", null);
+            reference = FirebaseDatabase.getInstance().getReference().child("Updated").child(ROOT).child(child);
+            //ToastShort(this, THIRD_CHILD);
+            reference.keepSynced(true);
+            reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        databaseReference.child(snapshot.getKey()).child(SECOND_CHILD).addValueEventListener(new ValueEventListener() {
+                        reference.child(snapshot.getKey()).child(SECOND_CHILD).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                for (DataSnapshot sn : dataSnapshot.getChildren()) {
+                                    DatabaseReference reference =FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(child).child(snapshot.getKey()).child(SECOND_CHILD).child(sn.getKey()).child(FINAL_CHILD);
+                                    reference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot ss : dataSnapshot.getChildren()) {
+                                                ChildModel model = ss.getValue(ChildModel.class);
+                                                childModelList.add(model);
+                                            }
 
-                                    ChildModel model = snapshot.getValue(ChildModel.class);
-                                    childModelList.add(model);
+                                            adapter = new ContactViewAdapter(ContactListActivity.this, childModelList);
+                                            listView.setAdapter(adapter);
 
+                                            listView.setOnItemClickListener((parent, view, position, id) -> {
+                                                ChildModel model = childModelList.get(position);
+                                                Animation animation = AnimationUtils.loadAnimation(ContactListActivity.this, R.anim.fade_in);
+                                                topLayout.setVisibility(View.VISIBLE);
+                                                topLayout.setAnimation(animation);
+                                                name.setText(model.getName());
+                                                desg.setText(model.getDesignation());
+                                                if (model.getEmail().toLowerCase().equals("null")) {
+                                                    email.setVisibility(View.GONE);
+                                                } else {
+                                                    email.setVisibility(View.VISIBLE);
+                                                    email.setText(model.getEmail());
+                                                }
+                                                if (model.getPhonePer().toLowerCase().equals("null") || model.getPhonePer().equals("")) {
+                                                    phone.setText(model.getPhoneHome());
+                                                } else {
+                                                    phone.setText(model.getPhoneHome() + ", " + model.getPhonePer());
+                                                }
+                                                if (model.getPhoneHome().toLowerCase().equals("null") || model.getPhoneHome().equals("")) {
+                                                    phone.setVisibility(View.GONE);
+                                                } else {
+                                                    phone.setVisibility(View.VISIBLE);
+                                                    phone.setText(model.getPhoneHome());
+                                                }
+                                                if (model.getPbx().toLowerCase().equals("null") || model.getPbx().equals("")) {
+                                                    pbx.setVisibility(View.GONE);
+                                                } else {
+                                                    pbx.setVisibility(View.VISIBLE);
+                                                    pbx.setText(model.getPbx());
+                                                }
+                                                if (model.getOthers().toLowerCase().equals("null") || model.getOthers().equals("")) {
+                                                    others.setVisibility(View.GONE);
+                                                } else {
+                                                    others.setVisibility(View.VISIBLE);
+                                                    others.setText(model.getOthers());
+                                                }
+
+                                                msg.setOnClickListener(v -> {
+                                                    if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
+                                                        Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeMessage(model.getPhoneHome());
+                                                    }
+                                                });
+
+                                                call.setOnClickListener(v -> {
+                                                    if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
+                                                        Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeCall(model.getPhoneHome());
+                                                    }
+                                                });
+
+                                                mail.setOnClickListener(v -> {
+                                                    if (model.getEmail().isEmpty() || model.getEmail().toLowerCase().equals("null")) {
+                                                        Toast.makeText(ContactListActivity.this, "Sorry, Email address is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeMail(model.getEmail());
+                                                    }
+                                                });
+                                            });
+
+                                            if (childModelList.size() > 0) {
+                                                ChildModel model = childModelList.get(0);
+                                                Animation animation = AnimationUtils.loadAnimation(ContactListActivity.this, R.anim.fade_in);
+                                                topLayout.setVisibility(View.VISIBLE);
+                                                topLayout.setAnimation(animation);
+                                                name.setText(model.getName());
+                                                desg.setText(model.getDesignation());
+                                                if (model.getEmail().toLowerCase().equals("null")) {
+                                                    email.setVisibility(View.GONE);
+                                                } else {
+                                                    email.setText(model.getEmail());
+                                                }
+                                                if (model.getPhonePer().toLowerCase().equals("null") || model.getPhonePer().equals("")) {
+                                                    phone.setText(model.getPhoneHome());
+                                                } else {
+                                                    phone.setText(model.getPhoneHome() + ", " + model.getPhonePer());
+                                                }
+                                                if (model.getPhoneHome().toLowerCase().equals("null") || model.getPhoneHome().equals("")) {
+                                                    phone.setVisibility(View.GONE);
+                                                } else {
+                                                    phone.setText(model.getPhoneHome());
+                                                }
+                                                if (model.getPbx().toLowerCase().equals("null") || model.getPbx().equals("")) {
+                                                    pbx.setVisibility(View.GONE);
+                                                } else {
+                                                    pbx.setText(model.getPbx());
+                                                }
+                                                if (model.getOthers().toLowerCase().equals("null") || model.getOthers().equals("")) {
+                                                    others.setVisibility(View.GONE);
+                                                } else {
+                                                    others.setText(model.getOthers());
+                                                }
+
+                                                msg.setOnClickListener(v -> {
+                                                    if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
+                                                        Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeMessage(model.getPhoneHome());
+                                                    }
+                                                });
+
+                                                call.setOnClickListener(v -> {
+                                                    if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
+                                                        Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeCall(model.getPhoneHome());
+                                                    }
+                                                });
+
+                                                mail.setOnClickListener(v -> {
+                                                    if (model.getEmail().isEmpty() || model.getEmail().toLowerCase().equals("null")) {
+                                                        Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeMail(model.getEmail());
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            ToastLong(ContactListActivity.this, databaseError.getMessage());
+                                        }
+                                    });
                                 }
-
-                                adapter = new ContactViewAdapter(ContactListActivity.this, childModelList);
-                                listView.setAdapter(adapter);
-
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        ChildModel model = childModelList.get(position);
-                                        Animation animation = AnimationUtils.loadAnimation(ContactListActivity.this, R.anim.fade_in);
-                                        topLayout.setVisibility(View.VISIBLE);
-                                        topLayout.setAnimation(animation);
-                                        name.setText(model.getName());
-                                        desg.setText(model.getDesignation());
-                                        if (model.getEmail().toLowerCase().equals("null")) {
-                                            email.setVisibility(View.GONE);
-                                        } else {
-                                            email.setVisibility(View.VISIBLE);
-                                            email.setText(model.getEmail());
-                                        }
-                                        if (model.getPhonePer().toLowerCase().equals("null") || model.getPhonePer().equals("")) {
-                                            phone.setText(model.getPhoneHome());
-                                        } else {
-                                            phone.setText(model.getPhoneHome() + ", " + model.getPhonePer());
-                                        }
-                                        if (model.getPhoneHome().toLowerCase().equals("null") || model.getPhoneHome().equals("")) {
-                                            phone.setVisibility(View.GONE);
-                                        } else {
-                                            phone.setVisibility(View.VISIBLE);
-                                            phone.setText(model.getPhoneHome());
-                                        }
-                                        if (model.getPbx().toLowerCase().equals("null") || model.getPbx().equals("")) {
-                                            pbx.setVisibility(View.GONE);
-                                        } else {
-                                            pbx.setVisibility(View.VISIBLE);
-                                            pbx.setText(model.getPbx());
-                                        }
-                                        if (model.getOthers().toLowerCase().equals("null") || model.getOthers().equals("")) {
-                                            others.setVisibility(View.GONE);
-                                        } else {
-                                            others.setVisibility(View.VISIBLE);
-                                            others.setText(model.getOthers());
-                                        }
-
-                                        msg.setOnClickListener(v -> {
-                                            if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
-                                                Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
-                                            } else {
-                                                makeMessage(model.getPhoneHome());
-                                            }
-                                        });
-
-                                        call.setOnClickListener(v -> {
-                                            if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
-                                                Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
-                                            } else {
-                                                makeCall(model.getPhoneHome());
-                                            }
-                                        });
-
-                                        mail.setOnClickListener(v -> {
-                                            if (model.getEmail().isEmpty() || model.getEmail().toLowerCase().equals("null")) {
-                                                Toast.makeText(ContactListActivity.this, "Sorry, Email address is empty!", Toast.LENGTH_LONG).show();
-                                            } else {
-                                                makeMail(model.getEmail());
-                                            }
-                                        });
-                                    }
-                                });
-
-                                if (childModelList.size() > 0) {
-                                    ChildModel model = childModelList.get(0);
-                                    Animation animation = AnimationUtils.loadAnimation(ContactListActivity.this, R.anim.fade_in);
-                                    topLayout.setVisibility(View.VISIBLE);
-                                    topLayout.setAnimation(animation);
-                                    name.setText(model.getName());
-                                    desg.setText(model.getDesignation());
-                                    if (model.getEmail().toLowerCase().equals("null")) {
-                                        email.setVisibility(View.GONE);
-                                    } else {
-                                        email.setText(model.getEmail());
-                                    }
-                                    if (model.getPhonePer().toLowerCase().equals("null") || model.getPhonePer().equals("")) {
-                                        phone.setText(model.getPhoneHome());
-                                    } else {
-                                        phone.setText(model.getPhoneHome() + ", " + model.getPhonePer());
-                                    }
-                                    if (model.getPhoneHome().toLowerCase().equals("null") || model.getPhoneHome().equals("")) {
-                                        phone.setVisibility(View.GONE);
-                                    } else {
-                                        phone.setText(model.getPhoneHome());
-                                    }
-                                    if (model.getPbx().toLowerCase().equals("null") || model.getPbx().equals("")) {
-                                        pbx.setVisibility(View.GONE);
-                                    } else {
-                                        pbx.setText(model.getPbx());
-                                    }
-                                    if (model.getOthers().toLowerCase().equals("null") || model.getOthers().equals("")) {
-                                        others.setVisibility(View.GONE);
-                                    } else {
-                                        others.setText(model.getOthers());
-                                    }
-
-                                    msg.setOnClickListener(v -> {
-                                        if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
-                                            Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            makeMessage(model.getPhoneHome());
-                                        }
-                                    });
-
-                                    call.setOnClickListener(v -> {
-                                        if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
-                                            Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            makeCall(model.getPhoneHome());
-                                        }
-                                    });
-
-                                    mail.setOnClickListener(v -> {
-                                        if (model.getEmail().isEmpty() || model.getEmail().toLowerCase().equals("null")) {
-                                            Toast.makeText(ContactListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            makeMail(model.getEmail());
-                                        }
-                                    });
-                                }
-
                             }
 
                             @Override
@@ -272,10 +283,12 @@ public class ContactListActivity extends AppCompatActivity {
                 }
             });
             dialog.dismiss();
+
         } catch (Exception e) {
-            ToastLong(ContactListActivity.this, e.getMessage());
+            Toast.makeText(ContactListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
 
     private void makeCall(String number) {
         if (number.isEmpty()) {

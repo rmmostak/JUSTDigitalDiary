@@ -49,26 +49,60 @@
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-                <EditText
-                    android:id="@+id/email"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/email"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/black"
-                    android:hint="Enter your email"
-                    android:inputType="textEmailAddress" />
+                    android:layout_margin="8dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintAnimationEnabled="true"
+                    app:startIconDrawable="@drawable/email"
+                    app:hintTextAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                    app:hintTextColor="@color/colorPrimary">
 
-                <EditText
-                    android:id="@+id/pass"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="5dp"
+                        android:gravity="start"
+                        android:inputType="textEmailAddress"
+                        android:hint="Email"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@drawable/ic_off_eye"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/black"
-                    android:hint="Enter your password"
-                    android:inputType="textPassword" />
+                    android:layout_margin="8dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    app:passwordToggleEnabled="true"
+                    app:startIconDrawable="@drawable/ic_off_eye"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:hintAnimationEnabled="true"
+                    app:hintTextAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                    app:hintTextColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="5dp"
+                        android:gravity="start"
+                        android:inputType="textPassword"
+                        android:hint="Password"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textSize="16sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/forgotPass"
@@ -121,22 +155,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/existingIdMsg"
+                        android:background="#00000000"
                         android:padding="5dp"
                         android:text="Sign Up"
-                        android:background="#00000000"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:textColor="@color/DarkBlue" />
 
                 </RelativeLayout>
-<!--
-                <Button
-                    android:id="@+id/guest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#00000000"
-                    android:text="Login as Guest"
-                    android:textColor="#3F51B5" />
--->
+                <!--
+                                <Button
+                                    android:id="@+id/guest"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#00000000"
+                                    android:text="Login as Guest"
+                                    android:textColor="#3F51B5" />
+                -->
             </LinearLayout>
 
         </LinearLayout>

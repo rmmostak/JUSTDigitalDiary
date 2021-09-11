@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Model.VehicleModel;
 import com.blogspot.skferdous.justdigitaldiary.R;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,15 +30,19 @@ import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
-    private GoogleMap mMap;
-    private DatabaseReference reference;
+/*
     private LocationManager manager;
     private ArrayList<LatLng> latLngArrayList = new ArrayList();
     private final int MIN_TIME = 1000; //1sec
     private final int MIN_DISTANCE = 1; //1meter
 
     Marker myMarker;
-    Double last = 0.0;
+    Double last = 0.0;*/
+
+
+    private GoogleMap mMap;
+    private LocationRequest locationRequest;
+    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +51,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         reference = FirebaseDatabase.getInstance().getReference("Vehicle Admin").child("Vehicle");
 
-        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        //manager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setFastestInterval(1000); //1 sec
+        locationRequest.setInterval(2000); //2 sec
+        locationRequest.setSmallestDisplacement(1); //1 meter
+
         //Toast.makeText(MapsActivity.this, "Size: "+latLngArrayList.size(), Toast.LENGTH_LONG).show();
 
-        readChanges();
+        //readChanges();
     }
 
-    private void readChanges() {
+    /*    private void readChanges() {
         try {
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -69,13 +79,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             LatLng latLng = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
                             myMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(model.getVehicleName()));
 
-                            /*if (latLng.latitude != last) {
+                            */
+
+    /*if (latLng.latitude != last) {
                                 myMarker.remove();
                                 myMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(model.getVehicleName()));
 
                             } else {
                                 myMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(model.getVehicleName()));
                             }*/
+
+    /*
 
                             mMap.setMinZoomPreference(14);
                             mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -99,7 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 
 
     @Override
@@ -127,13 +141,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
-    private void setMarker(LatLng latLng, String vehicleName) {
+    /*    private void setMarker(LatLng latLng, String vehicleName) {
         myMarker.setPosition(new LatLng(latLng.latitude, latLng.longitude));
         myMarker = mMap.addMarker(new MarkerOptions().title(vehicleName));
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-    }
+    }*/
 
     @Override
     public void onLocationChanged(@NonNull Location location) {

@@ -33,7 +33,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="2dp"
-                    android:background="@drawable/cerclebackone"
+                    android:background="@drawable/circle_green"
                     android:padding="5dp"
                     android:src="@drawable/admin_icon" />
 
@@ -64,7 +64,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="2dp"
-                    android:background="@drawable/cerclebackthree"
+                    android:background="@drawable/circle_orange"
                     android:padding="5dp"
                     android:src="@drawable/faculty_logo" />
 
@@ -94,7 +94,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="2dp"
-                    android:background="@drawable/cerclebackthree"
+                    android:background="@drawable/circle_orange"
                     android:padding="5dp"
                     android:src="@drawable/ic_baseline_location" />
 
@@ -126,9 +126,9 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="2dp"
-                    android:background="@drawable/cerclebackgroundttt"
+                    android:background="@drawable/circle_indigo"
                     android:padding="5dp"
-                    android:src="@drawable/ic_noteone" />
+                    android:src="@drawable/ic_write_note" />
 
                 <TextView
                     style="@style/cardTitle"
@@ -156,9 +156,9 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="2dp"
-                    android:background="@drawable/cerclebackthree"
+                    android:background="@drawable/circle_orange"
                     android:padding="5dp"
-                    android:src="@drawable/ic_dateone" />
+                    android:src="@drawable/ic_calendar" />
 
                 <TextView
                     style="@style/cardTitle"
@@ -185,7 +185,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/cerclebacktwo"
+                    android:background="@drawable/circle_violet"
                     android:padding="5dp"
                     android:src="@drawable/ic_explore" />
 

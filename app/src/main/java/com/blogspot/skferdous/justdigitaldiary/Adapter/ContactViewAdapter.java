@@ -21,10 +21,10 @@ public class ContactViewAdapter extends ArrayAdapter<ChildModel> {
     private final Activity context;
     private final List<ChildModel> childModelList;
 
-    public ContactViewAdapter(Activity context, List<ChildModel> busesList) {
-        super(context, R.layout.contact_list_item, busesList);
+    public ContactViewAdapter(Activity context, List<ChildModel> childModelList) {
+        super(context, R.layout.contact_list_item, childModelList);
         this.context = context;
-        this.childModelList = busesList;
+        this.childModelList = childModelList;
     }
 
     @NonNull
@@ -33,8 +33,8 @@ public class ContactViewAdapter extends ArrayAdapter<ChildModel> {
         LayoutInflater inflater = context.getLayoutInflater();
         @SuppressLint("ViewHolder") View listViewItem = inflater.inflate(R.layout.contact_list_item, null, true);
 
-        TextView name = listViewItem.findViewById(R.id.name);
-        TextView desg = listViewItem.findViewById(R.id.designation);
+        TextView name = listViewItem.findViewById(R.id.title);
+        TextView desg = listViewItem.findViewById(R.id.totalChild);
 
         ChildModel model = childModelList.get(position);
 

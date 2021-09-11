@@ -7,12 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="330dp"
-        android:layout_marginTop="-100dp"
-        android:src="@drawable/home_bg"/>
-
     <include layout="@layout/content_main" />
 
     <androidx.appcompat.widget.Toolbar
@@ -20,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:backgroundTint="@color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_collapseMode="pin"

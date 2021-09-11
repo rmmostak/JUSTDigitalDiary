@@ -7,6 +7,7 @@ import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
@@ -29,13 +30,21 @@ public class WebsiteActivity extends AppCompatActivity {
         w.setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                 WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
+        webView = findViewById(R.id.webView);
+
         ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("Loading, please wait...");
+        dialog.setTitle("Data is retrieving, please wait...");
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.show();
 
-        webView = findViewById(R.id.webView);
+        Runnable r = () -> {
+
+            dialog.dismiss();
+        };
+
+        Handler handler = new Handler();
+        handler.postDelayed(r, 4000);
 
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl("http://just.edu.bd/");

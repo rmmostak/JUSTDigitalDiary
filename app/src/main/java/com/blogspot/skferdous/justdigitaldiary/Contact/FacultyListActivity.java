@@ -58,12 +58,12 @@ import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
 public class FacultyListActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     private List<ChildModel> childModelList;
     private ContactViewAdapter adapter;
     private DatabaseReference databaseReference;
     public static String SECOND_CHILD = "";
     public static String FINAL_CHILD = "";
+    private String backList="";
     private TextView name, desg, email, phone, pbx, others;
     private ImageView call, mail, msg;
     private LinearLayout topLayout;
@@ -73,6 +73,9 @@ public class FacultyListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty_list);
+
+        Log.d("Activity", getLocalClassName());
+
 
         name = findViewById(R.id.name);
         desg = findViewById(R.id.designation);
@@ -87,9 +90,11 @@ public class FacultyListActivity extends AppCompatActivity {
 
         topLayout = findViewById(R.id.topLayout);
 
+
         SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
         String child = preferences.getString("second_child", null);
         String child2 = preferences.getString("final_child", null);
+        backList = preferences.getString("third_child", null);
         SECOND_CHILD = child;
         FINAL_CHILD = child2;
 
@@ -113,8 +118,7 @@ public class FacultyListActivity extends AppCompatActivity {
         try {
             SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
             String child = preferences.getString("first_ref", null);
-            databaseReference = FirebaseDatabase.getInstance().getReference(ROOT).child(child);
-            //ToastShort(this, THIRD_CHILD);
+            databaseReference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(child);
             databaseReference.keepSynced(true);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -124,81 +128,79 @@ public class FacultyListActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot sn : dataSnapshot.getChildren()) {
-                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(ROOT).child(child).child(snapshot.getKey()).child(THIRD_CHILD).child(sn.getKey()).child(FINAL_CHILD);
+                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(child).child(snapshot.getKey()).child(THIRD_CHILD).child(sn.getKey()).child(FINAL_CHILD);
                                     reference.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                                 ChildModel model = snapshot.getValue(ChildModel.class);
+                                                Log.d("check", snapshot.getKey());
                                                 childModelList.add(model);
                                             }
 
                                             adapter = new ContactViewAdapter(FacultyListActivity.this, childModelList);
                                             listView.setAdapter(adapter);
 
-                                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                @Override
-                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                    ChildModel model = childModelList.get(position);
-                                                    Animation animation = AnimationUtils.loadAnimation(FacultyListActivity.this, R.anim.fade_in);
-                                                    topLayout.setVisibility(View.VISIBLE);
-                                                    topLayout.setAnimation(animation);
-                                                    name.setText(model.getName());
-                                                    desg.setText(model.getDesignation());
-                                                    if (model.getEmail().toLowerCase().equals("null")) {
-                                                        email.setVisibility(View.GONE);
-                                                    } else {
-                                                        email.setVisibility(View.VISIBLE);
-                                                        email.setText(model.getEmail());
-                                                    }
-                                                    if (model.getPhonePer().toLowerCase().equals("null") || model.getPhonePer().equals("")) {
-                                                        phone.setText(model.getPhoneHome());
-                                                    } else {
-                                                        phone.setText(model.getPhoneHome() + ", " + model.getPhonePer());
-                                                    }
-                                                    if (model.getPhoneHome().toLowerCase().equals("null") || model.getPhoneHome().equals("")) {
-                                                        phone.setVisibility(View.GONE);
-                                                    } else {
-                                                        phone.setVisibility(View.VISIBLE);
-                                                        phone.setText(model.getPhoneHome());
-                                                    }
-                                                    if (model.getPbx().toLowerCase().equals("null") || model.getPbx().equals("")) {
-                                                        pbx.setVisibility(View.GONE);
-                                                    } else {
-                                                        pbx.setVisibility(View.VISIBLE);
-                                                        pbx.setText(model.getPbx());
-                                                    }
-                                                    if (model.getOthers().toLowerCase().equals("null") || model.getOthers().equals("")) {
-                                                        others.setVisibility(View.GONE);
-                                                    } else {
-                                                        others.setVisibility(View.VISIBLE);
-                                                        others.setText(model.getOthers());
-                                                    }
-
-                                                    msg.setOnClickListener(v -> {
-                                                        if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
-                                                            Toast.makeText(FacultyListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
-                                                        } else {
-                                                            makeMessage(model.getPhoneHome());
-                                                        }
-                                                    });
-
-                                                    call.setOnClickListener(v -> {
-                                                        if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
-                                                            Toast.makeText(FacultyListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
-                                                        } else {
-                                                            makeCall(model.getPhoneHome());
-                                                        }
-                                                    });
-
-                                                    mail.setOnClickListener(v -> {
-                                                        if (model.getEmail().isEmpty() || model.getEmail().toLowerCase().equals("null")) {
-                                                            Toast.makeText(FacultyListActivity.this, "Sorry, Email address is empty!", Toast.LENGTH_LONG).show();
-                                                        } else {
-                                                            makeMail(model.getEmail());
-                                                        }
-                                                    });
+                                            listView.setOnItemClickListener((parent, view, position, id) -> {
+                                                ChildModel model = childModelList.get(position);
+                                                Animation animation = AnimationUtils.loadAnimation(FacultyListActivity.this, R.anim.fade_in);
+                                                topLayout.setVisibility(View.VISIBLE);
+                                                topLayout.setAnimation(animation);
+                                                name.setText(model.getName());
+                                                desg.setText(model.getDesignation());
+                                                if (model.getEmail().toLowerCase().equals("null")) {
+                                                    email.setVisibility(View.GONE);
+                                                } else {
+                                                    email.setVisibility(View.VISIBLE);
+                                                    email.setText(model.getEmail());
                                                 }
+                                                if (model.getPhonePer().toLowerCase().equals("null") || model.getPhonePer().equals("")) {
+                                                    phone.setText(model.getPhoneHome());
+                                                } else {
+                                                    phone.setText(model.getPhoneHome() + ", " + model.getPhonePer());
+                                                }
+                                                if (model.getPhoneHome().toLowerCase().equals("null") || model.getPhoneHome().equals("")) {
+                                                    phone.setVisibility(View.GONE);
+                                                } else {
+                                                    phone.setVisibility(View.VISIBLE);
+                                                    phone.setText(model.getPhoneHome());
+                                                }
+                                                if (model.getPbx().toLowerCase().equals("null") || model.getPbx().equals("")) {
+                                                    pbx.setVisibility(View.GONE);
+                                                } else {
+                                                    pbx.setVisibility(View.VISIBLE);
+                                                    pbx.setText(model.getPbx());
+                                                }
+                                                if (model.getOthers().toLowerCase().equals("null") || model.getOthers().equals("")) {
+                                                    others.setVisibility(View.GONE);
+                                                } else {
+                                                    others.setVisibility(View.VISIBLE);
+                                                    others.setText(model.getOthers());
+                                                }
+
+                                                msg.setOnClickListener(v -> {
+                                                    if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
+                                                        Toast.makeText(FacultyListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeMessage(model.getPhoneHome());
+                                                    }
+                                                });
+
+                                                call.setOnClickListener(v -> {
+                                                    if (model.getPhoneHome().isEmpty() || model.getPhoneHome().toLowerCase().equals("null")) {
+                                                        Toast.makeText(FacultyListActivity.this, "Sorry, Phone number is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeCall(model.getPhoneHome());
+                                                    }
+                                                });
+
+                                                mail.setOnClickListener(v -> {
+                                                    if (model.getEmail().isEmpty() || model.getEmail().toLowerCase().equals("null")) {
+                                                        Toast.makeText(FacultyListActivity.this, "Sorry, Email address is empty!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        makeMail(model.getEmail());
+                                                    }
+                                                });
                                             });
 
                                             if (childModelList.size() > 0) {
@@ -345,5 +347,16 @@ public class FacultyListActivity extends AppCompatActivity {
                 Toast.makeText(FacultyListActivity.this, "Sorry, email address is not found!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(FacultyListActivity.this, DeptActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("listBack", backList);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+        startActivity(intent, options.toBundle());
+        super.onBackPressed();
     }
 }

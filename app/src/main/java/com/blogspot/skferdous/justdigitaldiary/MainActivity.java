@@ -1,13 +1,17 @@
 package com.blogspot.skferdous.justdigitaldiary;
 
 import android.app.ActivityOptions;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +26,16 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,7 +45,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
+
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -46,7 +58,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public static final String FACULTY_TAG = "Faculty Members";
 
     private FirebaseAuth firebaseAuth;
-    private TextView navUserTitle;
+    private TextView navUserTitle, navUserDept;
+    private ImageButton logOut;
 
     //in app update
     private int MY_REQUEST_CODE = 111;
@@ -59,6 +72,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
 
+    private String uName = "", uDept;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +81,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
-        navUserTitle=findViewById(R.id.navUserTitle);
-
-        navUserTitle.setText("This is Rm");
+        navUserTitle = findViewById(R.id.navUserTitle);
 
         setSupportActionBar(toolbar);
 
@@ -111,6 +124,39 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View headerView = getLayoutInflater().inflate(R.layout.nav_header_main, navigationView, false);
+        navigationView.addHeaderView(headerView);
+
+        /* TODO get the IMAGE and make it clickable */
+
+        navUserTitle = headerView.findViewById(R.id.navUserTitle);
+        navUserDept = headerView.findViewById(R.id.navUserDept);
+        logOut=headerView.findViewById(R.id.signOut);
+        logOut.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            builder.setTitle("Alert!!");
+            builder.setIcon(R.drawable.logo);
+            builder.setMessage("Are you sure to sign out?");
+            builder.setPositiveButton("Yes", (dialog1, which) -> {
+
+                firebaseAuth.signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
+                startActivity(intent, options.toBundle());
+
+                dialog1.dismiss();
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> {
+                dialog.dismiss();
+            });
+            builder.show();
+
+        });
+
+        setNameWithDept();
     }
 
     @Override
@@ -154,11 +200,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onBackPressed();
     }
 
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+    public void setNameWithDept() {
 
         try {
             DatabaseReference reference;
@@ -177,21 +219,23 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                         uName = snapshot.child("name").getValue(String.class);
-                        MenuItem item = menu.findItem(R.id.nav_name);
+                        uDept = snapshot.child("dept").getValue(String.class);
                         int orientation = MainActivity.this.getResources().getConfiguration().orientation; //.getResources().getConfiguration().orientation;
                         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                            if (uName.length() > 17) {
+                            if (uName.length() > 25) {
                                 StringBuilder builder = new StringBuilder();
-                                for (int i = 0; i < 15; i++) {
+                                for (int i = 0; i < 23; i++) {
                                     builder.append(uName.charAt(i));
                                 }
-                                item.setTitle(builder + "...");
+                                navUserTitle.setText(builder + "...");
                             } else {
-                                item.setTitle(uName);
+                                navUserTitle.setText(uName);
                             }
                         } else {
-                            item.setTitle(uName);
+                            navUserTitle.setText(uName);
                         }
+
+                        navUserDept.setText(uDept);
 
                     }
                 }
@@ -205,52 +249,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         } catch (Exception e) {
             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == R.id.signOut) {
-
-            firebaseAuth.signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
-            startActivity(intent, options.toBundle());
-        }
-        return super.onOptionsItemSelected(item);
-
-    }
-*/
 
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == R.id.signOut) {
-
-            Toast.makeText(getApplicationContext(), firebaseAuth.getUid(), Toast.LENGTH_LONG).show();
-
-            firebaseAuth.signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
-            startActivity(intent, options.toBundle());
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
     }
 }

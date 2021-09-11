@@ -3,57 +3,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:gravity="bottom"
+    android:layout_gravity="top"
+    android:gravity="top"
     android:orientation="vertical"
     tools:context=".ui.about.AboutUsFragment">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:layout_gravity="center"
-        android:src="@drawable/logo" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-100dp"
+            android:src="@drawable/home_bg"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="-150dp"
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="3dp"
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:text="@string/welcome_note"
-            android:textAlignment="center"
-            android:textIsSelectable="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/black" />
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="3dp"
+                android:layout_gravity="center"
+                android:text="@string/welcome_note"
+                android:textAlignment="center"
+                android:textIsSelectable="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="2dp"
+                android:text="v-1.1.0"
+                android:textStyle="italic" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/version"
+            android:id="@+id/about_us"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="2dp"
-            android:text="v-1.1.0"
-            android:textStyle="italic" />
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textIsSelectable="true"
+            android:padding="5dp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/about_us_text"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/about_us"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:textIsSelectable="true"
-        android:padding="5dp"
-        android:text="@string/about_us_text"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

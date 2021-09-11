@@ -7,6 +7,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:layout_gravity="center"
+    android:background="@color/white"
     android:gravity="center"
     android:theme="@style/Theme.AppCompat.NoActionBar"
     tools:context=".SplashScreen">
