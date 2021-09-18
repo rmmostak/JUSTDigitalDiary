@@ -71,6 +71,7 @@ public class AdminNodeAdapter extends RecyclerView.Adapter<AdminNodeAdapter.View
                                 if (dataSnapshot.getKey().equals(title)) {
                                     Log.d("child", sn.getKey() + sn.getChildrenCount());
                                     holder.totalChild.setText(dataSnapshot.getChildrenCount() + " Sub-Categories");
+                                    holder.totalChild.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_account, 0, 0, 0);
                                 }
                             }
                         }

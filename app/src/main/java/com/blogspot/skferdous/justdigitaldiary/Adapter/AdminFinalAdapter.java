@@ -68,7 +68,8 @@ public class AdminFinalAdapter extends RecyclerView.Adapter<AdminFinalAdapter.Vi
                             for (DataSnapshot sn : dataSnapshot.getChildren()) {
                                 for (DataSnapshot s : sn.getChildren()) {
                                     if (s.getKey().equals(title)) {
-                                        holder.totalChild.setText(s.getChildrenCount() + " Sub-Categories");
+                                        holder.totalChild.setText(s.getChildrenCount() + " Person(s)");
+                                        holder.totalChild.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_profile_line, 0, 0, 0);
                                         Log.d("count", s.getKey() + s.getChildrenCount());
                                     }
                                 }
@@ -81,7 +82,6 @@ public class AdminFinalAdapter extends RecyclerView.Adapter<AdminFinalAdapter.Vi
                         }
                     });
                 }
-
             }
 
             @Override

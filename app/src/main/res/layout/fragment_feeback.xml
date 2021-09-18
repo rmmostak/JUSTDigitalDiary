@@ -44,6 +44,8 @@
                 android:layout_height="wrap_content"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:hintAnimationEnabled="true"
+                android:focusedByDefault="true"
+                android:focusable="true"
                 app:hintTextAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
                 app:hintTextColor="@color/colorPrimary">
 

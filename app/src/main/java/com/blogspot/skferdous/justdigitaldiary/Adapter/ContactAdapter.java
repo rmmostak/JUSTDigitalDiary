@@ -83,6 +83,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                                         for (DataSnapshot s : sn.getChildren()) {
                                             if (s.getKey().equals(title)) {
                                                 holder.totalChild.setText(s.getChildrenCount() + " Teacher(s)");
+                                                holder.totalChild.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_profile_line, 0, 0, 0);
                                             }
                                         }
                                     }
@@ -119,6 +120,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                                         if (sn.getKey().equals(title)) {
                                             Log.d("faculty", sn.getKey()+sn.getChildrenCount());
                                             holder.totalChild.setText(sn.getChildrenCount() + " Sub-Categories");
+                                            holder.totalChild.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_account, 0, 0, 0);
                                         }
                                     }
                                 }

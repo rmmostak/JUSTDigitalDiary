@@ -25,6 +25,7 @@ import com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode;
 import com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
 import com.blogspot.skferdous.justdigitaldiary.R;
+import com.blogspot.skferdous.justdigitaldiary.UpcomingActivity;
 import com.blogspot.skferdous.justdigitaldiary.VehicleTracking.MapsActivity;
 import com.blogspot.skferdous.justdigitaldiary.VehicleTracking.VehicleTracking;
 
@@ -67,8 +68,8 @@ public class HomeFragment extends Fragment {
         });
 
         CardView vehicle = root.findViewById(R.id.vehicleTracking);
-        vehicle.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+         /*vehicle.setOnClickListener(v -> {
+           AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             builder.setTitle("Notice!");
             builder.setIcon(R.drawable.logo);
             builder.setMessage("This feature is coming soon!!");
@@ -76,22 +77,13 @@ public class HomeFragment extends Fragment {
                 dialog1.dismiss();
             });
             builder.show();
-        });
+        });*/
 
         vehicle.setOnClickListener(v -> {
-            /*Intent intent = new Intent(getContext(), MapsActivity.class);
+            Intent intent = new Intent(getContext(), MapsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
-            startActivity(intent, options.toBundle());*/
-            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-            builder.setTitle("Notice!");
-            builder.setIcon(R.drawable.logo);
-            builder.setMessage("This feature is coming soon!!");
-            builder.setPositiveButton("OK", (dialog1, which) -> {
-                dialog1.dismiss();
-            });
-            builder.show();
-
+            startActivity(intent, options.toBundle());
         });
 
         CardView calendar = root.findViewById(R.id.calendar);
@@ -114,6 +106,14 @@ public class HomeFragment extends Fragment {
         CardView explore = root.findViewById(R.id.explore);
         explore.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), ExploreActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
+        });
+
+        CardView upComing = root.findViewById(R.id.upComing);
+        upComing.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), UpcomingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());

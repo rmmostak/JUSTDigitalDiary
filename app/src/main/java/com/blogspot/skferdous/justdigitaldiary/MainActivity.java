@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private String uName = "", uDept;
+    private long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +161,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }*/
+
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(getApplicationContext(), "Press Again to Exit!", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MY_REQUEST_CODE) {
@@ -192,13 +213,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+/*    @Override
     public void onBackPressed() {
         moveTaskToBack(true);
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(1);
         super.onBackPressed();
-    }
+    }*/
 
     public void setNameWithDept() {
 

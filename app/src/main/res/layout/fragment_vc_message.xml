@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <ImageView
@@ -20,7 +20,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="-230dp"
             android:orientation="vertical">
 
@@ -67,21 +67,17 @@
                 android:textAlignment="textStart"
                 android:textIsSelectable="true"
                 android:textSize="14sp"
+                android:layout_marginBottom="10dp"
                 tools:ignore="RtlCompat" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_margin="5dp"
-                android:justificationMode="inter_word"
-                android:padding="5dp"
-                android:text="@string/vc_message"
-                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
-                android:textColor="@color/black"
-                android:textIsSelectable="true"
-                tools:targetApi="o" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="start"
+                android:layout_height="350dp"
+                android:background="@drawable/vc_msg"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,31 +13,53 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="JUST\nExploring"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                tools:ignore="RtlCompat" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:contentDescription="App Logo"
+                android:padding="5dp"
+                android:src="@drawable/logo" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="1dp"
-            android:layout_marginLeft="20dp"
             android:clipToPadding="false"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="1dp">
+            android:padding="1dp"
+            android:weightSum="3">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/gallery"
-                android:layout_width="140dp"
-                android:layout_height="170dp"
-                android:layout_margin="9dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="#ffffff"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:contentPadding="1dp">
+                android:id="@+id/portal"
+                style="@style/expLandCard">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -46,54 +68,56 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="74dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="2dp"
+                        style="@style/expLandIcon"
+                        android:background="@drawable/circle_green"
+                        android:src="@drawable/ic_baseline_link_24" />
+
+                    <TextView
+                        android:id="@+id/csetext"
+                        style="@style/expLandTitle"
+                        android:text="Portal" />
+
+                    <View style="@style/expLandView" />
+
+                    <TextView
+                        style="@style/expLandBottom"
+                        android:text="Go what do you want!" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/gallery"
+                style="@style/expLandCard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        style="@style/expLandIcon"
                         android:background="@drawable/circle_indigo"
-                        android:padding="10dp"
                         android:src="@drawable/ic_menu_gallery" />
 
                     <TextView
                         android:id="@+id/home01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/calibri"
-                        android:text="Gallery"
-                        android:textColor="@color/black"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
+                        style="@style/expLandTitle"
+                        android:text="Gallery" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_margin="1dp"
-                        android:background="#B1AFA9" />
+                    <View style="@style/expLandView" />
 
                     <TextView
+                        style="@style/expLandBottom"
+                        android:text="View campus with picture" />
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/calibri"
-                        android:gravity="center"
-                        android:padding="3dp"
-                        android:text="View campus with picture"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/web"
-                android:layout_width="140dp"
-                android:layout_height="170dp"
-                android:layout_margin="3dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="#faf8f8"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:contentPadding="1dp">
+                style="@style/expLandCard">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,161 +126,29 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="74dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="2dp"
+                        style="@style/expLandIcon"
                         android:background="@drawable/circle_orange"
-                        android:padding="10dp"
                         android:src="@drawable/ic_baseline_web_24" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/calibri"
-                        android:text="Web"
-                        android:textColor="@color/black"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
+                        style="@style/expLandTitle"
+                        android:text="Web" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_margin="1dp"
-                        android:background="#899997" />
+
+                    <View style="@style/expLandView" />
+
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/calibri"
-                        android:gravity="center"
-                        android:padding="3dp"
-                        android:text="View our official website"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        style="@style/expLandBottom"
+                        android:text="View our official website" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/portal"
-                android:layout_width="140dp"
-                android:layout_height="170dp"
-                android:layout_margin="9dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="#fcfbfb"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:contentPadding="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="74dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="2dp"
-                        android:background="@drawable/circle_green"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_baseline_link_24" />
-
-                    <TextView
-                        android:id="@+id/csetext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/calibri"
-                        android:text="Portal"
-                        android:textColor="@color/black"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_margin="1dp"
-                        android:background="#FB95A795" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/calibri"
-                        android:gravity="center"
-                        android:padding="3dp"
-                        android:text="Go what do you want!"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/explore"
-                android:layout_width="140dp"
-                android:layout_height="170dp"
-                android:layout_margin="3dp"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp"
-                app:contentPadding="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="74dp"
-                        android:layout_height="74dp"
-                        android:background="@drawable/circle_violet"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_explore" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:fontFamily="@font/calibri"
-                        android:text="Explore JUST"
-                        android:textColor="@color/black"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:layout_margin="1dp"
-                        android:background="#928E8E" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/calibri"
-                        android:gravity="center"
-                        android:padding="1dp"
-                        android:text="Other informations"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
 
     </LinearLayout>
 
-</HorizontalScrollView>
+</ScrollView>

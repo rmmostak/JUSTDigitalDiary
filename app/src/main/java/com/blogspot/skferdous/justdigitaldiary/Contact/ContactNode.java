@@ -60,7 +60,7 @@ import static com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivit
 import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
-public class ContactNode extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ContactNode extends AppCompatActivity{
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -147,7 +147,7 @@ public class ContactNode extends AppCompatActivity implements SearchView.OnQuery
         startActivity(intent, options.toBundle());
         super.onBackPressed();
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -177,12 +177,11 @@ public class ContactNode extends AppCompatActivity implements SearchView.OnQuery
 
     private void findThis(String newText) {
 
-
-        /*keyList.clear();
+    keyList.clear();
         keyList.add(newText);
 
         adapter = new ContactAdapter(keyList);
-        recyclerView.setAdapter(adapter);*/
+        recyclerView.setAdapter(adapter);
         newText = newText.toLowerCase();
 
         if (newText.length() > 0 && newText != null) {
@@ -193,7 +192,7 @@ public class ContactNode extends AppCompatActivity implements SearchView.OnQuery
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Log.d("Search", dataSnapshot.getKey());
-/*                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         GalleryModel model = snapshot.getValue(GalleryModel.class);
                         if (model.getTopic().toLowerCase().contains(finalNewText)) {
                             Log.d("gallery", model.getTopic());
@@ -202,11 +201,11 @@ public class ContactNode extends AppCompatActivity implements SearchView.OnQuery
                         }
                     }
                     adapter=new ContactAdapter(keyList);
-                    recyclerView.setAdapter(adapter);*/
+                    recyclerView.setAdapter(adapter);
                     while (dataSnapshot.getChildren().iterator().hasNext()) {
                     GalleryModel model=dataSnapshot.getValue(GalleryModel.class);
                         Log.d("topic", dataSnapshot.getChildren().iterator().next().getChildren().iterator().next().getRef().getRoot().toString());
-                        /*if (model.getTopic().toLowerCase().contains(finalNewText)) {
+                        if (model.getTopic().toLowerCase().contains(finalNewText)) {
 
                     }
                     if (model.getTopic().toLowerCase().contains(finalNewText)) {
@@ -214,7 +213,7 @@ public class ContactNode extends AppCompatActivity implements SearchView.OnQuery
                     }
                         if (dataSnapshot.child("topic").toString().toLowerCase().contains(finalNewText)) {
                             Log.d("topic", dataSnapshot.getRef().toString());
-                        }*/
+                        }
                     }
                 }
 
@@ -224,5 +223,5 @@ public class ContactNode extends AppCompatActivity implements SearchView.OnQuery
                 }
             });
         }
-    }
+    }*/
 }
