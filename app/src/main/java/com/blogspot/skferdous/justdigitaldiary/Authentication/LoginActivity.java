@@ -41,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
 
@@ -82,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         if (!isConnected()) {
             Snackbar.make(coordinatorLayout, "You don't have internet connection, Please connect!", Snackbar.LENGTH_INDEFINITE)
                     .setAction("OK", v -> {
-                        return;
                     }).show();
         }
 
@@ -118,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     forgotMail.setError("Enter your institutional email!!");
                     forgotMail.requestFocus();
-                    return;
                 }
             });
         });
@@ -134,16 +133,6 @@ public class LoginActivity extends AppCompatActivity {
             ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
-
-        /*guest.setOnClickListener(v -> {
-            SharedPreferences preferences = getSharedPreferences("guest_state", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("state", true);
-            Intent intent = new Intent(LoginActivity.this, SplashScreen.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.left2right, R.anim.right2left);
-            startActivity(intent, options.toBundle());
-        });*/
     }
 
     @Override
@@ -172,16 +161,14 @@ public class LoginActivity extends AppCompatActivity {
                     builder.setMessage("We have sent you a link to reset your password, please check your email!!");
                     builder.setPositiveButton("OK", (dialog1, which) -> {
                         firebaseAuth.signOut();
-                        return;
                     });
                     builder.show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Alert!");
                     builder.setIcon(R.drawable.logo);
-                    builder.setMessage(task.getException().getMessage());
+                    builder.setMessage(Objects.requireNonNull(task.getException()).getMessage());
                     builder.setPositiveButton("OK", (dialog1, which) -> {
-                        return;
                     });
                 }
             });
@@ -211,22 +198,31 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (!TextUtils.isEmpty(_pass)) {
 
+                        if (_mail.equals("mr.akhond@just.edu.bd") || _mail.equals("160134.cse@student.just.edu.bd") || _mail.equals("170144.cse@student.just.edu.bd") || _mail.equals("160101.cse@student.just.edu.bd")) {
+                            SharedPreferences preferences = getSharedPreferences("driver", MODE_PRIVATE);
+                            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("vehicle", true);
+                            editor.apply();
+                        } else {
+                            SharedPreferences preferences = getSharedPreferences("driver", MODE_PRIVATE);
+                            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("vehicle", false);
+                            editor.apply();
+                        }
+
                         getDataForExistUser(_mail, _pass);
 
                     } else {
                         pass.setError("Enter your password!!");
                         pass.requestFocus();
-                        return;
                     }
                 } else {
                     email.setError("Enter your institutional email!!");
                     email.requestFocus();
-                    return;
                 }
             } else {
                 email.setError("Enter your email address!!");
                 email.requestFocus();
-                return;
             }
         });
 
@@ -261,13 +257,12 @@ public class LoginActivity extends AppCompatActivity {
                         builder.setIcon(R.drawable.logo);
                         builder.setMessage("Please verify your email address and try again to login!!");
                         builder.setPositiveButton("Close", (dialog1, which) -> {
-                            return;
                         });
                         builder.show();
                     }
                 } else {
                     dialog.dismiss();
-                    warning.setText(task.getException().getMessage());
+                    warning.setText(Objects.requireNonNull(task.getException()).getMessage());
                 }
             });
         } catch (Exception e) {
@@ -283,11 +278,6 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth.signOut();
         super.onBackPressed();
     }
-
-    /*private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

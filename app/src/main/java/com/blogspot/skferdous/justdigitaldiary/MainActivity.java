@@ -162,10 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }*/
 
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
             moveTaskToBack(true);
@@ -212,14 +208,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-/*    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
-        super.onBackPressed();
-    }*/
 
     public void setNameWithDept() {
 

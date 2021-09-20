@@ -145,10 +145,10 @@ public class ExploreActivity extends AppCompatActivity {
                     Picasso.get().load(modelList.get(index).getUrl()).into(gImage);
                     gTitle.setText(modelList.get(index).getTopic());
                     gDetail.setText(modelList.get(index).getDetail());
-                    Log.d("title", modelList.get(index).getTopic() + ", " + index);
-                    //imageLoading.setVisibility(View.GONE);
+                    //Log.d("title", modelList.get(index).getTopic() + ", " + index);
+                    imageLoading.setVisibility(View.GONE);
                     prev.setOnClickListener(v -> {
-                        //imageLoading.setVisibility(View.VISIBLE);
+                        imageLoading.setVisibility(View.VISIBLE);
 
                         --index;
                         if (index < 0) {
@@ -158,11 +158,11 @@ public class ExploreActivity extends AppCompatActivity {
                         gTitle.setText(modelList.get(index).getTopic());
                         gDetail.setText(modelList.get(index).getDetail());
                         Log.d("title", modelList.get(index).getTopic() + ", " + index);
-                        //imageLoading.setVisibility(View.GONE);
+                        imageLoading.setVisibility(View.GONE);
                     });
 
                     next.setOnClickListener(v -> {
-                        //imageLoading.setVisibility(View.VISIBLE);
+                        imageLoading.setVisibility(View.VISIBLE);
                         index++;
                         if (index == size) {
                             index = 0;
@@ -170,7 +170,7 @@ public class ExploreActivity extends AppCompatActivity {
                         Picasso.get().load(modelList.get(index).getUrl()).into(gImage);
                         gTitle.setText(modelList.get(index).getTopic());
                         gDetail.setText(modelList.get(index).getDetail());
-                        //imageLoading.setVisibility(View.GONE);
+                        imageLoading.setVisibility(View.GONE);
                     });
                 }
 

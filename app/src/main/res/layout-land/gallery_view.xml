@@ -36,12 +36,26 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-        <ImageView
-            android:id="@+id/gImage"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:clickable="true"
-            android:contentDescription="Gallery Image" />
+            android:layout_height="250dp">
+
+            <ImageView
+                android:id="@+id/gImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:contentDescription="Gallery Image"
+                android:focusable="true" />
+
+            <ProgressBar
+                android:id="@+id/imageLoading"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <TextView
             android:id="@+id/gDetail"

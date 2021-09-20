@@ -36,10 +36,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    //dexOptions {
-    //    javaMaxHeapSize "4g"//this line
-    //}
 }
 
 dependencies {
@@ -66,15 +62,4 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    /*implementation ('com.google.api-client:google-api-client-android:1.23.0') {
-        exclude group: 'org.apache.httpcomponents'
-    }
-    implementation('com.google.apis:google-api-services:v3-rev305-1.23.0') {
-        exclude group: 'org.apache.httpcomponents'
-    }*/
-
-    //implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.1'){
-    //    exclude group: 'group_name', module: 'module_name'
-    //}
 }
