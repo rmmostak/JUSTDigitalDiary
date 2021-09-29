@@ -1,1 +1,1 @@
-# JUSTDigitalDiary
+<i>JUSTDigitalDiary</i>
