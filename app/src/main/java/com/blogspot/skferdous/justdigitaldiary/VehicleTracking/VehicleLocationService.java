@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -40,6 +41,7 @@ public class VehicleLocationService extends Service {
                 double Lat = locationResult.getLastLocation().getLatitude();
                 double Long = locationResult.getLastLocation().getLongitude();
                 //Log.d("current_location", Lat + ", " + Long);
+
                 try {
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Vehicle Admin").child("Vehicle").child(auth.getUid());
@@ -100,6 +102,7 @@ public class VehicleLocationService extends Service {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(500)
                 .setFastestInterval(250)
+                .setSmallestDisplacement(1)
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         if (ActivityCompat.checkSelfPermission(this,

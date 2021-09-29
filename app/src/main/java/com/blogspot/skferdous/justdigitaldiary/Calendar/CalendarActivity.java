@@ -18,6 +18,7 @@ import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.R;
@@ -31,6 +32,7 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         /*        CalendarQuickStart start = new CalendarQuickStart();
         try {

@@ -10,8 +10,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,8 +130,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_margin="15dp"
-                    android:background="@color/colorAccent"
                     android:padding="5dp"
+                    android:background="@color/colorPrimary"
                     android:text="Login"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
@@ -159,18 +158,10 @@
                         android:padding="5dp"
                         android:text="Sign Up"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="@color/DarkBlue" />
+                        android:textColor="@color/colorPrimary" />
 
                 </RelativeLayout>
-                <!--
-                                <Button
-                                    android:id="@+id/guest"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="#00000000"
-                                    android:text="Login as Guest"
-                                    android:textColor="#3F51B5" />
-                -->
+
             </LinearLayout>
 
         </LinearLayout>

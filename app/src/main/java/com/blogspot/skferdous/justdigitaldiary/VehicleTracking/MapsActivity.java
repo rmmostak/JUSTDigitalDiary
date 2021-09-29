@@ -1,6 +1,7 @@
 package com.blogspot.skferdous.justdigitaldiary.VehicleTracking;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -74,7 +75,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static int REQUEST_CODE = 101;
 
-    private Marker myMarker, shapla, golap, rojoni, voirab, searchMarker;
+    private Marker myMarker, shapla, golap, rojoni, voirab;
+    private LatLng prevLatlng;
     Map<String, LatLng> vehicleList = new HashMap<>();
     List<String> nameList = new ArrayList<>();
 
@@ -95,6 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         serviceControl = findViewById(R.id.serviceControl);
         activeVName = findViewById(R.id.activeVName);
@@ -121,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                     VehicleModel model = snapshot.getValue(VehicleModel.class);
-                                    if (model!=null) {
+                                    if (model != null) {
                                         if (model.getVehicleName().equals(vehicleSpinner.getSelectedItem())) {
                                             LatLng latLng = new LatLng(Double.parseDouble(model.getLatitude()), Double.parseDouble(model.getLongitude()));
                                             if (mMap != null) {
@@ -223,8 +226,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
     }
 
     private void myLocation() {
@@ -248,6 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     try {
                         //Log.d("check", locationResult.getLastLocation().getLatitude() + "Latitude");
                         LatLng latLng = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+
                         if (mMap != null) {
                             if (myMarker == null) {
                                 MarkerOptions options = new MarkerOptions().position(latLng).title("My Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.per_loc));
@@ -351,6 +353,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -371,6 +374,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
                 setMap(vehicleList, nameList);
+                double distance = 0.0;
+                //distance = distance + Distance(prevLatlng.latitude, prevLatlng.longitude, vehicleList.get(myName()).latitude, vehicleList.get(myName()).longitude);
+
+                Log.d("distance", distance+" m");
             }
 
             @Override
@@ -378,6 +385,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+    }
+
+
+    private double Distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 
     private void setMap(Map<String, LatLng> vehicleList, List<String> nameList) {
@@ -394,6 +423,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 } else {
                                     shapla.setPosition(vehicleList.get(nameList.get(i)));
                                 }
+                                prevLatlng = new LatLng(vehicleList.get(nameList.get(i)).latitude, vehicleList.get(nameList.get(i)).longitude);
                             } else {
                                 if (shapla == null) {
                                     MarkerOptions options = new MarkerOptions().position(vehicleList.get(nameList.get(i)))
@@ -415,6 +445,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 } else {
                                     golap.setPosition(vehicleList.get(nameList.get(i)));
                                 }
+                                prevLatlng = new LatLng(vehicleList.get(nameList.get(i)).latitude, vehicleList.get(nameList.get(i)).longitude);
                             } else {
                                 if (golap == null) {
                                     MarkerOptions options = new MarkerOptions().position(vehicleList.get(nameList.get(i)))
@@ -436,6 +467,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 } else {
                                     rojoni.setPosition(vehicleList.get(nameList.get(i)));
                                 }
+                                prevLatlng = new LatLng(vehicleList.get(nameList.get(i)).latitude, vehicleList.get(nameList.get(i)).longitude);
                             } else {
                                 if (rojoni == null) {
                                     MarkerOptions options = new MarkerOptions().position(vehicleList.get(nameList.get(i)))
@@ -457,6 +489,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 } else {
                                     voirab.setPosition(vehicleList.get(nameList.get(i)));
                                 }
+                                prevLatlng = new LatLng(vehicleList.get(nameList.get(i)).latitude, vehicleList.get(nameList.get(i)).longitude);
                             } else {
                                 if (voirab == null) {
                                     MarkerOptions options = new MarkerOptions().position(vehicleList.get(nameList.get(i)))

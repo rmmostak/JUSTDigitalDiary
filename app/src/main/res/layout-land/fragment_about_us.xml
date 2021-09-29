@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,53 +8,38 @@
     android:orientation="vertical"
     tools:context=".ui.about.AboutUsFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="330dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="-100dp"
-            android:src="@drawable/home_bg" />
-
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="-100dp"
         android:gravity="center"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_gravity="center"
             android:layout_margin="10dp"
+            android:layout_gravity="center"
             android:src="@drawable/logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:padding="3dp"
+                android:layout_gravity="center"
                 android:text="@string/welcome_note"
                 android:textAlignment="center"
+                android:textIsSelectable="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/colorPrimary"
-                android:textIsSelectable="true" />
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/version"
@@ -73,22 +58,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
+            android:textIsSelectable="true"
             android:padding="5dp"
+            android:textColor="@color/colorPrimary"
             android:text="@string/about_us_text"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/colorPrimary"
-            android:textIsSelectable="true" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="10dp"
-            android:padding="5dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:src="@drawable/ic_share" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

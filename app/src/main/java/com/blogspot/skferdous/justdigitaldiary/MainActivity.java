@@ -36,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -47,7 +48,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     //in app update
     private int MY_REQUEST_CODE = 111;
     private AppUpdateManager mAppUpdateManager;
-    private int RC_APP_UPDATE = 999;
+    private final int RC_APP_UPDATE = 999;
     private int inAppUpdateType;
     private com.google.android.play.core.tasks.Task<AppUpdateInfo> appUpdateInfoTask;
     private InstallStateUpdatedListener installStateUpdatedListener;
@@ -80,15 +81,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         toolbar = findViewById(R.id.toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
+        toolbar.setTitle("");
         navUserTitle = findViewById(R.id.navUserTitle);
 
         setSupportActionBar(toolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+
 
         /*start of in app update functions*/
 
@@ -114,17 +115,24 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_about_us, R.id.nav_vc_message, R.id.nav_feedBack, R.id.signOut)
-                .setDrawerLayout(drawer)
+                .setDrawerLayout(drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        /*navigationView.setNavigationItemSelectedListener(this);*/
 
         View headerView = getLayoutInflater().inflate(R.layout.nav_header_main, navigationView, false);
         navigationView.addHeaderView(headerView);
@@ -160,6 +168,29 @@ public class MainActivity extends AppCompatActivity {
         setNameWithDept();
     }
 
+   /* @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_share) {
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            String shareBody = "https://play.google.com/store/apps/details?id=com.blogspot.skferdous.justdigitaldiary";
+            String shareSubject = "JUST Digital Diary";
+
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
+            startActivity(Intent.createChooser(shareIntent, "Share App Using..."));
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }*/
+
     @Override
     public void onBackPressed() {
 
@@ -174,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
         }
         backPressedTime = System.currentTimeMillis();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

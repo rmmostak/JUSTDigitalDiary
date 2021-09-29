@@ -1,13 +1,16 @@
 package com.blogspot.skferdous.justdigitaldiary;
 
 import android.content.Context;
+import android.os.Bundle;
 
+import androidx.multidex.MultiDex;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static org.junit.Assert.*;
 
 /**

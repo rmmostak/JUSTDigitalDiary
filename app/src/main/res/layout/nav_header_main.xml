@@ -22,9 +22,10 @@
         android:id="@+id/navUserTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/white" />
+        android:padding="3dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,14 +33,13 @@
 
         <TextView
             android:id="@+id/navUserDept"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:drawablePadding="5dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text=""
+            android:padding="3dp"
             android:textColor="@color/white"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <ImageButton

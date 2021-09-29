@@ -1,6 +1,7 @@
 package com.blogspot.skferdous.justdigitaldiary.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
@@ -33,7 +34,8 @@ public class UserManual extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_manual);
         webView = findViewById(R.id.webView);
-        /*pdfView.fromAsset("user_manual.pdf")
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+/*pdfView.fromAsset("user_manual.pdf")
                 .defaultPage(pageNumber)
                 .enableAnnotationRendering(true)
                 .scrollHandle(new DefaultScrollHandle(this))

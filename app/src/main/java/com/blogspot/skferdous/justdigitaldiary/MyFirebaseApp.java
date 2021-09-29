@@ -1,14 +1,14 @@
 package com.blogspot.skferdous.justdigitaldiary;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MyFirebaseApp extends Application {
+public class MyFirebaseApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();

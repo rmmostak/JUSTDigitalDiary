@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.VCMessage.VCMessageFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_collapseMode="pin"
+            app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"
+            app:title="Honorable Vice Chancellor"
+            app:titleTextColor="@color/colorPrimary" />
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="start"
+            android:layout_margin="20dp"
+            android:contentDescription="Vice Chancellor"
+            android:src="@drawable/vc_sir" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:paddingLeft="5dp"
+            android:text="Professor Dr. Md. Anwar Hossain"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/colorPrimary"
+            android:textIsSelectable="true"
+            android:textSize="20sp"
+            tools:ignore="RtlCompat" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:paddingLeft="5dp"
+            android:text="Vice Chancellor\nJashore University of Science and Technology\nJashore, Bangladesh"
+            android:textAlignment="textStart"
+            android:textIsSelectable="true"
+            android:textSize="14sp"
+            tools:ignore="RtlCompat" />
+
+        <TextView
+            android:layout_width="400dp"
+            android:layout_height="350dp"
+            android:layout_gravity="start"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/vc_msg" />
+    </LinearLayout>
+
+</ScrollView>

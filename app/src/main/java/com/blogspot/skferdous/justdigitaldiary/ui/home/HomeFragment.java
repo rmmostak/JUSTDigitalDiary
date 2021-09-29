@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
         });
 
         CardView vehicle = root.findViewById(R.id.vehicleTracking);
+
          /*vehicle.setOnClickListener(v -> {
            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             builder.setTitle("Notice!");

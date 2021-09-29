@@ -30,7 +30,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="API_KEY">AIzaSyCpkai1OArOr5xhb6MwS7Dlnjf6MKaJne0</string>
+    <string name="API_KEY">AIzaSyCH-tOLe0mWKvW9amrvzPqo6r2m9ixfi_A</string>
     <string name="title_activity_maps">Map</string>
     <string name="no_note_alert">Nothing to show here!</string>
     <string name="add_note_desc">Add Note</string>
