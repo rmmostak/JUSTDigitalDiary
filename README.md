@@ -1,4 +1,4 @@
-<h2><img height="100" width="100" src="https://github.com/rmproduct/JUSTDigitalDiary/blob/master/app/src/main/res/drawable/logo.png"><br>JUST Digital Diary </h2>
+<h2 align="center"><img height="100" width="100" src="https://github.com/rmproduct/JUSTDigitalDiary/blob/master/app/src/main/res/drawable/logo.png"><br>JUST Digital Diary </h2>
 <p>This is a institutional application for Jashore University of Science and Technology (JUST). This app has some functions like-<br></p>
 <ul>
   <li>Authentication system using Firebase Authentication API.</li>
