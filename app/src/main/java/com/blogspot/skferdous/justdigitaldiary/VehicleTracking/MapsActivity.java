@@ -181,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("profileError", e.getMessage());
             }
             //profile.setVisibility(View.VISIBLE);
-            Log.d("active", vName + "2");
+            //Log.d("active", vName + "2");
 
             if (isServiceRunning()) {
                 serviceControl.setImageResource(R.drawable.ic_clear);

@@ -89,8 +89,6 @@ public class MainActivity extends AppCompatActivity{
 
         setSupportActionBar(toolbar);
 
-
-
         /*start of in app update functions*/
 
         AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
