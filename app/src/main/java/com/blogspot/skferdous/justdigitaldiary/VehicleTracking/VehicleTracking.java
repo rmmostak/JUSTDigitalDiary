@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 
+
 public class VehicleTracking extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

@@ -1,0 +1,127 @@
+{
+  "project_info": {
+    "project_number": "40308523254",
+    "firebase_url": "https://just-bus-tracking-5500d.firebaseio.com",
+    "project_id": "just-bus-tracking-5500d",
+    "storage_bucket": "just-bus-tracking-5500d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40308523254:android:0d47dcde6659135373acd7",
+        "android_client_info": {
+          "package_name": "com.blogspot.skferdous.justdigitaldiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASstKrHZrAYI3jkMziXcvp2bwKDg9tXGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40308523254:android:0b7f0a1cc10dc18b73acd7",
+        "android_client_info": {
+          "package_name": "com.blogspot.skferdous.navigation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASstKrHZrAYI3jkMziXcvp2bwKDg9tXGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40308523254:android:afe51d571f5217db73acd7",
+        "android_client_info": {
+          "package_name": "com.example.tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASstKrHZrAYI3jkMziXcvp2bwKDg9tXGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40308523254:android:f599626daac292e573acd7",
+        "android_client_info": {
+          "package_name": "com.justdigitaldiary.vehicleadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASstKrHZrAYI3jkMziXcvp2bwKDg9tXGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40308523254-31s0irn1fjslndlq6s4fvk1dn288jo7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

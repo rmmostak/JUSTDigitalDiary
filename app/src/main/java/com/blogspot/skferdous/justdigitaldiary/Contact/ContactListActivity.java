@@ -73,6 +73,7 @@ public class ContactListActivity extends AppCompatActivity {
     private TextView name, desg, email, phone, pbx, others;
     private ImageView call, mail, msg;
     private LinearLayout topLayout;
+    public boolean role = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class ContactListActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
         String child = preferences.getString("second_child", null);
         String child2 = preferences.getString("last_child", null);
+        role = preferences.getBoolean("role", false);
         SECOND_CHILD = child;
         FINAL_CHILD = child2;
 
@@ -130,7 +132,7 @@ public class ContactListActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot sn : dataSnapshot.getChildren()) {
-                                    DatabaseReference reference =FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(child).child(snapshot.getKey()).child(SECOND_CHILD).child(sn.getKey()).child(FINAL_CHILD);
+                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(child).child(snapshot.getKey()).child(SECOND_CHILD).child(sn.getKey()).child(FINAL_CHILD);
                                     reference.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

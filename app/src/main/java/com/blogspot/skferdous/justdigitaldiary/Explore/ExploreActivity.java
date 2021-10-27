@@ -37,6 +37,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.skferdous.justdigitaldiary.Adapter.CustomToast;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.Model.GalleryModel;
 import com.blogspot.skferdous.justdigitaldiary.R;
@@ -56,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ExploreActivity extends AppCompatActivity {
+public class ExploreActivity extends AppCompatActivity implements CustomToast {
 
     private CardView gallery, web, portal;
     private DatabaseReference reference;
@@ -211,6 +212,14 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     public static void ToastLong(Context context, String message) {
+        /*LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.custom_toast_layout));
+        TextView text=view.findViewById(R.id.toastTitle);
+        text.setText(message);
+        Toast custom = new Toast(context);
+        custom.setDuration(Toast.LENGTH_LONG);
+        custom.setView(view);
+        custom.show();*/
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
         toast.getView().setBackgroundColor(Color.parseColor("#00bfa5"));
         toast.setGravity(Gravity.BOTTOM, 0, 0);
@@ -231,5 +240,10 @@ public class ExploreActivity extends AppCompatActivity {
 
         x = BitmapFactory.decodeStream(input);
         return new BitmapDrawable(Resources.getSystem(), x);
+    }
+
+    @Override
+    public void customToast(Context context, String message) {
+
     }
 }
