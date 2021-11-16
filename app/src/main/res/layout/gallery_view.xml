@@ -14,8 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
+        android:contentDescription="Previous"
         android:focusable="true"
-        android:src="@drawable/ic_prev" />
+        android:src="@drawable/ic_prev"
+        android:tooltipText="Previous" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -50,7 +52,8 @@
                 android:layout_gravity="start"
                 android:clickable="true"
                 android:contentDescription="Gallery Image"
-                android:focusable="true" />
+                android:focusable="true"
+                android:tooltipText="Gallery Image" />
 
             <ProgressBar
                 android:id="@+id/imageLoading"
@@ -66,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:gravity="center_horizontal"
+            android:contentDescription="Image Description"
             android:padding="1dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -79,7 +83,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
+        android:contentDescription="Previous"
         android:focusable="true"
-        android:src="@drawable/ic_next" />
+        android:src="@drawable/ic_next"
+        android:tooltipText="Next" />
 
 </LinearLayout>

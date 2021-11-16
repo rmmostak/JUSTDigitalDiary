@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="top"
-    android:gravity="top"
+    android:layout_gravity="bottom"
+    android:gravity="bottom"
     android:orientation="vertical"
     tools:context=".ui.about.AboutUsFragment">
 
-    <RelativeLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="330dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="-100dp"
-            android:src="@drawable/home_bg" />
-
-    </RelativeLayout>
+        android:layout_height="330dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="top"
+        android:layout_marginTop="-100dp"
+        android:src="@drawable/home_bg" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="-100dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
         android:orientation="vertical">
-
 
         <ImageView
             android:layout_width="80dp"
@@ -80,15 +74,37 @@
             android:textColor="@color/colorPrimary"
             android:textIsSelectable="true" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="10dp"
-            android:padding="5dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:src="@drawable/ic_share" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="Contact"
+                android:padding="5dp"
+                android:src="@drawable/call_white"
+                app:backgroundTint="@color/colorPrimary" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="Share App"
+                android:padding="5dp"
+                android:src="@drawable/ic_share"
+                app:backgroundTint="@color/colorPrimary" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

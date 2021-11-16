@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,13 +39,11 @@ import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 public class AdminNodeAdapter extends RecyclerView.Adapter<AdminNodeAdapter.ViewHolder> {
 
     List<String> cardModels;
-    String count;
     Context context;
     private DatabaseReference reference;
 
     public AdminNodeAdapter(List<String> cardModels) {
         this.cardModels = cardModels;
-        //this.count = count;
     }
 
     @NonNull
@@ -65,11 +65,12 @@ public class AdminNodeAdapter extends RecyclerView.Adapter<AdminNodeAdapter.View
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     reference.child(snapshot.getKey()).child(title).addValueEventListener(new ValueEventListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot sn : dataSnapshot.getChildren()) {
                                 if (dataSnapshot.getKey().equals(title)) {
-                                    Log.d("child", sn.getKey() + sn.getChildrenCount());
+                                    //Log.d("child", sn.getKey() + sn.getChildrenCount());
                                     holder.totalChild.setText(dataSnapshot.getChildrenCount() + " Sub-Categories");
                                     holder.totalChild.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_account, 0, 0, 0);
                                 }
@@ -89,7 +90,6 @@ public class AdminNodeAdapter extends RecyclerView.Adapter<AdminNodeAdapter.View
                 ToastLong(context.getApplicationContext(), databaseError.getMessage());
             }
         });
-
 
         holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), SecondaryActivity.class);

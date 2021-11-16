@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.skferdous.justdigitaldiary.Model.AdminModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.AuthModel;
 import com.blogspot.skferdous.justdigitaldiary.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -181,11 +182,14 @@ public class SignupActivity extends AppCompatActivity {
 
                     String uid = firebaseAuth.getUid();
                     String user = checkEmailValidity(mail);
+
                     if (user.equals("just.edu.bd")) {
+                        assert uid != null;
                         reference = FirebaseDatabase.getInstance().getReference("Users").child("Faculty and Stuff").child(uid);
                         String id = reference.push().getKey();
                         AuthModel model = new AuthModel(id, uid, mail, Name, Dept);
 
+                        assert id != null;
                         reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
 
@@ -193,7 +197,21 @@ public class SignupActivity extends AppCompatActivity {
                                 if (firebaseUser != null) {
                                     firebaseUser.sendEmailVerification().addOnCompleteListener(task3 -> {
                                         if (task3.isSuccessful()) {
-
+                                            if (mail.contains("dean")) {
+                                                reference = FirebaseDatabase.getInstance().getReference("Admin").child("Faculty");
+                                                String key = reference.push().getKey();
+                                                assert key != null;
+                                                reference = reference.child(key);
+                                                AdminModel model1 = new AdminModel(firebaseUser.getUid(), Dept, key);
+                                                reference.setValue(model1);
+                                            } else if (mail.contains("admin")){
+                                                reference = FirebaseDatabase.getInstance().getReference("Admin").child("Super Admin");
+                                                String key = reference.push().getKey();
+                                                assert key != null;
+                                                reference = reference.child(key);
+                                                AdminModel model1 = new AdminModel(firebaseUser.getUid(), Dept, key);
+                                                reference.setValue(model1);
+                                            } 
                                             dialog.dismiss();
                                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
                                             builder.setTitle("Alert!");

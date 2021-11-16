@@ -21,6 +21,16 @@
         android:theme="@style/Theme.JUSTDigitalDiary"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Explore.AddGalleryActivity"
+            android:exported="false"
+            android:label="Add Gallery Content"
+            android:parentActivityName=".Explore.ExploreActivity" />
+        <activity
+            android:name=".Explore.AddPortalActivity"
+            android:exported="false"
+            android:label="Add Data"
+            android:parentActivityName=".Explore.PortalActivity" />
+        <activity
             android:name=".UpcomingActivity"
             android:label="Upcoming Features"
             android:parentActivityName=".MainActivity" />

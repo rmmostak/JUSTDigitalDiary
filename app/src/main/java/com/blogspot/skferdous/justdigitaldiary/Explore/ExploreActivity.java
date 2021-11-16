@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,35 +18,32 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blogspot.skferdous.justdigitaldiary.Adapter.CustomToast;
+import com.blogspot.skferdous.justdigitaldiary.Authentication.LoginActivity;
+import com.blogspot.skferdous.justdigitaldiary.Authentication.UserManual;
+import com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
+import com.blogspot.skferdous.justdigitaldiary.Model.AdminModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.GalleryModel;
 import com.blogspot.skferdous.justdigitaldiary.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,15 +51,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class ExploreActivity extends AppCompatActivity implements CustomToast {
+public class ExploreActivity extends AppCompatActivity {
 
     private CardView gallery, web, portal;
     private DatabaseReference reference;
     private List<GalleryModel> modelList;
-    private int in;
     private int index = 0;
+    public boolean role = false;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -74,6 +69,35 @@ public class ExploreActivity extends AppCompatActivity implements CustomToast {
 
         reference = FirebaseDatabase.getInstance().getReference().child("Explore").child("Gallery");
         modelList = new ArrayList<>();
+
+        try {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Admin");
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot sn : snapshot.getChildren()) {
+                            AdminModel model = sn.getValue(AdminModel.class);
+
+                            assert model != null;
+                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("all")) {
+                                role = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(ExploreActivity.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(ExploreActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
         gallery = findViewById(R.id.gallery);
         gallery.setOnClickListener(v -> {
@@ -139,6 +163,7 @@ public class ExploreActivity extends AppCompatActivity implements CustomToast {
                     modelList.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         GalleryModel model = snapshot.getValue(GalleryModel.class);
+                        assert model != null;
                         GalleryModel galleryModel = new GalleryModel(model.getTopic(), model.getUrl(), model.getDetail());
                         modelList.add(galleryModel);
                     }
@@ -160,7 +185,7 @@ public class ExploreActivity extends AppCompatActivity implements CustomToast {
                         Picasso.get().load(modelList.get(index).getUrl()).into(gImage);
                         gTitle.setText(modelList.get(index).getTopic());
                         gDetail.setText(modelList.get(index).getDetail());
-                        Log.d("title", modelList.get(index).getTopic() + ", " + index);
+                        //Log.d("title", modelList.get(index).getTopic() + ", " + index);
                         imageLoading.setVisibility(View.GONE);
                     });
 
@@ -187,11 +212,36 @@ public class ExploreActivity extends AppCompatActivity implements CustomToast {
         }
 
         dialogBuilder.setPositiveButton("Close", (dialog1, which) -> {
-            in = 0;
             return;
         });
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (role) {
+            getMenuInflater().inflate(R.menu.menu_add_gallery, menu);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.addGallery) {
+            Intent intent = new Intent(ExploreActivity.this, AddGalleryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -212,14 +262,6 @@ public class ExploreActivity extends AppCompatActivity implements CustomToast {
     }
 
     public static void ToastLong(Context context, String message) {
-        /*LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.custom_toast_layout));
-        TextView text=view.findViewById(R.id.toastTitle);
-        text.setText(message);
-        Toast custom = new Toast(context);
-        custom.setDuration(Toast.LENGTH_LONG);
-        custom.setView(view);
-        custom.show();*/
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
         toast.getView().setBackgroundColor(Color.parseColor("#00bfa5"));
         toast.setGravity(Gravity.BOTTOM, 0, 0);
@@ -240,10 +282,5 @@ public class ExploreActivity extends AppCompatActivity implements CustomToast {
 
         x = BitmapFactory.decodeStream(input);
         return new BitmapDrawable(Resources.getSystem(), x);
-    }
-
-    @Override
-    public void customToast(Context context, String message) {
-
     }
 }

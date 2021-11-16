@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
+        android:contentDescription="Previous"
         android:src="@drawable/ic_prev" />
 
     <LinearLayout
@@ -31,6 +32,7 @@
             android:id="@+id/gTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="Image Title"
             android:gravity="center_horizontal"
             android:padding="1dp"
             android:textAlignment="center"
@@ -38,7 +40,7 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp">
+            android:layout_height="200dp">
 
             <ImageView
                 android:id="@+id/gImage"
@@ -61,9 +63,10 @@
             android:id="@+id/gDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:contentDescription="Image Description"
             android:gravity="center_horizontal"
             android:padding="1dp"
-            android:layout_margin="1dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textIsSelectable="true" />
@@ -76,6 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clickable="true"
+        android:contentDescription="Previous"
         android:src="@drawable/ic_next" />
 
 </LinearLayout>

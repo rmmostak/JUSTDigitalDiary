@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.blogspot.skferdous.justdigitaldiary.Model.AdminModel;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.InvitedNotePad;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
 import com.blogspot.skferdous.justdigitaldiary.R;
@@ -39,9 +41,16 @@ import com.blogspot.skferdous.justdigitaldiary.SplashScreen;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
@@ -50,7 +59,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email, pass;
     private TextView warning, signUp, forgotPass;
-    private Button signIn, guest;
+    private Button signIn;
+    public String title = null, identifier = null;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -130,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
             ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
             startActivity(intent, options.toBundle());
         });
+
+
     }
 
     @Override
@@ -173,7 +185,6 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     private boolean isConnected() {
@@ -206,7 +217,6 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("vehicle", false);
                             editor.apply();
                         }
-
                         getDataForExistUser(_mail, _pass);
 
                     } else {
@@ -222,7 +232,6 @@ public class LoginActivity extends AppCompatActivity {
                 email.requestFocus();
             }
         });
-
     }
 
     private void getDataForExistUser(String mail, String p1) {
@@ -240,13 +249,16 @@ public class LoginActivity extends AppCompatActivity {
                     assert firebaseUser != null;
                     boolean userStatus = firebaseUser.isEmailVerified();
                     if (userStatus) {
+
                         email.setText("");
                         pass.setText("");
                         dialog.dismiss();
+
                         Intent intent = new Intent(LoginActivity.this, SplashScreen.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
                         startActivity(intent, options.toBundle());
+
                     } else {
                         dialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -254,6 +266,7 @@ public class LoginActivity extends AppCompatActivity {
                         builder.setIcon(R.drawable.logo);
                         builder.setMessage("Please verify your email address and try again to login!!");
                         builder.setPositiveButton("Close", (dialog1, which) -> {
+
                         });
                         builder.show();
                     }
@@ -262,9 +275,20 @@ public class LoginActivity extends AppCompatActivity {
                     warning.setText(Objects.requireNonNull(task.getException()).getMessage());
                 }
             });
+
         } catch (Exception e) {
             Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void setPre(String key, String identifier) {
+        SharedPreferences sharedPreferences = getSharedPreferences("control", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("title", title);
+        editor.putString("identifier", identifier);
+        editor.commit();
+
+        Log.d("tag", key + " & " + identifier);
     }
 
     @Override
