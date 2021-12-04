@@ -9,19 +9,23 @@
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/drawable/ic_add.xml" value="0.26458333333333334" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/drawable/ic_share.xml" value="0.33240740740740743" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/drawable/input_link.xml" value="0.19635416666666666" />
-        <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/activity_faculty_list.xml" value="0.1781305114638448" />
+        <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/activity_contact_list.xml" value="0.3090828924162258" />
+        <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/activity_faculty_list.xml" value="0.25" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/fragment_about_us.xml" value="0.18" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/fragment_feeback.xml" value="0.20238095238095238" />
+        <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/fragment_home.xml" value="0.3090828924162258" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/gallery_view.xml" value="0.20899470899470898" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout-land/portal_layout.xml" value="0.25" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_add_gallery.xml" value="0.24270833333333333" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_add_portal.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_contact_list.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_dept.xml" value="0.3129528985507246" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_faculty_list.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_login.xml" value="0.2390625" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_main.xml" value="0.3129528985507246" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_portal.xml" value="0.2484375" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_signup.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/activity_user_manual.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/add_category.xml" value="0.25" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/add_dept.xml" value="0.25" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/add_node.xml" value="0.3651041666666667" />
@@ -42,6 +46,7 @@
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/portal_update.xml" value="0.36041666666666666" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/layout/recycler_node_card.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/menu/admin_edit.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/menu/menu_docs.xml" value="0.1609375" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/menu/menu_events.xml" value="0.246875" />
         <entry key="..\:/Users/CSE Lab/StudioProjects/JUSTDigitalDiary/app/src/main/res/menu/send_mail.xml" value="0.3651041666666667" />
       </map>
@@ -52,5 +57,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3651041666666667" />
+      </ProjectState>
+    </option>
   </component>
 </project>

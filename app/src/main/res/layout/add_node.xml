@@ -32,7 +32,6 @@
                 android:layout_gravity="start"
                 android:gravity="start"
                 android:hint="Title"
-                android:inputType="textCapWords"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="14sp" />

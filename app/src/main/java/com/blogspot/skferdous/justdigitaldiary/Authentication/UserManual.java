@@ -33,7 +33,7 @@ public class UserManual extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_manual);
-        webView = findViewById(R.id.webView);
+        //webView = findViewById(R.id.webView);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 /*pdfView.fromAsset("user_manual.pdf")
                 .defaultPage(pageNumber)
@@ -41,7 +41,7 @@ public class UserManual extends AppCompatActivity {
                 .scrollHandle(new DefaultScrollHandle(this))
                 .spacing(10) // in dp
                 .load();*/
-
+/*
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("Data is retrieving, please wait...");
         dialog.setCanceledOnTouchOutside(false);
@@ -59,7 +59,7 @@ public class UserManual extends AppCompatActivity {
         //webView.setWebViewClient(new Callback());
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("https://drive.google.com/file/d/1Fi5slwwur4PcHa9b8yX6jxIl6n8ZgKET/view?usp=sharing");
-
+*/
         //setContentView(webView);
     }
 

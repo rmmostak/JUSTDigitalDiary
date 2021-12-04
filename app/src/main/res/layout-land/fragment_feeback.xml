@@ -87,6 +87,16 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
+        <TextView
+            android:id="@+id/notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No feedback is available right now."
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/gray"
+            android:gravity="center_horizontal" />
+
         <ListView
             android:id="@+id/feedList"
             android:layout_width="match_parent"

@@ -13,21 +13,23 @@
         android:layout_marginTop="-100dp"
         android:src="@drawable/home_bg" />
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
+                android:layout_gravity="top|center"
+                android:layout_margin="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -55,145 +57,141 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:clipToPadding="false"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:weightSum="2">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/facultyContact"
-                    style="@style/cardBackground"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/circle_orange"
-                            android:src="@drawable/faculty_logo" />
-
-                        <TextView
-                            style="@style/cardTitle"
-                            android:text="Faculty Members" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/adminContact"
-                    style="@style/cardBackground"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/circle_green"
-                            android:src="@drawable/admin_icon" />
-
-                        <TextView
-                            android:id="@+id/home01"
-                            style="@style/cardTitle"
-                            android:text="Admin Office" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="1dp"
-                android:clipToPadding="false"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingTop="0dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="0dp"
-                android:weightSum="2">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/vehicleTracking"
-                    style="@style/cardBackground">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/circle_orange"
-                            android:src="@drawable/ic_baseline_location" />
-
-                        <TextView
-                            style="@style/cardTitle"
-                            android:text="Vehicle Tracking" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/notepad"
-                    style="@style/cardBackground">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/circle_indigo"
-                            android:src="@drawable/ic_write_note" />
-
-                        <TextView
-                            style="@style/cardTitle"
-                            android:text="Daily Diary" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="1dp"
-                android:clipToPadding="false"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:weightSum="2">
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:weightSum="2">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/facultyContact"
+                        style="@style/cardBackground"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle_orange"
+                                android:src="@drawable/faculty_logo" />
+
+                            <TextView
+                                style="@style/cardTitle"
+                                android:text="Faculty Members" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/adminContact"
+                        style="@style/cardBackground"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle_green"
+                                android:src="@drawable/admin_icon" />
+
+                            <TextView
+                                android:id="@+id/home01"
+                                style="@style/cardTitle"
+                                android:text="Admin Office" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="1dp"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="0dp"
+                    android:weightSum="2">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/vehicleTracking"
+                        style="@style/cardBackground">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle_orange"
+                                android:src="@drawable/ic_baseline_location" />
+
+                            <TextView
+                                style="@style/cardTitle"
+                                android:text="Vehicle Tracking" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/notepad"
+                        style="@style/cardBackground">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/circle_indigo"
+                                android:src="@drawable/ic_write_note" />
+
+                            <TextView
+                                style="@style/cardTitle"
+                                android:text="Daily Diary" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/calendar"
@@ -247,41 +245,58 @@
 
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/upComing"
-                    style="@style/cardLandBackground"
-                    android:layout_marginTop="20dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/circle_violet"
-                            android:src="@drawable/ic_upcoming" />
-
-                        <TextView
-                            style="@style/cardTitle"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Up Coming Features" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
             </LinearLayout>
 
-        </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <!--
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="3dp"
+                       android:layout_marginBottom="1dp"
+                       android:clipToPadding="false"
+                       android:gravity="center"
+                       android:orientation="vertical"
+                       android:padding="10dp"
+                       android:weightSum="2">
+
+                       <androidx.cardview.widget.CardView
+                           android:id="@+id/upComing"
+                           style="@style/cardLandBackground"
+                           android:layout_marginTop="20dp">
+
+                           <LinearLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:layout_gravity="center"
+                               android:gravity="center"
+                               android:orientation="horizontal">
+
+                               <ImageView
+                                   android:layout_width="50dp"
+                                   android:layout_height="50dp"
+                                   android:layout_gravity="center"
+                                   android:layout_margin="10dp"
+                                   android:background="@drawable/circle_violet"
+                                   android:src="@drawable/ic_upcoming" />
+
+                               <TextView
+                                   style="@style/cardTitle"
+                                   android:layout_gravity="center"
+                                   android:layout_marginLeft="20dp"
+                                   android:layout_marginTop="10dp"
+                                   android:text="Up Coming Features" />
+
+                           </LinearLayout>
+
+                       </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+        -->
+    </LinearLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

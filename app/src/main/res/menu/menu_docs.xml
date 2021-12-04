@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/docs"
-        android:title="User Manual"
+        android:title="Manual"
+        android:contentDescription="Registration Manual"
         app:showAsAction="always"/>
 </menu>

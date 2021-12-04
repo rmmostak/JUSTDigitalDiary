@@ -5,13 +5,15 @@
     <item
         android:id="@+id/sendEmail"
         android:icon="@drawable/ic_mark_email"
-        android:title="Email"
+        android:title="Send Email"
+        android:contentDescription="Send Mail"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/editItem"
         android:icon="@drawable/ic_edit"
         android:title="Edit"
+        android:contentDescription="Add new Node"
         app:showAsAction="ifRoom" />
 
 </menu>

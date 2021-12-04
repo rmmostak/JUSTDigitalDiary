@@ -5,18 +5,20 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Contact.ContactListActivity">
+    tools:context=".Contact.FacultyListActivity">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addTeacher"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
         android:layout_margin="20dp"
+        android:contentDescription="@string/add_entry"
         android:src="@drawable/ic_add"
         android:tint="@color/white"
-        app:backgroundTint="@color/colorPrimary" />
+        android:visibility="gone"
+        app:backgroundTint="@color/colorPrimary"
+        tools:ignore="RtlHardcoded" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#F4F4F4"
+            android:baselineAligned="false"
             android:focusable="true"
             android:orientation="horizontal"
             android:visibility="gone"
@@ -43,9 +46,11 @@
                     android:id="@+id/item_image1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
                     android:layout_gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginLeft="2dp"
                     android:background="@drawable/shape"
+                    android:contentDescription="@string/profile"
                     android:fitsSystemWindows="true"
                     android:padding="10dp"
                     android:scaleType="centerCrop"
@@ -56,7 +61,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp">
+                    android:paddingStart="15dp"
+                    android:paddingLeft="15dp"
+                    tools:ignore="RtlSymmetry">
 
                     <TextView
                         android:id="@+id/name"
@@ -67,7 +74,7 @@
                         android:textAlignment="center"
                         android:textColor="#000000"
                         android:textIsSelectable="true"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -79,7 +86,7 @@
                         android:textAlignment="center"
                         android:textColor="#000"
                         android:textIsSelectable="true"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:textStyle="italic" />
 
                     <TextView
@@ -91,7 +98,7 @@
                         android:textAlignment="center"
                         android:textColor="#000"
                         android:textIsSelectable="true"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
                         android:textStyle="italic" />
 
                     <TextView
@@ -103,7 +110,7 @@
                         android:textAlignment="center"
                         android:textColor="#000"
                         android:textIsSelectable="true"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
                         android:textStyle="italic" />
 
                     <TextView
@@ -115,7 +122,7 @@
                         android:textAlignment="center"
                         android:textColor="#000"
                         android:textIsSelectable="true"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
                         android:textStyle="italic" />
 
                     <TextView
@@ -127,7 +134,7 @@
                         android:textAlignment="center"
                         android:textColor="#000"
                         android:textIsSelectable="true"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -163,14 +170,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/click_to_call"
                     android:padding="4dp"
-                    android:src="@drawable/call" />
+                    android:src="@drawable/call"
+                    tools:ignore="NestedWeights" />
 
                 <ImageView
                     android:id="@+id/mail"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/click_to_send_mail"
                     android:padding="4dp"
                     android:src="@drawable/email" />
 
@@ -179,6 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/click_to_send_text_message"
                     android:padding="4dp"
                     android:src="@drawable/msg" />
 
@@ -201,7 +212,5 @@
             android:padding="2dp" />
 
     </LinearLayout>
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

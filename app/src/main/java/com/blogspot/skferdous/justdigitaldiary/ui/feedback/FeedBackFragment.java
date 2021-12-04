@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.FeedBackAdapter;
@@ -48,6 +49,7 @@ public class FeedBackFragment extends Fragment {
     private ListView feedList;
     private List<FeedModel> feedModelList;
     private FeedBackAdapter adapter;
+    public TextView notice;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -56,6 +58,7 @@ public class FeedBackFragment extends Fragment {
 
         adminView = root.findViewById(R.id.adminView);
         userView = root.findViewById(R.id.userView);
+        notice = root.findViewById(R.id.notice);
 
         feedList = root.findViewById(R.id.feedList);
         feedModelList = new ArrayList<>();
@@ -106,6 +109,9 @@ public class FeedBackFragment extends Fragment {
                             }
                         }
 
+                    }
+                    if (feedModelList.size() < 1) {
+                        notice.setVisibility(View.VISIBLE);
                     }
                     adapter = new FeedBackAdapter(getActivity(), feedModelList);
                     feedList.setAdapter(adapter);

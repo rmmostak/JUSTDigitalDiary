@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:gravity="start"
-                android:hint="Department Name"
+                android:hint="Name"
                 android:inputType="textCapWords"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/colorPrimary"
@@ -39,11 +39,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:id="@+id/deptHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:gravity="right"
-            android:text="Please enter department name as follows format, \'XYZ Dept\'" />
+            android:gravity="right" />
 
     </LinearLayout>
 

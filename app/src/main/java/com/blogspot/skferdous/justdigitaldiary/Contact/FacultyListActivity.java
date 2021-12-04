@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -104,7 +105,7 @@ public class FacultyListActivity extends AppCompatActivity {
         assert bar != null;
         bar.setTitle(FINAL_CHILD);
 
-        Log.d("child", THIRD_CHILD + "/" + FINAL_CHILD);
+        //Log.d("child", THIRD_CHILD + "/" + FINAL_CHILD);
         try {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Admin");
             FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -184,20 +185,33 @@ public class FacultyListActivity extends AppCompatActivity {
         alertDialog.show();
 
         delete.setOnClickListener(v -> {
-            //Log.d("path", path + "/" + i);
-            try {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(i);
-                reference.removeValue().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d("task", "Done!");
-                        alertDialog.dismiss();
-                    } else {
-                        Log.d("task", task.getException().getMessage());
-                    }
-                });
-            } catch (Exception e) {
-                Toast.makeText(FacultyListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(FacultyListActivity.this);
+            builder.setTitle("Alert!");
+            builder.setIcon(R.drawable.logo);
+            builder.setMessage("Are you sure to delete this?");
+            builder.setPositiveButton("Yes", (dialog1, which) -> {
+                try {
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(i);
+                    reference.removeValue().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            alertDialog.dismiss();
+                            Intent intent = new Intent(FacultyListActivity.this, FacultyListActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                            startActivity(intent, options.toBundle());
+                        } else {
+                            Log.d("task", task.getException().getMessage());
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(FacultyListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+                dialog1.dismiss();
+            });
+            builder.setNegativeButton("Cancel", (dialogInterface, i1) -> dialogInterface.dismiss());
+            builder.show();
+
         });
         cancel.setOnClickListener(view -> alertDialog.dismiss());
         update.setOnClickListener(view -> {
@@ -246,7 +260,11 @@ public class FacultyListActivity extends AppCompatActivity {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(id);
             reference.setValue(model).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Log.d("task", "Done");
+                    Intent intent = new Intent(FacultyListActivity.this, FacultyListActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                    startActivity(intent, options.toBundle());
                 } else {
                     Log.d("task", Objects.requireNonNull(task.getException()).getMessage());
                 }
@@ -363,17 +381,20 @@ public class FacultyListActivity extends AppCompatActivity {
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(String.valueOf(count));
                     reference.setValue(model).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Log.d("task", "Done!");
+                            alertDialog.dismiss();
+                            Intent intent = new Intent(FacultyListActivity.this, FacultyListActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                            startActivity(intent, options.toBundle());
                         } else {
                             Log.d("task", task.getException().getMessage());
                         }
                     });
-                    alertDialog.dismiss();
                 });
             } catch (Exception e) {
                 Toast.makeText(FacultyListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
         });
     }
 
@@ -434,7 +455,24 @@ public class FacultyListActivity extends AppCompatActivity {
                                                     childModelList.add(model);
                                                 }
                                             }
+                                            /*Log.d("child", childModelList.size() + "");
+                                            if (childModelList.size() < 1) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(FacultyListActivity.this);
+                                                builder.setTitle("Alert!");
+                                                builder.setIcon(R.drawable.logo);
+                                                builder.setMessage("No contents are available here, back to home.");
+                                                builder.setPositiveButton("Ok", (dialog1, which) -> {
 
+                                                    Intent intent = new Intent(FacultyListActivity.this, ContactNode.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                                                    startActivity(intent, options.toBundle());
+
+                                                    dialog1.dismiss();
+                                                });
+                                                builder.show();
+                                            }*/
                                             adapter = new ContactViewAdapter(FacultyListActivity.this, childModelList);
                                             listView.setAdapter(adapter);
 

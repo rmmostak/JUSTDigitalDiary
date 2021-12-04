@@ -4,8 +4,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.skferdous.justdigitaldiary.Contact.ContactListActivity;
-import com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity;
-import com.blogspot.skferdous.justdigitaldiary.Contact.SecondaryActivity;
 import com.blogspot.skferdous.justdigitaldiary.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +25,6 @@ import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode.FIRST_CHILD;
-import static com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity.THIRD_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.SecondaryActivity.ADMIN_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
@@ -70,7 +65,7 @@ public class AdminFinalAdapter extends RecyclerView.Adapter<AdminFinalAdapter.Vi
                                     if (s.getKey().equals(title)) {
                                         holder.totalChild.setText(s.getChildrenCount() + " Person(s)");
                                         holder.totalChild.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_profile_line, 0, 0, 0);
-                                        Log.d("count", s.getKey() + s.getChildrenCount());
+                                        //Log.d("count", s.getKey() + s.getChildrenCount());
                                     }
                                 }
                             }

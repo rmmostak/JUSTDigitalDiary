@@ -1,69 +1,47 @@
 package com.blogspot.skferdous.justdigitaldiary.Contact;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SearchView;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.AdminNodeAdapter;
 import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactAdapter;
-import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactCategoryAdapter;
-import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactViewAdapter;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.Model.AdminModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.ChildModel;
-import com.blogspot.skferdous.justdigitaldiary.Model.GalleryModel;
-import com.blogspot.skferdous.justdigitaldiary.NotePad.MakeNote;
-import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
-import com.blogspot.skferdous.justdigitaldiary.NotePad.ViewNote;
 import com.blogspot.skferdous.justdigitaldiary.R;
-import com.google.android.gms.dynamic.IFragmentWrapper;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity.THIRD_CHILD;
-import static com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivity.SECOND_CHILD;
-import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
 public class ContactNode extends AppCompatActivity {
@@ -74,6 +52,7 @@ public class ContactNode extends AppCompatActivity {
     private List<String> keyList;
     public static String FIRST_CHILD = "";
     public boolean role = false;
+    public String id = null, path = null, count = "", title = null, identifier = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +72,11 @@ public class ContactNode extends AppCompatActivity {
                             AdminModel model = sn.getValue(AdminModel.class);
 
                             assert model != null;
-                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("all")) {
-
-                                role = true;
-                                return;
+                            if ((model.getId().equals(auth.getUid()) && FIRST_CHILD.equals("Administrative Offices")) || (model.getId().equals(auth.getUid()) && FIRST_CHILD.equals("Faculty Members"))) {
+                                if (model.getIdentifier().equals("all") || model.getIdentifier().equals("Editor")) {
+                                    role = true;
+                                    return;
+                                }
                             }
                         }
                     }
@@ -141,6 +121,7 @@ public class ContactNode extends AppCompatActivity {
             databaseReference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(FIRST_CHILD);
             databaseReference.keepSynced(true);
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @SuppressLint("RestrictedApi")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -150,8 +131,10 @@ public class ContactNode extends AppCompatActivity {
                             String ch = sn.getKey();
                             keyList.add(ch);
                         }
-
+                        path = dataSnapshot.getRef().getPath().toString();
+                        count = snapshot.getKey();
                         if (FIRST_CHILD.equals("Administrative Offices")) {
+
                             adapter = new AdminNodeAdapter(keyList);
                             recyclerView.setAdapter(adapter);
                         } else {
@@ -170,7 +153,6 @@ public class ContactNode extends AppCompatActivity {
             });
         } catch (Exception e) {
             Toast.makeText(ContactNode.this, e.getMessage(), Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -283,10 +265,10 @@ public class ContactNode extends AppCompatActivity {
                 addFacultyNode();
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("SetTextI18n")
     private void addFacultyNode() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -303,12 +285,12 @@ public class ContactNode extends AppCompatActivity {
         Button nodeNext = dialogView.findViewById(R.id.nodeNext);
         Button nodeCancel = dialogView.findViewById(R.id.nodeCancel);
         TextView hint = dialogView.findViewById(R.id.hint);
-        hint.setText("Please enter node name like \'Faculty of Engineering and Technology\'");
+        hint.setText("Please enter node name like 'Faculty of Engineering and Technology'");
 
         nodeCancel.setOnClickListener(view -> alertDialog.dismiss());
         nodeNext.setOnClickListener(v -> {
             String node = nodeName.getText().toString().trim();
-            if (!TextUtils.isEmpty(node) && node.contains("Faculty")) {
+            if (!TextUtils.isEmpty(node) && node.toLowerCase().startsWith("faculty of")) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 LayoutInflater inf = getLayoutInflater();
                 View view = inf.inflate(R.layout.add_dept, null);
@@ -323,6 +305,8 @@ public class ContactNode extends AppCompatActivity {
                 EditText deptName = view.findViewById(R.id.deptName);
                 Button deptNext = view.findViewById(R.id.deptNext);
                 Button deptCancel = view.findViewById(R.id.deptCancel);
+                TextView deptHint = view.findViewById(R.id.deptHint);
+                deptHint.setText("Please enter department name in this pattern, 'XYZ Dept'");
 
                 deptCancel.setOnClickListener(view1 -> dialog.dismiss());
                 deptNext.setOnClickListener(view1 -> {
@@ -353,6 +337,7 @@ public class ContactNode extends AppCompatActivity {
                             Button cancel = view2.findViewById(R.id.cancel);
 
                             delete.setVisibility(View.GONE);
+                            update.setText("Add");
 
                             AlertDialog dLog = blder.create();
                             dLog.show();
@@ -393,7 +378,7 @@ public class ContactNode extends AppCompatActivity {
                                     othersSt = "null";
                                 }
 
-                                /*int id = Integer.parseInt(count) + 1;
+                                int id = Integer.parseInt(count) + 1;
                                 StringBuilder pre = new StringBuilder();
                                 if (count.length() > String.valueOf(id).length()) {
                                     for (int i = 0; i < (count.length() - String.valueOf(id).length()); i++) {
@@ -402,18 +387,22 @@ public class ContactNode extends AppCompatActivity {
                                 }
                                 count = pre.append(id).toString();
 
-                                //Log.d("tag", "path: " + path + "\tcount: " + count + "/" + deptSt);
+                                String child = path + "/" + count + "/" + node + "/001/" + deptSt;
                                 ChildModel model = new ChildModel("01", nameSt, desgSt, phoneHomeSt, phonePerSt, emailSt, othersSt, pbxSt);
+                                //Log.d("ref", child);
 
-                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(String.valueOf(count)).child(deptSt).child("01");
-                                Log.d("ref", reference.toString());
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference(child).child("01");
                                 reference.setValue(model).addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
-                                        Log.d("task", "Done!");
+                                        Intent intent = new Intent(ContactNode.this, ContactNode.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                                        startActivity(intent, options.toBundle());
                                     } else {
                                         Log.d("task", task.getException().getMessage());
                                     }
-                                });*/
+                                });
                                 dLog.dismiss();
                                 alertDialog.dismiss();
                             });
@@ -424,13 +413,15 @@ public class ContactNode extends AppCompatActivity {
                     }
                 });
             } else {
-                nodeName.setError("Please enter a name containing \'Faculty\' keyword!");
+                nodeName.setError("Please enter a name starts with 'Faculty of' keyword!");
                 nodeName.requestFocus();
             }
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void addAdminNode() {
+        Log.d("tag", "path=" + path + "\tcount=" + count);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.add_node, null);
@@ -446,7 +437,7 @@ public class ContactNode extends AppCompatActivity {
         Button nodeNext = dialogView.findViewById(R.id.nodeNext);
         Button nodeCancel = dialogView.findViewById(R.id.nodeCancel);
         TextView hint = dialogView.findViewById(R.id.hint);
-        hint.setText("Please enter node name like \'Offices, Cell\'");
+        hint.setText("Please enter node name like 'Offices, Cell'");
 
         nodeCancel.setOnClickListener(view -> alertDialog.dismiss());
         nodeNext.setOnClickListener(v -> {
@@ -466,6 +457,7 @@ public class ContactNode extends AppCompatActivity {
                 EditText catName = view.findViewById(R.id.catName);
                 Button catNext = view.findViewById(R.id.catNext);
                 Button catCancel = view.findViewById(R.id.catCancel);
+
                 catCancel.setOnClickListener(view1 -> dialog.dismiss());
 
                 catNext.setOnClickListener(view1 -> {
@@ -534,27 +526,33 @@ public class ContactNode extends AppCompatActivity {
                                 othersSt = "null";
                             }
 
-                                /*int id = Integer.parseInt(count) + 1;
-                                StringBuilder pre = new StringBuilder();
-                                if (count.length() > String.valueOf(id).length()) {
-                                    for (int i = 0; i < (count.length() - String.valueOf(id).length()); i++) {
-                                        pre.append('0');
-                                    }
+                            //Log.d("tag", count + "\t" + node + "\t" + catSt + "\t" + nameSt);
+
+                            int id = Integer.parseInt(count) + 1;
+                            StringBuilder pre = new StringBuilder();
+                            if (count.length() > String.valueOf(id).length()) {
+                                for (int i = 0; i < (count.length() - String.valueOf(id).length()); i++) {
+                                    pre.append('0');
                                 }
-                                count = pre.append(id).toString();
+                            }
+                            count = pre.append(id).toString();
 
-                                //Log.d("tag", "path: " + path + "\tcount: " + count + "/" + deptSt);
-                                ChildModel model = new ChildModel("01", nameSt, desgSt, phoneHomeSt, phonePerSt, emailSt, othersSt, pbxSt);
+                            String child = path + "/" + count + "/" + node + "/001/" + catSt;
+                            ChildModel model = new ChildModel("01", nameSt, desgSt, phoneHomeSt, phonePerSt, emailSt, othersSt, pbxSt);
+                            //Log.d("ref", child);
 
-                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(String.valueOf(count)).child(deptSt).child("01");
-                                Log.d("ref", reference.toString());
-                                reference.setValue(model).addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        Log.d("task", "Done!");
-                                    } else {
-                                        Log.d("task", task.getException().getMessage());
-                                    }
-                                });*/
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(child).child("01");
+                            reference.setValue(model).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Intent intent = new Intent(ContactNode.this, ContactNode.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                                    startActivity(intent, options.toBundle());
+                                } else {
+                                    Log.d("task", task.getException().getMessage());
+                                }
+                            });
                             dLog.dismiss();
                             alertDialog.dismiss();
                         });

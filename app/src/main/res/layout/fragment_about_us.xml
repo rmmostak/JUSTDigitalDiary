@@ -68,6 +68,7 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:padding="5dp"
+            android:lineHeight="20dp"
             android:text="@string/about_us_text"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"

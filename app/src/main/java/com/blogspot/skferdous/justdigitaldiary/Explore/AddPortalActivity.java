@@ -1,8 +1,8 @@
 package com.blogspot.skferdous.justdigitaldiary.Explore;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,10 +17,6 @@ import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Model.PortalModel;
 import com.blogspot.skferdous.justdigitaldiary.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,7 +28,7 @@ import java.util.UUID;
 public class AddPortalActivity extends AppCompatActivity {
 
     private EditText title, description, link;
-    private Button upload, uDelete, add;
+    private Button upload;
 
     private Uri filePath;
 
@@ -42,6 +38,7 @@ public class AddPortalActivity extends AppCompatActivity {
     public StorageReference storageReference;
     String checkAdmin = "";
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +51,8 @@ public class AddPortalActivity extends AppCompatActivity {
         description = findViewById(R.id.pDesc);
         link = findViewById(R.id.pLink);
         upload = findViewById(R.id.pUpload);
-        add = findViewById(R.id.pAdd);
-        uDelete = findViewById(R.id.uDelete);
+        Button add = findViewById(R.id.pAdd);
+        Button uDelete = findViewById(R.id.uDelete);
 
         Intent intent = getIntent();
         checkAdmin = intent.getStringExtra("id");
@@ -120,7 +117,7 @@ public class AddPortalActivity extends AppCompatActivity {
                                             PortalModel model = new PortalModel(checkAdmin, titleSt, descSt, linkSt, uri.toString());
                                             ref.child(checkAdmin).setValue(model).addOnCompleteListener(task -> {
                                                 if (task.isSuccessful()) {
-                                                    Log.d("task", Objects.requireNonNull(task.getResult()).toString());
+                                                    Log.d("task", "Value set completed!");
                                                 }
                                             });
                                         } catch (Exception e) {
@@ -178,11 +175,9 @@ public class AddPortalActivity extends AppCompatActivity {
                 Log.d("dSuccess", "Done!");
                 checkAdmin = "normal";
 
-
                 try {
                     StorageReference ref = storage.getReferenceFromUrl(others);
                     ref.delete().addOnSuccessListener(unused1 -> {
-                        Log.d("Image Delete", unused1.toString());
 
                         Intent intent = new Intent(AddPortalActivity.this, PortalActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -202,6 +197,7 @@ public class AddPortalActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void addPortal(String titleSt, String desc, String linkSt) {
         if (filePath != null) {
 

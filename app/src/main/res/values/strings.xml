@@ -23,7 +23,7 @@
     <string name="about_us">About Us</string>
     <string name="share_app">Share App</string>
     <string name="welcome_note">JUST Digital Diary Mobile App</string>
-    <string name="about_us_text">Design and Development by\n\n
+    <string name="about_us_text"><i>Design and Development by</i>\n
         <b>Computer Science and Engineering Department</b>\n
         <b>Jashore University of Science and Technology, Jashore.</b></string>
     <string name="upcomingFeatures">Upcoming features: Contact search option, Calendar interface upgradation, Vehicle tracking system, Control panel etc.</string>
@@ -35,4 +35,20 @@
     <string name="no_note_alert">Nothing to show here!</string>
     <string name="add_note_desc">Add Note</string>
     <string name="feedback">Feedback</string>
+    <string name="profile">Profile</string>
+    <string name="click_to_call">Click to call</string>
+    <string name="click_to_send_mail">Click to send mail</string>
+    <string name="click_to_send_text_message">Click to send text message</string>
+    <string name="add_entry">Add New Entry</string>
+    <string name="manual">Simply follow the <b>Sign up</b> and <b>Login</b> instructions to complete your registration to use this application. Here are some issues that you may concern</string>
+    <string name="email_manual">Please enter your <b>institutional/academic email</b></string>
+    <string name="pass_manual">Please create a <b>strong sassword</b> with minimum 6 characters</string>
+    <string name="dept_manual">Please enter your corresponding <b>department or section</b> or any other <b>category.</b></string>
+    <string name="sign_up_manual">After fill up all the input, click on the <b>Sign Up</b> button.</string>
+    <string name="verify_manual">Now this notify you that a <b>email verification</b> link has been sent to your email so, please go to your email and confirm that the given email has real existence/correct.</string>
+    <string name="login_manual">After verifying your email address please fill up the Login form and click on <b>Login</b> button. Now enjoy our application and don\'t forget to share your opinion to us.</string>
+    <string name="faculty_manual">All the input filling up is same for this particular except <b>Department/Section</b> field. For this particular field we have to obey the following instructions.</string>
+    <string name="faculty_sec_manual">In this field we have to set the exact name of the faculty with the exact patterns. The must followed pattern is like- <b>\'Faculty of Engineering and Technology\'</b>. We have to set the name which <b>starts with \'Faculty of\' keyword.</b></string>
+    <string name="fac_head_manual">For faculties, staff and general students:</string>
+    <string name="c_pass_manual"><b>Confirm</b> your password.</string>
 </resources>

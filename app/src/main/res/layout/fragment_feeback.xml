@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.feedback.FeedBackFragment">
 
     <ImageView
@@ -79,8 +79,8 @@
     <LinearLayout
         android:id="@+id/adminView"
         android:layout_width="match_parent"
-        android:layout_gravity="bottom"
         android:layout_height="match_parent"
+        android:layout_gravity="bottom"
         android:layout_marginTop="-50dp"
         android:orientation="vertical"
         android:visibility="gone">
@@ -88,11 +88,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
             android:text="Users feedback List"
             android:textAlignment="center"
-            android:padding="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <TextView
+            android:id="@+id/notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="No feedback is available right now."
+            android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:gravity="center_horizontal" />
+            android:textColor="@color/gray"
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/feedList"

@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactAdapter;
@@ -136,132 +137,133 @@ public class DeptActivity extends AppCompatActivity {
             emailIntent(emailList);
         } else if (id == R.id.editItem) {
             editItem();
-
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("SetTextI18n")
     private void editItem() {
-        /*addTeacher.setVisibility(View.VISIBLE);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.add_dept, null);
+        dialogBuilder.setView(dialogView);
 
-        addTeacher.setOnClickListener(view -> {*/
-            //Log.d("check", "path: " + path + "\tcount: " + count);
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.add_dept, null);
-            dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Add Department");
+        dialogBuilder.setIcon(R.drawable.logo);
 
-            dialogBuilder.setTitle("Add Department");
-            dialogBuilder.setIcon(R.drawable.logo);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
 
-            AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();
+        EditText deptName = dialogView.findViewById(R.id.deptName);
+        Button deptNext = dialogView.findViewById(R.id.deptNext);
+        Button deptCancel = dialogView.findViewById(R.id.deptCancel);
+        TextView deptHint = dialogView.findViewById(R.id.deptHint);
+        deptHint.setText("Please enter department name in this pattern, 'XYZ Dept'");
 
-            EditText deptName = dialogView.findViewById(R.id.deptName);
-            Button deptNext = dialogView.findViewById(R.id.deptNext);
-            Button deptCancel = dialogView.findViewById(R.id.deptCancel);
+        deptCancel.setOnClickListener(view1 -> alertDialog.dismiss());
+        deptNext.setOnClickListener(view1 -> {
+            String deptSt = deptName.getText().toString().trim();
+            if (deptSt.isEmpty()) {
+                deptName.setError("Please enter department name!");
+                deptName.requestFocus();
+                return;
+            } else {
+                if (deptSt.endsWith("Dept")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    LayoutInflater inflater1 = getLayoutInflater();
+                    View view2 = inflater1.inflate(R.layout.child_update_layout, null);
+                    builder.setView(view2);
 
-            deptCancel.setOnClickListener(view1 -> alertDialog.dismiss());
-            deptNext.setOnClickListener(view1 -> {
-                String deptSt = deptName.getText().toString().trim();
-                if (deptSt.isEmpty()) {
-                    deptName.setError("Please enter department name!");
-                    deptName.requestFocus();
-                    return;
-                } else {
-                    if (deptSt.endsWith("Dept")) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        LayoutInflater inflater1 = getLayoutInflater();
-                        View view2 = inflater1.inflate(R.layout.child_update_layout, null);
-                        builder.setView(view2);
+                    builder.setTitle("Add Teacher");
+                    builder.setIcon(R.drawable.logo);
 
-                        builder.setTitle("Add Teacher");
-                        builder.setIcon(R.drawable.logo);
+                    EditText name = view2.findViewById(R.id.name);
+                    EditText desg = view2.findViewById(R.id.designation);
+                    EditText email = view2.findViewById(R.id.email);
+                    EditText phoneHome = view2.findViewById(R.id.phoneHome);
+                    EditText phonePer = view2.findViewById(R.id.phonePer);
+                    EditText pbx = view2.findViewById(R.id.pbx);
+                    EditText others = view2.findViewById(R.id.others);
+                    Button update = view2.findViewById(R.id.update);
+                    Button delete = view2.findViewById(R.id.delete);
+                    Button cancel = view2.findViewById(R.id.cancel);
 
-                        EditText name = view2.findViewById(R.id.name);
-                        EditText desg = view2.findViewById(R.id.designation);
-                        EditText email = view2.findViewById(R.id.email);
-                        EditText phoneHome = view2.findViewById(R.id.phoneHome);
-                        EditText phonePer = view2.findViewById(R.id.phonePer);
-                        EditText pbx = view2.findViewById(R.id.pbx);
-                        EditText others = view2.findViewById(R.id.others);
-                        Button update = view2.findViewById(R.id.update);
-                        Button delete = view2.findViewById(R.id.delete);
-                        Button cancel = view2.findViewById(R.id.cancel);
+                    delete.setVisibility(View.GONE);
 
-                        delete.setVisibility(View.GONE);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                    cancel.setOnClickListener(view3 -> dialog.dismiss());
+                    update.setOnClickListener(view3 -> {
+                        String nameSt = name.getText().toString().trim();
+                        String desgSt = desg.getText().toString().trim();
+                        String emailSt = email.getText().toString().trim();
+                        String phoneHomeSt = phoneHome.getText().toString().trim();
+                        String phonePerSt = phonePer.getText().toString().trim();
+                        String pbxSt = pbx.getText().toString().trim();
+                        String othersSt = others.getText().toString().trim();
 
-                        cancel.setOnClickListener(view3 -> dialog.dismiss());
-                        update.setOnClickListener(view3 -> {
-                            String nameSt = name.getText().toString().trim();
-                            String desgSt = desg.getText().toString().trim();
-                            String emailSt = email.getText().toString().trim();
-                            String phoneHomeSt = phoneHome.getText().toString().trim();
-                            String phonePerSt = phonePer.getText().toString().trim();
-                            String pbxSt = pbx.getText().toString().trim();
-                            String othersSt = others.getText().toString().trim();
+                        if (TextUtils.isEmpty(nameSt)) {
+                            name.setError("Please enter name!");
+                            name.requestFocus();
+                            return;
+                        }
+                        if (TextUtils.isEmpty(desgSt)) {
+                            desg.setError("Please enter designation!");
+                            desg.requestFocus();
+                            return;
+                        }
+                        if (emailSt.isEmpty()) {
+                            emailSt = "null";
+                        }
+                        if (phoneHomeSt.isEmpty()) {
+                            phoneHomeSt = "null";
+                        }
+                        if (phonePerSt.isEmpty()) {
+                            phonePerSt = "null";
+                        }
+                        if (pbxSt.isEmpty()) {
+                            pbxSt = "null";
+                        }
+                        if (othersSt.isEmpty()) {
+                            othersSt = "null";
+                        }
 
-                            if (TextUtils.isEmpty(nameSt)) {
-                                name.setError("Please enter name!");
-                                name.requestFocus();
-                                return;
+                        int id = Integer.parseInt(count) + 1;
+                        StringBuilder pre = new StringBuilder();
+                        if (count.length() > String.valueOf(id).length()) {
+                            for (int i = 0; i < (count.length() - String.valueOf(id).length()); i++) {
+                                pre.append('0');
                             }
-                            if (TextUtils.isEmpty(desgSt)) {
-                                desg.setError("Please enter designation!");
-                                desg.requestFocus();
-                                return;
-                            }
-                            if (emailSt.isEmpty()) {
-                                emailSt = "null";
-                            }
-                            if (phoneHomeSt.isEmpty()) {
-                                phoneHomeSt = "null";
-                            }
-                            if (phonePerSt.isEmpty()) {
-                                phonePerSt = "null";
-                            }
-                            if (pbxSt.isEmpty()) {
-                                pbxSt = "null";
-                            }
-                            if (othersSt.isEmpty()) {
-                                othersSt = "null";
-                            }
+                        }
+                        count = pre.append(id).toString();
 
-                            int id = Integer.parseInt(count) + 1;
-                            StringBuilder pre = new StringBuilder();
-                            if (count.length() > String.valueOf(id).length()) {
-                                for (int i = 0; i < (count.length() - String.valueOf(id).length()); i++) {
-                                    pre.append('0');
-                                }
+                        //Log.d("tag", "path: " + path + "\tcount: " + count + "/" + deptSt);
+                        ChildModel model = new ChildModel("01", nameSt, desgSt, phoneHomeSt, phonePerSt, emailSt, othersSt, pbxSt);
+
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(String.valueOf(count)).child(deptSt).child("01");
+                        Log.d("ref", reference.toString());
+                        reference.setValue(model).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(DeptActivity.this, DeptActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                                startActivity(intent, options.toBundle());
+                            } else {
+                                Log.d("task", task.getException().getMessage());
                             }
-                            count = pre.append(id).toString();
-
-                            //Log.d("tag", "path: " + path + "\tcount: " + count + "/" + deptSt);
-                            ChildModel model = new ChildModel("01", nameSt, desgSt, phoneHomeSt, phonePerSt, emailSt, othersSt, pbxSt);
-
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(String.valueOf(count)).child(deptSt).child("01");
-                            Log.d("ref", reference.toString());
-                            reference.setValue(model).addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Log.d("task", "Done!");
-                                } else {
-                                    Log.d("task", task.getException().getMessage());
-                                }
-                            });
-                            dialog.dismiss();
-                            alertDialog.dismiss();
                         });
-                    } else {
-                        deptName.setError("Please enter department name in given pattern!");
-                        deptName.requestFocus();
-                    }
+                        dialog.dismiss();
+                        alertDialog.dismiss();
+                    });
+                } else {
+                    deptName.setError("Please enter department name in given pattern!");
+                    deptName.requestFocus();
                 }
-            });
-        //});
+            }
+        });
     }
 
     private void sendMail() {

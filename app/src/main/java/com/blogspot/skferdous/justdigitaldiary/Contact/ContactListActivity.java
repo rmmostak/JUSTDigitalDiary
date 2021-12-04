@@ -1,35 +1,34 @@
 package com.blogspot.skferdous.justdigitaldiary.Contact;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
+
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,13 +36,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactViewAdapter;
-import com.blogspot.skferdous.justdigitaldiary.MainActivity;
+import com.blogspot.skferdous.justdigitaldiary.Model.AdminModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.ChildModel;
-import com.blogspot.skferdous.justdigitaldiary.NotePad.MakeNote;
-import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
-import com.blogspot.skferdous.justdigitaldiary.NotePad.ViewNote;
 import com.blogspot.skferdous.justdigitaldiary.R;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,12 +51,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode.FIRST_CHILD;
-import static com.blogspot.skferdous.justdigitaldiary.Contact.DeptActivity.THIRD_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Contact.FacultyListActivity.SECOND_CHILD;
-import static com.blogspot.skferdous.justdigitaldiary.Contact.SecondaryActivity.ADMIN_CHILD;
 import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastLong;
-import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.ToastShort;
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
 public class ContactListActivity extends AppCompatActivity {
@@ -74,6 +67,9 @@ public class ContactListActivity extends AppCompatActivity {
     private ImageView call, mail, msg;
     private LinearLayout topLayout;
     public boolean role = false;
+    public List<String> arrayList = new ArrayList<>();
+    public String id = null, path = null, count = "", title = null, identifier = null;
+    private FloatingActionButton addTeacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +89,7 @@ public class ContactListActivity extends AppCompatActivity {
         msg = findViewById(R.id.msg);
 
         topLayout = findViewById(R.id.topLayout);
+        addTeacher = findViewById(R.id.addTeacher);
 
         SharedPreferences preferences = getSharedPreferences("child", Context.MODE_PRIVATE);
         String child = preferences.getString("second_child", null);
@@ -107,9 +104,304 @@ public class ContactListActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         childModelList = new ArrayList<>();
 
+        try {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Admin");
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot sn : snapshot.getChildren()) {
+                            AdminModel model = sn.getValue(AdminModel.class);
+
+                            assert model != null;
+                            if (model.getId().equals(auth.getUid())) {
+                                if (model.getIdentifier().equals("all") || model.getIdentifier().equals("Editor")) {
+                                    role = true;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(ContactListActivity.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(ContactListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
         showContactList();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (role) {
+            getMenuInflater().inflate(R.menu.send_mail, menu);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.sendEmail) {
+            emailIntent(arrayList);
+        } else if (id == R.id.editItem) {
+            editItem();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void editItem() {
+        addTeacher.setVisibility(View.VISIBLE);
+        listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            ChildModel model = childModelList.get(i);
+            updateInformation(model, model.getId());
+
+            return false;
+        });
+
+        addTeacher.setOnClickListener(view -> {
+            try {
+                android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.child_update_layout, null);
+                dialogBuilder.setView(dialogView);
+
+                EditText name = dialogView.findViewById(R.id.name);
+                EditText desg = dialogView.findViewById(R.id.designation);
+                EditText email = dialogView.findViewById(R.id.email);
+                EditText phoneHome = dialogView.findViewById(R.id.phoneHome);
+                EditText phonePer = dialogView.findViewById(R.id.phonePer);
+                EditText pbx = dialogView.findViewById(R.id.pbx);
+                EditText others = dialogView.findViewById(R.id.others);
+                Button update = dialogView.findViewById(R.id.update);
+                Button delete = dialogView.findViewById(R.id.delete);
+                Button cancel = dialogView.findViewById(R.id.cancel);
+
+                delete.setVisibility(View.GONE);
+                dialogBuilder.setTitle("Add Person");
+                dialogBuilder.setIcon(R.drawable.logo);
+
+                AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
+
+                cancel.setOnClickListener(v -> alertDialog.dismiss());
+                update.setOnClickListener(v -> {
+                    String nameSt = name.getText().toString().trim();
+                    String desgSt = desg.getText().toString().trim();
+                    String emailSt = email.getText().toString().trim();
+                    String phoneHomeSt = phoneHome.getText().toString().trim();
+                    String phonePerSt = phonePer.getText().toString().trim();
+                    String pbxSt = pbx.getText().toString().trim();
+                    String othersSt = others.getText().toString().trim();
+
+                    if (TextUtils.isEmpty(nameSt)) {
+                        name.setError("Please enter name!");
+                        name.requestFocus();
+                        return;
+                    }
+                    if (TextUtils.isEmpty(desgSt)) {
+                        desg.setError("Please enter designation!");
+                        desg.requestFocus();
+                        return;
+                    }
+                    if (emailSt.isEmpty()) {
+                        emailSt = "null";
+                    }
+                    if (phoneHomeSt.isEmpty()) {
+                        phoneHomeSt = "null";
+                    }
+                    if (phonePerSt.isEmpty()) {
+                        phonePerSt = "null";
+                    }
+                    if (pbxSt.isEmpty()) {
+                        pbxSt = "null";
+                    }
+                    if (othersSt.isEmpty()) {
+                        othersSt = "null";
+                    }
+
+                    int id = Integer.parseInt(count) + 1;
+                    StringBuilder pre = new StringBuilder();
+                    if (count.length() > String.valueOf(id).length()) {
+                        for (int i = 0; i < (count.length() - String.valueOf(id).length()); i++) {
+                            pre.append('0');
+                        }
+                    }
+                    count = pre.append(id).toString();
+
+                    ChildModel model = new ChildModel(count, nameSt, desgSt, phoneHomeSt, phonePerSt, emailSt, othersSt, pbxSt);
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(String.valueOf(count));
+                    reference.setValue(model).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            alertDialog.dismiss();
+                            Intent intent = new Intent(ContactListActivity.this, ContactListActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                            startActivity(intent, options.toBundle());
+                        } else {
+                            Log.d("task", Objects.requireNonNull(task.getException()).getMessage());
+                        }
+                    });
+                });
+            } catch (Exception e) {
+                Toast.makeText(ContactListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        });
+    }
+
+    private void emailIntent(List<String> eList) {
+        String sendTo = eList.toString().substring(1, eList.toString().length() - 1);
+        //Log.d("email", sendTo);
+        if (sendTo.isEmpty()) {
+            Toast.makeText(ContactListActivity.this, "Sorry, email address is not found", Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("message/rfc822");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{sendTo});
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(Intent.createChooser(intent, "Send via..."));
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(ContactListActivity.this, "Sorry, email address is not found!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void updateInformation(ChildModel model, String i) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.child_update_layout, null);
+        dialogBuilder.setView(dialogView);
+
+        EditText name = dialogView.findViewById(R.id.name);
+        EditText desg = dialogView.findViewById(R.id.designation);
+        EditText email = dialogView.findViewById(R.id.email);
+        EditText phoneHome = dialogView.findViewById(R.id.phoneHome);
+        EditText phonePer = dialogView.findViewById(R.id.phonePer);
+        EditText pbx = dialogView.findViewById(R.id.pbx);
+        EditText others = dialogView.findViewById(R.id.others);
+        Button update = dialogView.findViewById(R.id.update);
+        Button delete = dialogView.findViewById(R.id.delete);
+        Button cancel = dialogView.findViewById(R.id.cancel);
+
+        name.setText(model.getName());
+        desg.setText(model.getDesignation());
+        email.setText(model.getEmail());
+        phoneHome.setText(model.getPhoneHome());
+        phonePer.setText(model.getPhonePer());
+        pbx.setText(model.getPbx());
+        others.setText(model.getOthers());
+
+        dialogBuilder.setTitle("Update Information");
+        dialogBuilder.setIcon(R.drawable.logo);
+
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+        delete.setOnClickListener(v -> {
+            //Log.d("path", path + "/" + i);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ContactListActivity.this);
+            builder.setTitle("Alert!");
+            builder.setIcon(R.drawable.logo);
+            builder.setMessage("Are you sure to delete this?");
+            builder.setPositiveButton("Yes", (dialog1, which) -> {
+                try {
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(i);
+                    reference.removeValue().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            alertDialog.dismiss();
+                            Intent intent = new Intent(ContactListActivity.this, ContactListActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                            startActivity(intent, options.toBundle());
+                        } else {
+                            Log.d("task", task.getException().getMessage());
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(ContactListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+                dialog1.dismiss();
+            });
+            builder.setNegativeButton("Cancel", (dialogInterface, i1) -> dialogInterface.dismiss());
+            builder.show();
+        });
+        cancel.setOnClickListener(view -> alertDialog.dismiss());
+        update.setOnClickListener(view -> {
+            String nameSt = name.getText().toString().trim();
+            String desgSt = desg.getText().toString().trim();
+            String emailSt = email.getText().toString().trim();
+            String phoneHomeSt = phoneHome.getText().toString().trim();
+            String phonePerSt = phonePer.getText().toString().trim();
+            String pbxSt = pbx.getText().toString().trim();
+            String othersSt = others.getText().toString().trim();
+
+            if (TextUtils.isEmpty(nameSt)) {
+                name.setError("Please enter name!");
+                name.requestFocus();
+                return;
+            }
+            if (TextUtils.isEmpty(desgSt)) {
+                desg.setError("Please enter designation!");
+                desg.requestFocus();
+                return;
+            }
+            if (emailSt.isEmpty()) {
+                emailSt = "null";
+            }
+            if (phoneHomeSt.isEmpty()) {
+                phoneHomeSt = "null";
+            }
+            if (phonePerSt.isEmpty()) {
+                phonePerSt = "null";
+            }
+            if (pbxSt.isEmpty()) {
+                pbxSt = "null";
+            }
+            if (othersSt.isEmpty()) {
+                othersSt = "null";
+            }
+
+            ChildModel updateModel = new ChildModel(model.getId(), nameSt, desgSt, phoneHomeSt, phonePerSt, emailSt, othersSt, pbxSt);
+            setUpdate(updateModel, model.getId());
+            alertDialog.dismiss();
+        });
+    }
+
+    private void setUpdate(ChildModel model, String id) {
+        try {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(path).child(id);
+            reference.setValue(model).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Intent intent = new Intent(ContactListActivity.this, ContactListActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                    startActivity(intent, options.toBundle());
+                } else {
+                    Log.d("task", Objects.requireNonNull(task.getException()).getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(ContactListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
 
     private void showContactList() {
         ProgressDialog dialog = new ProgressDialog(this);
@@ -128,17 +420,25 @@ public class ContactListActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        reference.child(snapshot.getKey()).child(SECOND_CHILD).addValueEventListener(new ValueEventListener() {
+                        reference.child(Objects.requireNonNull(snapshot.getKey())).child(SECOND_CHILD).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot sn : dataSnapshot.getChildren()) {
                                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Updated").child(ROOT).child(child).child(snapshot.getKey()).child(SECOND_CHILD).child(sn.getKey()).child(FINAL_CHILD);
                                     reference.addValueEventListener(new ValueEventListener() {
+                                        @SuppressLint({"RestrictedApi", "SetTextI18n"})
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             for (DataSnapshot ss : dataSnapshot.getChildren()) {
+                                                path = dataSnapshot.getRef().getPath().toString();
+                                                count = ss.getKey();
+
                                                 ChildModel model = ss.getValue(ChildModel.class);
-                                                childModelList.add(model);
+
+                                                if (model != null) {
+                                                    arrayList.add(model.getEmail());
+                                                    childModelList.add(model);
+                                                }
                                             }
 
                                             adapter = new ContactViewAdapter(ContactListActivity.this, childModelList);
@@ -292,7 +592,6 @@ public class ContactListActivity extends AppCompatActivity {
             Toast.makeText(ContactListActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
 
     private void makeCall(String number) {
         if (number.isEmpty()) {

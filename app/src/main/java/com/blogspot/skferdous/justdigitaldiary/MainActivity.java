@@ -166,29 +166,6 @@ public class MainActivity extends AppCompatActivity{
         setNameWithDept();
     }
 
-   /* @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_share) {
-
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            String shareBody = "https://play.google.com/store/apps/details?id=com.blogspot.skferdous.justdigitaldiary";
-            String shareSubject = "JUST Digital Diary";
-
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
-            startActivity(Intent.createChooser(shareIntent, "Share App Using..."));
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
-
     @Override
     public void onBackPressed() {
 

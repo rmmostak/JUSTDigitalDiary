@@ -18,7 +18,7 @@ android {
         applicationId "com.blogspot.skferdous.justdigitaldiary"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 10
+        versionCode 11
         versionName "1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
