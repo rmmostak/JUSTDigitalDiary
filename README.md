@@ -8,6 +8,7 @@
   <li>Google calendar integration using Goople Calendar iFrame.</li>
   <li>Image Gallery which can represent our campus at a glance.</li>
   <li>This app also hold our necessary links as portal.</li>
+  <li><b>Admin panel</b> has been added</li>
 </ul>
 <h4>The main part of this app is shown below in a GIF file.</h4>
 <img src="https://github.com/rmproduct/JUSTDigitalDiary/blob/master/F_drive/ESD-ISO/Intro.gif" height="640" width="360"/>
