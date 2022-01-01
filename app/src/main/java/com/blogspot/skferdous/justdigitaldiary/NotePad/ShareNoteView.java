@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Model.NoteModel;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.Fragment.SharedNoteFragment;
@@ -67,11 +68,11 @@ public class ShareNoteView extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    ToastLong(ShareNoteView.this, databaseError.getMessage());
+                    Toast.makeText(ShareNoteView.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         } catch (Exception e) {
-            ToastLong(ShareNoteView.this, e.getMessage());
+            Toast.makeText(ShareNoteView.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

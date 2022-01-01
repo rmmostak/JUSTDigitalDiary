@@ -58,7 +58,7 @@ public class PortalActivity extends AppCompatActivity {
                             AdminModel model = sn.getValue(AdminModel.class);
 
                             assert model != null;
-                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("all")) {
+                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("Super Admin")) {
 
                                 addPortal.setVisibility(View.VISIBLE);
                                 return;

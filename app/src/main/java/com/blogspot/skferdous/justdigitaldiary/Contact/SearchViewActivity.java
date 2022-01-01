@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.blogspot.skferdous.justdigitaldiary.R;
 
-public class SearchView extends AppCompatActivity {
+public class SearchViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

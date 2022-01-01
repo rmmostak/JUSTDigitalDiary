@@ -12,11 +12,30 @@
     android:paddingBottom="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/logo" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/logo" />
+
+        <ImageButton
+            android:id="@+id/adminPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/circle_admin"
+            android:contentDescription="Super Admin Mode"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_admin_panel"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/navUserTitle"

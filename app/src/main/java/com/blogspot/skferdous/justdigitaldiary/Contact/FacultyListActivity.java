@@ -123,7 +123,7 @@ public class FacultyListActivity extends AppCompatActivity {
                                 role = true;
                                 return;
 
-                            } else if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("all")) {
+                            } else if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("Super Admin")) {
 
                                 role = true;
                                 return;

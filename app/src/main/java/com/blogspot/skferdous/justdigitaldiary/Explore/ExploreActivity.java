@@ -82,7 +82,7 @@ public class ExploreActivity extends AppCompatActivity {
                             AdminModel model = sn.getValue(AdminModel.class);
 
                             assert model != null;
-                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("all")) {
+                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("Super Admin")) {
                                 role = true;
                                 return;
                             }

@@ -81,7 +81,7 @@ public class SecondaryActivity extends AppCompatActivity {
 
                             assert model != null;
                             if (model.getId().equals(auth.getUid())) {
-                                if (model.getIdentifier().equals("all") || model.getIdentifier().equals("Editor")) {
+                                if (model.getIdentifier().equals("Super Admin") || model.getIdentifier().equals("Editor")) {
                                     role = true;
                                     return;
                                 }
@@ -106,13 +106,18 @@ public class SecondaryActivity extends AppCompatActivity {
         keyList = new ArrayList<>();
         showContactList();
     }
-
+Menu mMenu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mMenu = menu;
+
         if (role) {
             getMenuInflater().inflate(R.menu.admin_edit, menu);
+            mMenu.findItem(R.id.searchItem).setVisible(false);
             return true;
         } else {
+            getMenuInflater().inflate(R.menu.admin_edit, menu);
+            mMenu.findItem(R.id.searchItem).setVisible(false);
             return false;
         }
     }

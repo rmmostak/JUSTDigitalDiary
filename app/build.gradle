@@ -15,10 +15,10 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.blogspot.skferdous.justdigitaldiary"
+        applicationId 'com.blogspot.skferdous.justdigitaldiary'
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 11
+        versionCode 12
         versionName "1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

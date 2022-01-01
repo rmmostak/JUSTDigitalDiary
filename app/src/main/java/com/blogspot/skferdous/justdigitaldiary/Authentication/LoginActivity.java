@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (!TextUtils.isEmpty(_pass)) {
 
-                        if (_mail.equals("mr.akhond@just.edu.bd") || _mail.equals("160134.cse@student.just.edu.bd") || _mail.equals("170144.cse@student.just.edu.bd") || _mail.equals("160101.cse@student.just.edu.bd")) {
+                        if (_mail.equals("mr.akhond@just.edu.bd") || _mail.equals("160134.cse@student.just.edu.bd") || _mail.equals("170144.cse@student.just.edu.bd")) {
                             SharedPreferences preferences = getSharedPreferences("driver", MODE_PRIVATE);
                             @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = preferences.edit();
                             editor.putBoolean("vehicle", true);

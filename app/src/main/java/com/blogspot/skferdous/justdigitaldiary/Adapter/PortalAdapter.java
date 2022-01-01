@@ -100,9 +100,8 @@ public class PortalAdapter extends RecyclerView.Adapter<PortalAdapter.ViewHolder
                             AdminModel model1 = sn.getValue(AdminModel.class);
 
                             assert model1 != null;
-                            if (model1.getId().equals(auth.getUid()) && model1.getIdentifier().equals("all")) {
+                            if (model1.getId().equals(auth.getUid()) && model1.getIdentifier().equals("Super Admin")) {
                                 holder.portalCard.setOnLongClickListener(view -> {
-
                                     Intent intent = new Intent(context, AddPortalActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

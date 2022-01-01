@@ -1,7 +1,6 @@
 package com.blogspot.skferdous.justdigitaldiary.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +14,13 @@ import com.blogspot.skferdous.justdigitaldiary.R;
 
 import java.util.List;
 
-public class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.ViewHolder> {
+public class NameAdapter extends RecyclerView.Adapter<NameAdapter.ViewHolder> {
 
     private Context context;
     private List<String> stringList;
     private RecyclerView.ViewHolder holder;
 
-    public AttendeeAdapter(Context context, List<String> stringList) {
+    public NameAdapter(Context context, List<String> stringList) {
         this.context = context;
         this.stringList = stringList;
     }
@@ -29,25 +28,15 @@ public class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.attendee_list, parent, false);
-        return new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.name_layout, parent, false);
+        return new NameAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         String name = stringList.get(position);
-        holder.textView.setText(name);
-        holder.clear.setOnClickListener(v -> {
 
-            if (stringList.isEmpty()) {
-                holder.textView.setText("");
-                return;
-            } else {
-                stringList.remove(stringList.get(position));
-                holder.textView.setText("");
-            }
-        });
+        holder.textView.setText(name);
     }
 
     @Override
@@ -57,13 +46,11 @@ public class AttendeeAdapter extends RecyclerView.Adapter<AttendeeAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        ImageButton clear;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textView = itemView.findViewById(R.id.attendeeName);
-            clear = itemView.findViewById(R.id.clearButton);
         }
     }
 }

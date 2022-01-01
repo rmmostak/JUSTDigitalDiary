@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
+
+<!--    <ImageButton
+        android:id="@+id/docs"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="right|top"
+        android:layout_margin="15dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:contentDescription="Documentation"
+        android:accessibilityPaneTitle="Documentation"
+        android:padding="5dp"
+        android:background="@drawable/ic_support"
+        app:backgroundTint="@color/colorPrimary" />-->
 
     <ImageView
         android:layout_width="match_parent"
@@ -12,7 +26,6 @@
         android:layout_gravity="top"
         android:layout_marginTop="-100dp"
         android:src="@drawable/home_bg" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,7 +126,6 @@
                                 android:src="@drawable/admin_icon" />
 
                             <TextView
-                                android:id="@+id/home01"
                                 style="@style/cardTitle"
                                 android:text="Admin Office" />
 
@@ -247,56 +259,8 @@
 
             </LinearLayout>
 
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <!--
-                   <LinearLayout
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="3dp"
-                       android:layout_marginBottom="1dp"
-                       android:clipToPadding="false"
-                       android:gravity="center"
-                       android:orientation="vertical"
-                       android:padding="10dp"
-                       android:weightSum="2">
-
-                       <androidx.cardview.widget.CardView
-                           android:id="@+id/upComing"
-                           style="@style/cardLandBackground"
-                           android:layout_marginTop="20dp">
-
-                           <LinearLayout
-                               android:layout_width="match_parent"
-                               android:layout_height="match_parent"
-                               android:layout_gravity="center"
-                               android:gravity="center"
-                               android:orientation="horizontal">
-
-                               <ImageView
-                                   android:layout_width="50dp"
-                                   android:layout_height="50dp"
-                                   android:layout_gravity="center"
-                                   android:layout_margin="10dp"
-                                   android:background="@drawable/circle_violet"
-                                   android:src="@drawable/ic_upcoming" />
-
-                               <TextView
-                                   style="@style/cardTitle"
-                                   android:layout_gravity="center"
-                                   android:layout_marginLeft="20dp"
-                                   android:layout_marginTop="10dp"
-                                   android:text="Up Coming Features" />
-
-                           </LinearLayout>
-
-                       </androidx.cardview.widget.CardView>
-
-
-        </LinearLayout>
-        -->
     </LinearLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

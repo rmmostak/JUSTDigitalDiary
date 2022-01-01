@@ -75,7 +75,7 @@ public class FeedBackFragment extends Fragment {
                             AdminModel model = sn.getValue(AdminModel.class);
 
                             assert model != null;
-                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("all")) {
+                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("Super Admin")) {
 
                                 userView.setVisibility(View.GONE);
                                 adminView.setVisibility(View.VISIBLE);

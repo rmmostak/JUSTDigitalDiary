@@ -184,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Log.d("active", vName + "2");
 
             if (isServiceRunning()) {
-                serviceControl.setImageResource(R.drawable.ic_clear);
+                serviceControl.setImageResource(R.drawable.off);
                 serviceControl.setOnClickListener(v -> {
                     if (ContextCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
@@ -194,7 +194,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }, REQUEST_CODE);
                     } else {
                         startLocationService();
-                        serviceControl.setImageResource(R.drawable.ic_clear);
+                        serviceControl.setImageResource(R.drawable.off);
                         if (isServiceRunning()) {
                             stopLocationService();
                             serviceControl.setImageResource(R.drawable.ic_baseline_play_arrow_24);
@@ -211,7 +211,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }, REQUEST_CODE);
                     } else {
                         startLocationService();
-                        serviceControl.setImageResource(R.drawable.ic_clear);
+                        serviceControl.setImageResource(R.drawable.off);
                         if (isServiceRunning()) {
                             stopLocationService();
                             serviceControl.setImageResource(R.drawable.ic_baseline_play_arrow_24);
@@ -377,7 +377,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double distance = 0.0;
                 //distance = distance + Distance(prevLatlng.latitude, prevLatlng.longitude, vehicleList.get(myName()).latitude, vehicleList.get(myName()).longitude);
 
-                Log.d("distance", distance+" m");
+                Log.d("distance", distance + " m");
             }
 
             @Override

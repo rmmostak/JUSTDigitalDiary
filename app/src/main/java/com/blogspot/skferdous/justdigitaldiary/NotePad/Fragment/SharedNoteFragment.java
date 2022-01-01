@@ -86,14 +86,12 @@ public class SharedNoteFragment extends Fragment {
                     if (modelList.isEmpty()) {
                         notice.setVisibility(View.VISIBLE);
                         dialog.dismiss();
-
                     } else {
                         notice.setVisibility(View.GONE);
                         adapter = new InviteAdapter(context, modelList);
                         recyclerView.setAdapter(adapter);
                         dialog.dismiss();
                     }
-
                 }
 
                 @Override

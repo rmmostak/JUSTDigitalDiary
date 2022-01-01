@@ -16,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Authentication.LoginActivity;
+import com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity;
+import com.blogspot.skferdous.justdigitaldiary.Explore.WebsiteActivity;
+import com.blogspot.skferdous.justdigitaldiary.Model.AdminModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -48,7 +51,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import static com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity.checkEmailValidity;
 
-public class MainActivity extends AppCompatActivity{
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -59,8 +64,10 @@ public class MainActivity extends AppCompatActivity{
     public static final String FACULTY_TAG = "Faculty Members";
 
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference reference;
+    public boolean role = false;
     private TextView navUserTitle, navUserDept;
-    private ImageButton logOut;
+    private ImageButton logOut, adminPanel;
 
     //in app update
     private int MY_REQUEST_CODE = 111;
@@ -139,7 +146,9 @@ public class MainActivity extends AppCompatActivity{
 
         navUserTitle = headerView.findViewById(R.id.navUserTitle);
         navUserDept = headerView.findViewById(R.id.navUserDept);
-        logOut=headerView.findViewById(R.id.signOut);
+        logOut = headerView.findViewById(R.id.signOut);
+        adminPanel = headerView.findViewById(R.id.adminPanel);
+
         logOut.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             builder.setTitle("Alert!!");
@@ -163,8 +172,45 @@ public class MainActivity extends AppCompatActivity{
 
         });
 
+        try {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Admin");
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot sn : snapshot.getChildren()) {
+                            AdminModel model = sn.getValue(AdminModel.class);
+
+                            assert model != null;
+                            if (model.getId().equals(auth.getUid()) && model.getIdentifier().equals("Super Admin")) {
+                                adminPanel.setVisibility(View.VISIBLE);
+                                adminPanel.setOnClickListener(view -> {
+                                    Intent intent = new Intent(MainActivity.this, SuperAdminControl.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.fade_in, R.anim.fade_out);
+                                    startActivity(intent, options.toBundle());
+                                });
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
         setNameWithDept();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -215,7 +261,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void setNameWithDept() {
-
         try {
             DatabaseReference reference;
             FirebaseAuth auth = FirebaseAuth.getInstance();

@@ -49,7 +49,7 @@ public class WebsiteActivity extends AppCompatActivity {
         handler.postDelayed(r, 4000);
 
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("http://just.edu.bd/");
+        webView.loadUrl("https://firebasestorage.googleapis.com/v0/b/just-bus-tracking-5500d.appspot.com/o/files%2Fuser_manual.pdf?alt=media&token=e04051b1-36f8-4b4f-8055-e891193c9b85");
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);

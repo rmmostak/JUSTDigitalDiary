@@ -37,7 +37,6 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/item_image1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"

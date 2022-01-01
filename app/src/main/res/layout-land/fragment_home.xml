@@ -101,7 +101,6 @@
                             android:src="@drawable/admin_icon" />
 
                         <TextView
-                            android:id="@+id/home01"
                             style="@style/cardTitle"
                             android:text="Admin Office" />
 

@@ -11,13 +11,17 @@ import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.skferdous.justdigitaldiary.Adapter.AttendeeAdapter;
+import com.blogspot.skferdous.justdigitaldiary.Adapter.NameAdapter;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
+import com.blogspot.skferdous.justdigitaldiary.Model.AuthModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.InvitedModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.NoteModel;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.Fragment.MyNoteFragment;
@@ -36,13 +40,18 @@ import static com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity.To
 import static com.blogspot.skferdous.justdigitaldiary.MainActivity.NOTE_ROOT;
 import static com.blogspot.skferdous.justdigitaldiary.NotePad.MakeNote.NOTE_NODE;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewNote extends AppCompatActivity {
 
     private TextView title, body;
     private DatabaseReference reference;
-    private String note_id, push, uid;
-    ;
+    private String note_id, push, uid, mem;
     private RecyclerView recyclerView;
+    List<String> nameList = new ArrayList<>();
+    NameAdapter adapter;
+
     public static final String ROOT_NOTE = "JUST Digital Diary Notes";
     public static final String NOTE_INVITE = "Invitations";
     private String attendees = "null";
@@ -60,22 +69,63 @@ public class ViewNote extends AppCompatActivity {
 
         Intent intent = getIntent();
         note_id = intent.getStringExtra("noteId");
+        mem = intent.getStringExtra("member");
         int count = intent.getIntExtra("count", 0);
-
         if (count > 0) {
             recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setLayoutManager(new LinearLayoutManager(ViewNote.this));
-            showRecyclerView();
+            if (count == 1) {
+                showRecyclerView(mem.substring(0, mem.length() - 1));
+            } else {
+                StringBuilder builder=new StringBuilder();
+                for (int i=0; i<mem.length(); i++) {
+                    if (mem.charAt(i)==',') {
+                        showRecyclerView(builder.toString());
+                        Log.d("before", builder.toString());
+                        builder.delete(0, builder.length());
+                        Log.d("after", builder.toString());
+                        continue;
+                    } else {
+                        builder.append(mem.charAt(i));
+                    }
+                }
+                showRecyclerView(mem);
+            }
         }
 
         showPersonalNote();
     }
 
-    private void showRecyclerView() {
+    private void showRecyclerView(String noteId) {
         try {
             FirebaseAuth auth = FirebaseAuth.getInstance();
-            //String email = auth.getCurrentUser().getEmail();
-            //DatabaseReference reference = FirebaseDatabase.getInstance().getReference(NOTE_ROOT).child(NOTE_NODE).child();
+            String email = auth.getCurrentUser().getEmail();
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot sn : snapshot.getChildren()) {
+                            for (DataSnapshot s : sn.getChildren()) {
+                                AuthModel model = s.getValue(AuthModel.class);
+                                if (model != null) {
+                                    if (noteId.equals(model.getUid())) {
+                                        nameList.add(model.getName());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    adapter = new NameAdapter(ViewNote.this, nameList);
+                    recyclerView.setAdapter(adapter);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(ViewNote.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
 
         } catch (Exception e) {
             ToastLong(ViewNote.this, e.getMessage());
@@ -97,20 +147,21 @@ public class ViewNote extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                     NoteModel model = dataSnapshot.getValue(NoteModel.class);
-                    if (model.getTitle().isEmpty()) {
-                        title.setText("");
-                        return;
-                    } else {
-                        title.setText(model.getTitle());
+                    if (model != null) {
+                        if (model.getTitle().isEmpty()) {
+                            title.setText("");
+                            return;
+                        } else {
+                            title.setText(model.getTitle());
+                        }
+                        if (model.getBody().isEmpty()) {
+                            body.setText("");
+                            return;
+                        } else {
+                            body.setText(model.getBody());
+                        }
+                        dialog.dismiss();
                     }
-
-                    if (model.getBody().isEmpty()) {
-                        body.setText("");
-                        return;
-                    } else {
-                        body.setText(model.getBody());
-                    }
-                    dialog.dismiss();
                 }
 
                 @Override

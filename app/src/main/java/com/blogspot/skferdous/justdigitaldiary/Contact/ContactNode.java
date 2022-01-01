@@ -19,15 +19,18 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.skferdous.justdigitaldiary.Adapter.AdminNodeAdapter;
 import com.blogspot.skferdous.justdigitaldiary.Adapter.ContactAdapter;
+import com.blogspot.skferdous.justdigitaldiary.Adapter.SearchAdapter;
 import com.blogspot.skferdous.justdigitaldiary.MainActivity;
 import com.blogspot.skferdous.justdigitaldiary.Model.AdminModel;
 import com.blogspot.skferdous.justdigitaldiary.Model.ChildModel;
@@ -46,8 +49,11 @@ import static com.blogspot.skferdous.justdigitaldiary.MainActivity.ROOT;
 
 public class ContactNode extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView, searchReView;
+    SearchAdapter searchAdapter;
     private RecyclerView.Adapter adapter;
+    List<ChildModel> childModels;
+
     private DatabaseReference databaseReference;
     private List<String> keyList;
     public static String FIRST_CHILD = "";
@@ -59,6 +65,9 @@ public class ContactNode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_node);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        searchReView = findViewById(R.id.searchReView);
+        childModels = new ArrayList<>();
 
         try {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Admin");
@@ -73,7 +82,7 @@ public class ContactNode extends AppCompatActivity {
 
                             assert model != null;
                             if ((model.getId().equals(auth.getUid()) && FIRST_CHILD.equals("Administrative Offices")) || (model.getId().equals(auth.getUid()) && FIRST_CHILD.equals("Faculty Members"))) {
-                                if (model.getIdentifier().equals("all") || model.getIdentifier().equals("Editor")) {
+                                if (model.getIdentifier().equals("Super Admin") || model.getIdentifier().equals("Editor")) {
                                     role = true;
                                     return;
                                 }
@@ -169,6 +178,7 @@ public class ContactNode extends AppCompatActivity {
     /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search_menu, menu);
 
@@ -244,14 +254,78 @@ public class ContactNode extends AppCompatActivity {
         }
     }*/
 
+    Menu mMenu;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (role) {
-            getMenuInflater().inflate(R.menu.admin_edit, menu);
-            return true;
-        } else {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.admin_edit, menu);
+
+        mMenu = menu;
+
+        mMenu.findItem(R.id.adminEdit).setVisible(role);
+
+        MenuItem searchItem = mMenu.findItem(R.id.searchItem);
+
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search People");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                recyclerView.setVisibility(View.GONE);
+                searchReView.setVisibility(View.VISIBLE);
+                try {
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Updated").child("JUST Digital Diary").child(FIRST_CHILD);
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            childModels.clear();
+                            for (DataSnapshot sn0001 : dataSnapshot.getChildren()) {
+                                for (DataSnapshot sn001 : sn0001.getChildren()) {
+                                    for (DataSnapshot sn01 : sn001.getChildren()) {
+                                        for (DataSnapshot snapshot : sn01.getChildren()) {
+                                            for (DataSnapshot required : snapshot.getChildren()) {
+                                                ChildModel model = required.getValue(ChildModel.class);
+                                                if (model != null) {
+                                                    if (model.getName().toLowerCase().contains(s.toLowerCase())) {
+                                                        childModels.add(model);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            searchAdapter = new SearchAdapter(ContactNode.this, childModels);
+                            RecyclerView.LayoutManager manager = new LinearLayoutManager(ContactNode.this);
+                            searchReView.setLayoutManager(manager);
+                            searchReView.setAdapter(searchAdapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(ContactNode.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(ContactNode.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(() -> {
+            searchReView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
             return false;
-        }
+        });
+        return true;
     }
 
     @Override
@@ -564,4 +638,5 @@ public class ContactNode extends AppCompatActivity {
             }
         });
     }
+
 }

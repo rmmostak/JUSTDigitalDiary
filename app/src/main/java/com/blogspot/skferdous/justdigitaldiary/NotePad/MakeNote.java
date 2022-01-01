@@ -80,7 +80,8 @@ public class MakeNote extends AppCompatActivity {
                 } else if (checkEmailValidity(email).equals("student.just.edu.bd")) {
                     check = "Students";
                 } else {
-                    ToastLong(MakeNote.this, "Please enter institutional email.");
+                    Toast.makeText(MakeNote.this, "Please enter institutional email.", Toast.LENGTH_LONG).show();
+                    return;
                 }
 
                 emailRecycler.setVisibility(View.VISIBLE);
@@ -93,29 +94,35 @@ public class MakeNote extends AppCompatActivity {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 for (DataSnapshot sn : snapshot.getChildren()) {
                                     AuthModel model = sn.getValue(AuthModel.class);
-                                    if (email.equals(model.getEmail())) {
-                                        nameList.add(model.getName());
-                                        emailList.add(model.getEmail());
-                                        uidList.add(model.getUid());
-                                        checkList.add(model.getUid());
+                                    if (model != null) {
+                                        if (email.equals(model.getEmail())) {
+                                            nameList.add(model.getName());
+                                            emailList.add(model.getEmail());
+                                            uidList.add(model.getUid());
+                                            checkList.add(model.getUid());
+                                        }
                                     }
                                 }
                             }
                             if (checkList.isEmpty()) {
-                                ToastLong(MakeNote.this, "Sorry, Your requested email is not found!");
+                                Toast.makeText(MakeNote.this, "Sorry, Your requested email is not found!", Toast.LENGTH_LONG).show();
                             }
                             checkList.clear();
-                            adapter = new AttendeeAdapter(MakeNote.this, nameList);
-                            emailRecycler.setAdapter(adapter);
+                            if (nameList.isEmpty()) {
+                                emailRecycler.setVisibility(View.GONE);
+                            } else {
+                                adapter = new AttendeeAdapter(MakeNote.this, nameList);
+                                emailRecycler.setAdapter(adapter);
+                            }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            ToastLong(MakeNote.this, databaseError.getMessage());
+                            Toast.makeText(MakeNote.this, databaseError.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
                 } catch (Exception e) {
-                    ToastLong(MakeNote.this, e.getMessage());
+                    Toast.makeText(MakeNote.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
                 //emailRecycler.notifyAll();

@@ -6,6 +6,11 @@ public class AuthModel {
     public AuthModel() {
     }
 
+    public AuthModel(String name, String dept) {
+        this.name = name;
+        this.dept = dept;
+    }
+
     public AuthModel(String id, String uid, String email, String name, String dept) {
         this.id = id;
         this.uid = uid;

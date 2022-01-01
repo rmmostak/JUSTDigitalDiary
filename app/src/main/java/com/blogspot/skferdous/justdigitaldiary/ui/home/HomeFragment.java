@@ -8,38 +8,35 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
-import android.widget.Toolbar;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.blogspot.skferdous.justdigitaldiary.Authentication.LoginActivity;
-import com.blogspot.skferdous.justdigitaldiary.Authentication.SignupActivity;
-import com.blogspot.skferdous.justdigitaldiary.Calendar.AddingEvent;
 import com.blogspot.skferdous.justdigitaldiary.Calendar.CalendarActivity;
 import com.blogspot.skferdous.justdigitaldiary.Contact.ContactNode;
+import com.blogspot.skferdous.justdigitaldiary.DocsActivity;
 import com.blogspot.skferdous.justdigitaldiary.Explore.ExploreActivity;
 import com.blogspot.skferdous.justdigitaldiary.NotePad.NotePad;
 import com.blogspot.skferdous.justdigitaldiary.R;
-import com.blogspot.skferdous.justdigitaldiary.UpcomingActivity;
 import com.blogspot.skferdous.justdigitaldiary.VehicleTracking.MapsActivity;
-import com.blogspot.skferdous.justdigitaldiary.VehicleTracking.VehicleTracking;
 
 public class HomeFragment extends Fragment {
-
-    //private HomeViewModel homeViewModel;
-    private Context context;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        /*homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);*/
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        /*ImageButton docs=root.findViewById(R.id.docs);
+        docs.setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), DocsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(view.getContext(), R.anim.fade_in, R.anim.fade_out);
+            startActivity(intent, options.toBundle());
+        });*/
 
         CardView adminContact = root.findViewById(R.id.adminContact);
         adminContact.setOnClickListener(v -> {

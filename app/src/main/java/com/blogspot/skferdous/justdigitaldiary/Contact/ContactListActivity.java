@@ -117,7 +117,7 @@ public class ContactListActivity extends AppCompatActivity {
 
                             assert model != null;
                             if (model.getId().equals(auth.getUid())) {
-                                if (model.getIdentifier().equals("all") || model.getIdentifier().equals("Editor")) {
+                                if (model.getIdentifier().equals("Super Admin") || model.getIdentifier().equals("Editor")) {
                                     role = true;
                                     return;
                                 }

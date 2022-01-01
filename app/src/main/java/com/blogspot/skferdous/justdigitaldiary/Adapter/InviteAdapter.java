@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.provider.ContactsContract.CommonDataKinds.Note.NOTE;
@@ -77,7 +78,7 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
             }
 
         } else {
-            holder.attendees.setText("With- " + st.replace(',',' '));
+            holder.attendees.setText("With- " + st.replace(',', ' '));
         }
         try {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference(NOTE_ROOT).child(NOTE_NODE).child(model.getSenderId());
@@ -85,23 +86,21 @@ public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if (snapshot.getKey().equals(model.getNoteId())) {
+                        if (Objects.requireNonNull(snapshot.getKey()).equals(model.getNoteId())) {
                             NoteModel model1 = snapshot.getValue(NoteModel.class);
-                            /*int orientation = context.getResources().getConfiguration().orientation;
-                            if (orientation == Configuration.ORIENTATION_PORTRAIT) {*/
-                            if (model1.getTitle().length() > 20) {
-                                StringBuilder builder = new StringBuilder();
-                                for (int i = 0; i < 20; i++) {
-                                    builder.append(model1.getTitle().charAt(i));
+
+                            if (model1 != null) {
+                                if (model1.getTitle().length() > 20) {
+                                    StringBuilder builder = new StringBuilder();
+                                    for (int i = 0; i < 20; i++) {
+                                        builder.append(model1.getTitle().charAt(i));
+                                    }
+                                    holder.noteTitle.setText(builder.toString() + "...");
+                                } else {
+                                    holder.noteTitle.setText(model1.getTitle());
                                 }
-                                holder.noteTitle.setText(builder.toString() + "...");
-                            } else {
-                                holder.noteTitle.setText(model1.getTitle());
+                                holder.dateTime.setText(model1.getDate() + ", " + model1.getTime());
                             }
-                            /*} else {
-                                holder.noteTitle.setText(model1.getTitle());
-                            }*/
-                            holder.dateTime.setText(model1.getDate() + ", " + model1.getTime());
                         }
                     }
                 }

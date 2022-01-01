@@ -31,10 +31,10 @@
             android:label="Add Data"
             android:parentActivityName=".Explore.PortalActivity" />
         <activity
-            android:name=".UpcomingActivity"
-            android:label="Upcoming Features"
+            android:name=".SuperAdminControl"
+            android:label="Super Admin Control Room"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".Contact.SearchView" />
+        <activity android:name=".Contact.SearchViewActivity" />
 
         <service
             android:name=".VehicleTracking.VehicleLocationService"
@@ -63,9 +63,8 @@
             android:label="Shared Notes"
             android:parentActivityName=".NotePad.NotePad" />
         <activity
-            android:name=".Calendar.AddingEvent"
-            android:label="Add your events"
-            android:parentActivityName=".Calendar.CalendarActivity" />
+            android:name=".DocsActivity"
+            android:theme="@style/Theme.LightPrimaryActionBar" />
         <activity
             android:name=".Explore.WebsiteActivity"
             android:theme="@style/Theme.LightPrimaryActionBar" />

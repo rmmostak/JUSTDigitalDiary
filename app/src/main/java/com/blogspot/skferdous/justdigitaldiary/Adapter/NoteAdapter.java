@@ -62,9 +62,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         } else {
             holder.title.setText(model.getTitle());
         }
-        /*} else {
-            holder.title.setText(model.getTitle());
-        }*/
+
         int count = 0;
         if (!model.getAttendees().equals("null")) {
             String check = model.getAttendees();
@@ -82,119 +80,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             uBuilder.delete(0, uBuilder.length());
         }
 
-/*
-        if (holder.attendeeNo.getVisibility() == View.VISIBLE) {
-            holder.attendeeNo.setOnClickListener(v -> {
-                //nameString.delete(0, nameString.length());
-                uBuilder.delete(0, uBuilder.length());
-
-
-for (int i=0; i<model.getAttendees().length(); i++) {
-                    uBuilder.append(model.getAttendees().charAt(i));
-                    if (model.getAttendees().charAt(i) == ',') {
-                        uBuilder = uBuilder.deleteCharAt(uBuilder.length() - 1);
-ToastLong(context, uBuilder.toString());
-                        if (checkEmailValidity(uBuilder.toString()).equals("just.edu.bd")) {
-                            emailCheck = "Faculty and Stuff";
-                        } else if (checkEmailValidity(uBuilder.toString()).equals("student.just.edu.bd")) {
-                            emailCheck = "Students";
-                        }
-                        String _email = uBuilder.toString();
-                        try {
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(emailCheck);
-                            reference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        for (DataSnapshot sn : snapshot.getChildren()) {
-                                            AuthModel model = sn.getValue(AuthModel.class);
-                                            //uBuilder=uBuilder.delete(0, uBuilder.length()-1);
-                                            if (model.getEmail().equals(_email)) {
-                                                nameString.append(model.getName() + "\n");
-                                            }
-                                        }
-                                    }
-                                    if (nameString.equals("")) {
-                                        ToastLong(context, "Sorry, Your requested email is not registered!");
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    ToastLong(context, databaseError.getMessage());
-                                }
-                            });
-                            uBuilder.delete(0, uBuilder.length());
-
-                        } catch (Exception e) {
-                            //ToastShort(context, e.getMessage());
-                        }
-                    }
-                }
-
-
-                String attend = model.getAttendees();
-                for (int i = 0; i < attend.length(); i++) {
-                    uBuilder.append(attend.charAt(i));
-                    if (attend.charAt(i) == ',') {
-                        String email = uBuilder.substring(0, uBuilder.length() - 1);
-                        uBuilder.delete(0, uBuilder.length());
-                        String check = checkEmailValidity(email);
-                        if (check.equals("just.edu.bd")) {
-                            emailCheck = "Faculty and Stuff";
-                        } else if (check.equals("student.just.edu.bd")) {
-                            emailCheck = "Students";
-                        }
-                        try {
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(emailCheck);
-                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        for (DataSnapshot sn : snapshot.getChildren()) {
-                                            AuthModel model1 = sn.getValue(AuthModel.class);
-                                            if (email.equals(model1.getEmail())) {
-                                                nameString.add(model1.getName());
-                                            }
-                                        }
-                                    }
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                        } catch (Exception e) {
-                            ToastLong(context, e.getMessage());
-                        }
-                    }
-                }
-                StringBuilder message=new StringBuilder();
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setIcon(R.drawable.logo);
-                builder.setTitle("This note is shared with..");
-                for (int i=0; i<nameString.size(); i++) {
-                    message.append(nameString.get(i)+"\n");
-                }
-                builder.setMessage(message.toString());
-                message.delete(0, message.length());
-                builder.setPositiveButton("Close", (dialog, which) -> {
-                    return;
-                }).show();
-            });
-
-
-        }
-*/
         int finalCount = count;
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), ViewNote.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("noteId", model.getId());
             intent.putExtra("attendees", nameString.toString());
+            intent.putExtra("member", model.getAttendees());
             intent.putExtra("count", finalCount);
             ActivityOptions options = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fade_in, R.anim.fade_out);
             v.getContext().startActivity(intent, options.toBundle());
